@@ -8,7 +8,7 @@ Team Podz is creating a platform for renting services and goods, including tools
 ![Kasper](headshots/bilde.jpg)
 
 ## [August Eilertsen](https://github.com/augustle)
-![August](headshots/bilde_meg.PNG)
+![August](headshots/bilde_meg.png)
 
 ## [Ryan Allen](https://github.com/rmallensb)
 ![Ryan](headshots/UNADJUSTEDNONRAW_thumb_61f.jpg)
