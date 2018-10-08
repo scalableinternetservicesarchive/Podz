@@ -1,24 +1,17 @@
-# README
+# About
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Team Podz is creating a platform for renting services and goods, including tools, gear, and transport.  A user of this service should be able to upload information about one or multiple items the user wishes to rent.  Another user should be able to, if the item is available, rent said item.  All items will fall into searchable categories, and users should be able to view top rented items from all categories.
 
-Things you may want to cover:
+# Team Members
 
-* Ruby version
+## [Kasper Berg](https://github.com/kasperkberg)
+![Kasper](headshots/bilde.jpg)
 
-* System dependencies
+## [August Eilertsen](https://github.com/augustle)
+![August](headshots/bilde_meg.PNG)
 
-* Configuration
+## [Ryan Allen](https://github.com/rmallensb)
+![Ryan](headshots/UNADJUSTEDNONRAW_thumb_61f.jpg)
 
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+## [Alex Rich](https://github.com/alexrich021)
+![Alex](headshots/IMG_1539.PNG)
