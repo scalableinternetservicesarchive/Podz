@@ -65,4 +65,9 @@ class UserTest < ActiveSupport::TestCase
     @user.password = @user.password_confirmation = "a" * 5
     assert_not @user.valid?
   end
+
+  test "biography should not be too long" do
+    @user.biography = "a" * 2001
+    assert_not @user.valid?
+  end
 end

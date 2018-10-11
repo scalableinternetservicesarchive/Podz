@@ -9,6 +9,8 @@ gem 'rails', '~> 5.2.1'
 gem 'bootstrap-sass', '3.3.7'
 # Necessary for has_secure_password function in User model
 gem 'bcrypt',         '3.1.12'
+# Necessary for assert_template function
+gem 'rails-controller-testing'
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3'
 # Use Puma as the app server
