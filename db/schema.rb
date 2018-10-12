@@ -30,6 +30,17 @@ ActiveRecord::Schema.define(version: 2018_10_12_193645) do
     t.float "price_daily_usd"
   end
 
+  create_table "reviews", force: :cascade do |t|
+    t.integer "item_id"
+    t.string "title"
+    t.text "body"
+    t.integer "rating"
+    t.integer "user_id"
+    t.boolean "anonymous"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "display_name"
     t.string "email"

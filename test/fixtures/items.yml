@@ -1,11 +1,13 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  name: MyString
+  title: MyString
   description: MyText
-  checked_out: false
+  available: false
+  price_hourly_usd: 20
 
 two:
-  name: MyString
+  title: MyString
   description: MyText
-  checked_out: false
+  available: true
+  price_daily_usd: 100
