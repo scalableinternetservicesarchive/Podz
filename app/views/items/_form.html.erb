@@ -12,27 +12,23 @@
   <% end %>
 
   <div class="field">
-    <%= form.label :name %>
-    <%= form.text_field :name %>
+    <%= form.label :name, class: 'field_label' %>
+    <%= form.text_field :name, class: 'text_field name' %>
   </div>
 
   <div class="field">
-    <%= form.label :description %>
-    <%= form.text_area :description %>
+    <%= form.label :description, class: 'field_label' %>
+    <%= form.text_area :description, class: 'text_field' %>
   </div>
 
   <div class="field">
-    <% form.label :category %>
-
+    <%= form.label :category, class: 'field_label' %>
+    <%= form.collection_select :category_id, Category.order(:name),:id,:name, include_blank: false %>
 
   </div>
 
-  <div class="field">
-    <%= form.label :checked_out %>
-    <%= form.check_box :checked_out %>
-  </div>
 
   <div class="actions">
-    <%= form.submit %>
+    <%= form.submit class: 'submit_button' %>
   </div>
 <% end %>

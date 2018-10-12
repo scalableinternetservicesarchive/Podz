@@ -2,25 +2,36 @@
 
 <h1>Items</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Description</th>
-      <th>Checked out</th>
-      <th colspan="3"></th>
+<table class="item_table">
+  <thead class="table_content">
+    <tr class="list_header">
+      <th class="list_item_text">Name</th>
+      <th class="list_item_text">Description</th>
+      <th class="list_item_text">Checked out</th>
+      <th class="list_item_text">Category</th>
+      <th class="list_item_gap"></th>
+      <th class="list_item_gap"></th>
+      <th class="list_item_gap"></th>
     </tr>
   </thead>
 
-  <tbody>
+  <tbody class="table_content">
     <% @items.each do |item| %>
-      <tr>
-        <td><%= item.name %></td>
-        <td><%= item.description %></td>
-        <td><%= item.checked_out %></td>
-        <td><%= link_to 'Show', item %></td>
-        <td><%= link_to 'Edit', edit_item_path(item) %></td>
-        <td><%= link_to 'Destroy', item, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      <tr class="list_item">
+        <td class="list_item_text"><%= item.name %></td>
+        <td class="list_item_text"><%= item.description %></td>
+        <td class="list_item_text">false <%= item.checked_out %></td>
+        <td class="list_item_text"><%= item.category_id %></td>
+
+        <td class="list_item_button">
+          <%= link_to 'Show', item, class: 'list_item_button action' %>
+        </td>
+        <td class="list_item_button">
+          <%= link_to 'Edit', edit_item_path(item), class: 'list_item_button action' %>
+        </td>
+        <td class="list_item_button">
+          <%= link_to 'Destroy', item, method: :delete, data: { confirm: 'Are you sure?' }, class: 'list_item_button action delete' %>
+        </td>
       </tr>
     <% end %>
   </tbody>
