@@ -14,7 +14,12 @@ class ItemsController < ApplicationController
 
   # GET /items/new
   def new
-    @item = Item.new
+    if logged_in?
+      @item = Item.new
+    else
+      flash[:danger] = "Only authenticated users can create items"
+      redirect_to signup_path
+    end
   end
 
   # GET /items/1/edit
