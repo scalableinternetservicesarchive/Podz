@@ -2,29 +2,37 @@
 
 <h1>Items</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>Title</th>
-      <th>Description</th>
-      <th>Available</th>
-      <th>Hourly Price (USD)</th>
-      <th>Daily Price (USD)</th>
-      <th colspan="5"></th>
+<table class="item_table">
+  <thead class="table_content">
+    <tr class="list_header">
+      <th class="list_item_text">Title</th>
+      <th class="list_item_text">Description</th>
+      <th class="list_item_text">Available</th>
+      <th class="list_item_text">Category</th>
+      <th class="list_item_gap"></th>
+      <th class="list_item_gap"></th>
+      <th class="list_item_gap"></th>
     </tr>
   </thead>
 
-  <tbody>
+  <tbody class="table_content">
     <% @items.each do |item| %>
-      <tr>
-        <td><%= item.title %></td>
-        <td><%= item.description %></td>
-        <td><%= item.available %></td>
-        <td><%= item.price_hourly_usd %></td>
-        <td><%= item.price_daily_usd %></td>
-        <td><%= link_to 'Show', item %></td>
-        <td><%= link_to 'Edit', edit_item_path(item) %></td>
-        <td><%= link_to 'Destroy', item, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+
+      <tr class="list_item">
+        <td class="list_item_text"><%= item.title %></td>
+        <td class="list_item_text"><%= item.description %></td>
+        <td class="list_item_text"><%= item.available %></td>
+        <td class="list_item_text"><%= item.category_id %></td>
+
+        <td class="list_item_button">
+          <%= link_to 'Show', item, class: 'list_item_button action' %>
+        </td>
+        <td class="list_item_button">
+          <%= link_to 'Edit', edit_item_path(item), class: 'list_item_button action' %>
+        </td>
+        <td class="list_item_button">
+          <%= link_to 'Destroy', item, method: :delete, data: { confirm: 'Are you sure?' }, class: 'list_item_button action delete' %>
+        </td>
       </tr>
     <% end %>
   </tbody>

@@ -1,44 +1,43 @@
-<div class="row">
-  <div class="col-md-6 col-md-offset-3">
-    <%= form_with(model: item, local: true) do |form| %>
-      <% if item.errors.any? %>
-        <div id="error_explanation">
-          <h2><%= pluralize(item.errors.count, "error") %> prohibited this item from being saved:</h2>
 
-          <ul>
-            <% item.errors.full_messages.each do |message| %>
-              <li><%= message %></li>
-            <% end %>
-          </ul>
-        </div>
+<%= form_with(model: item, local: true) do |form| %>
+<% if item.errors.any? %>
+  <div id="error_explanation">
+    <h2><%= pluralize(item.errors.count, "error") %> prohibited this item from being saved:</h2>
+
+    <ul>
+      <% item.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
       <% end %>
-
-      <form class="form-horizontal">
-        <div class="form-group">
-          <%= form.label :title %>
-          <%= form.text_field :title, :placeholder => "Rental Title" %>
-        </div>
-        <div class="form-group">
-          <%= form.label :description %>
-          <%= form.text_area :description, :placeholder => "Rental Description" %>
-        </div>
-        <div class="form-group">
-          <%= form.label :category %>
-        </div>
-        <div class="form-group">
-          <%= form.label :Hourly_Price %>
-          <%= form.text_field :price_hourly_usd, :placeholder => "Hourly Price (USD)" %>
-          <%= form.label :Daily_Price %>
-          <%= form.text_field :price_daily_usd, :placeholder => "Daily Price (USD)" %>
-        </div>
-        <div class="form-group">
-          <%= form.label :available %>
-          <%= form.check_box :available%>
-        </div>
-        <div class="form-group">
-          <%= form.submit :submit, :class => "btn btn-default"%>
-        </div>
-      </form>
-    <% end %>
+    </ul>
   </div>
+<% end %>
+
+
+<div class="field">
+  <%= form.label :title, class: 'field_label' %>
+  <%= form.text_field :title, class: 'text_field name' %>
 </div>
+
+<div class="field">
+  <%= form.label :description, class: 'field_label' %>
+  <%= form.text_area :description, class: 'text_field' %>
+</div>
+
+<div class="field">
+  <%= form.label :category, class: 'field_label' %>
+  <%= form.collection_select :category_id, Category.order(:name),:id,:name, include_blank: false %>
+
+</div>
+
+<div class="field">
+  <%= form.label :Hourly_Price, class: 'field_label' %>
+  <%= form.text_field :price_hourly_usd, :placeholder => "Hourly Price (USD)", class: 'text_field name' %>
+  <%= form.label :Daily_Price, class: 'field_label' %>
+  <%= form.text_field :price_daily_usd, :placeholder => "Daily Price (USD)", class: 'text_field name' %>
+</div>
+
+
+<div class="actions">
+  <%= form.submit class: 'submit_button' %>
+</div>
+<% end %>

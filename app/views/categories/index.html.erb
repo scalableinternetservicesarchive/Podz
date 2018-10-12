@@ -2,23 +2,31 @@
 
 <h1>Categories</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Description</th>
-      <th colspan="3"></th>
+<table class="item_table">
+  <thead class="table_content">
+    <tr class="list_header">
+      <th class="list_item_text">Name</th>
+      <th class="list_item_text">Description</th>
+      <th class="list_item_gap"></th>
+      <th class="list_item_gap"></th>
+      <th class="list_item_gap"></th>
     </tr>
   </thead>
 
-  <tbody>
+  <tbody class="table_content">
     <% @categories.each do |category| %>
-      <tr>
-        <td><%= category.name %></td>
-        <td><%= category.description %></td>
-        <td><%= link_to 'Show', category %></td>
-        <td><%= link_to 'Edit', edit_category_path(category) %></td>
-        <td><%= link_to 'Destroy', category, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      <tr class="list_item">
+        <td class="list_item_text"><%= category.name %></td>
+        <td class="list_item_text"><%= category.description %></td>
+        <td class="list_item_button">
+          <%= link_to 'Show', category, class: 'list_item_button action' %>
+        </td>
+        <td class="list_item_button">
+          <%= link_to 'Edit', edit_category_path(category), class: 'list_item_button action' %>
+        </td>
+        <td class="list_item_button">
+          <%= link_to 'Destroy', category, method: :delete, data: { confirm: 'Are you sure?' }, class: 'list_item_button action delete' %>
+        </td>
       </tr>
     <% end %>
   </tbody>

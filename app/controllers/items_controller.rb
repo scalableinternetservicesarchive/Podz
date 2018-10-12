@@ -29,7 +29,10 @@ class ItemsController < ApplicationController
   # POST /items
   # POST /items.json
   def create
+    @category = Category.find_by(name: params[:category_id])
     @item = Item.new(item_params)
+    @item.category_id = params[:item][:category_id]
+    @item.available = true
 
     respond_to do |format|
       if @item.save
