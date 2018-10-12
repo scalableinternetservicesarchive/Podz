@@ -16,7 +16,7 @@ class ItemsTest < ApplicationSystemTestCase
 
     fill_in "Checked Out", with: @item.checked_out
     fill_in "Description", with: @item.description
-    fill_in "Name", with: @item.name
+    fill_in "Title", with: @item.title
     click_on "Create Item"
 
     assert_text "Item was successfully created"
@@ -27,9 +27,9 @@ class ItemsTest < ApplicationSystemTestCase
     visit items_url
     click_on "Edit", match: :first
 
-    fill_in "Checked Out", with: @item.checked_out
+    fill_in "available", with: @item.available
     fill_in "Description", with: @item.description
-    fill_in "Name", with: @item.name
+    fill_in "Title", with: @item.title
     click_on "Update Item"
 
     assert_text "Item was successfully updated"

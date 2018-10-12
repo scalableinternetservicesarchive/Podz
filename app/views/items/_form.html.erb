@@ -1,34 +1,43 @@
-<%= form_with(model: item, local: true) do |form| %>
-  <% if item.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(item.errors.count, "error") %> prohibited this item from being saved:</h2>
 
-      <ul>
+<%= form_with(model: item, local: true) do |form| %>
+<% if item.errors.any? %>
+  <div id="error_explanation">
+    <h2><%= pluralize(item.errors.count, "error") %> prohibited this item from being saved:</h2>
+
+    <ul>
       <% item.errors.full_messages.each do |message| %>
         <li><%= message %></li>
       <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <div class="field">
-    <%= form.label :name, class: 'field_label' %>
-    <%= form.text_field :name, class: 'text_field name' %>
+    </ul>
   </div>
-
-  <div class="field">
-    <%= form.label :description, class: 'field_label' %>
-    <%= form.text_area :description, class: 'text_field' %>
-  </div>
-
-  <div class="field">
-    <%= form.label :category, class: 'field_label' %>
-    <%= form.collection_select :category_id, Category.order(:name),:id,:name, include_blank: false %>
-
-  </div>
+<% end %>
 
 
-  <div class="actions">
-    <%= form.submit class: 'submit_button' %>
-  </div>
+<div class="field">
+  <%= form.label :title, class: 'field_label' %>
+  <%= form.text_field :title, class: 'text_field name' %>
+</div>
+
+<div class="field">
+  <%= form.label :description, class: 'field_label' %>
+  <%= form.text_area :description, class: 'text_field' %>
+</div>
+
+<div class="field">
+  <%= form.label :category, class: 'field_label' %>
+  <%= form.collection_select :category_id, Category.order(:name),:id,:name, include_blank: false %>
+
+</div>
+
+<div class="field">
+  <%= form.label :Hourly_Price, class: 'field_label' %>
+  <%= form.text_field :price_hourly_usd, :placeholder => "Hourly Price (USD)", class: 'text_field name' %>
+  <%= form.label :Daily_Price, class: 'field_label' %>
+  <%= form.text_field :price_daily_usd, :placeholder => "Daily Price (USD)", class: 'text_field name' %>
+</div>
+
+
+<div class="actions">
+  <%= form.submit class: 'submit_button' %>
+</div>
 <% end %>

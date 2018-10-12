@@ -1,8 +1,8 @@
 <p id="notice"><%= notice %></p>
 
 <p>
-  <strong>Name:</strong>
-  <%= @item.name %>
+  <strong>Title:</strong>
+  <%= @item.title %>
 </p>
 
 <p>
@@ -11,9 +11,10 @@
 </p>
 
 <p>
-  <strong>Checked out:</strong>
-  <%= @item.checked_out %>
+  <strong>Available:</strong>
+  <%= @item.available %>
 </p>
 
 <%= link_to 'Edit', edit_item_path(@item) %> |
-<%= link_to 'Back', items_path %>
+<%= link_to 'Back', items_path %> |
+<%= link_to 'Add review', new_review_path %>

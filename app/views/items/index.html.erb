@@ -5,9 +5,9 @@
 <table class="item_table">
   <thead class="table_content">
     <tr class="list_header">
-      <th class="list_item_text">Name</th>
+      <th class="list_item_text">Title</th>
       <th class="list_item_text">Description</th>
-      <th class="list_item_text">Checked out</th>
+      <th class="list_item_text">Available</th>
       <th class="list_item_text">Category</th>
       <th class="list_item_gap"></th>
       <th class="list_item_gap"></th>
@@ -17,10 +17,11 @@
 
   <tbody class="table_content">
     <% @items.each do |item| %>
+
       <tr class="list_item">
-        <td class="list_item_text"><%= item.name %></td>
+        <td class="list_item_text"><%= item.title %></td>
         <td class="list_item_text"><%= item.description %></td>
-        <td class="list_item_text">false <%= item.checked_out %></td>
+        <td class="list_item_text"><%= item.available %></td>
         <td class="list_item_text"><%= item.category_id %></td>
 
         <td class="list_item_button">

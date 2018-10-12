@@ -14,7 +14,12 @@ class ItemsController < ApplicationController
 
   # GET /items/new
   def new
-    @item = Item.new
+    if logged_in?
+      @item = Item.new
+    else
+      flash[:danger] = "Only authenticated users can create items"
+      redirect_to signup_path
+    end
   end
 
   # GET /items/1/edit
@@ -27,8 +32,7 @@ class ItemsController < ApplicationController
     @category = Category.find_by(name: params[:category_id])
     @item = Item.new(item_params)
     @item.category_id = params[:item][:category_id]
-    puts "PRINT PINRWFS PRINT PRITNP PRINT PRINT"
-    puts params[:item][:category_id]
+    @item.available = true
 
     respond_to do |format|
       if @item.save
@@ -73,6 +77,6 @@ class ItemsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def item_params
-      params.require(:item).permit(:name, :description, :checked_out)
+      params.require(:item).permit(:title, :description, :available, :price_hourly_usd, :price_daily_usd)
     end
 end
