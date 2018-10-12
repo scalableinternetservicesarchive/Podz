@@ -30,3 +30,6 @@
 # Ignore master key for decrypting credentials and more.
 /config/master.key
 .idea/
+
+# Ignore .ds_store, it is used for MacOS Finder
+.DS_Store
