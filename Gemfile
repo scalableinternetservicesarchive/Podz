@@ -7,6 +7,8 @@ ruby '2.4.4'
 gem 'rails', '~> 5.2.1'
 # Install bootstrap gem
 gem 'bootstrap-sass', '3.3.7'
+# Necessary for has_secure_password function in User model
+gem 'bcrypt',         '3.1.12'
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3'
 # Use Puma as the app server
@@ -58,6 +60,11 @@ group :test do
   gem 'selenium-webdriver'
   # Easy installation and use of chromedriver to run system tests with Chrome
   gem 'chromedriver-helper'
+  gem 'rails-controller-testing', '1.0.2'
+  gem 'minitest',                 '5.11.3'
+  gem 'minitest-reporters',       '1.1.14'
+  gem 'guard',                    '2.13.0'
+  gem 'guard-minitest',           '2.4.4'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
