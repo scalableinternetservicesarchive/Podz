@@ -14,7 +14,12 @@ class ReviewsController < ApplicationController
 
   # GET /reviews/new
   def new
-    @review = Review.new
+    if logged_in?
+      @review = Review.new
+    else
+      flash[:danger] = "Only authenticated users can create reviews"
+      redirect_to login_path
+    end
   end
 
   # GET /reviews/1/edit

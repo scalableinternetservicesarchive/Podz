@@ -12,7 +12,9 @@ class ReviewsControllerTest < ActionDispatch::IntegrationTest
 
   test "should get new" do
     get new_review_url
-    assert_response :success
+    assert_redirected_to login_path
+    follow_redirect!
+    assert_not flash.empty?
   end
 
   test "should create review" do
