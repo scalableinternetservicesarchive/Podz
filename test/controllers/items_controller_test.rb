@@ -10,11 +10,6 @@ class ItemsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "should get new" do
-    get new_item_url
-    assert_response :success
-  end
-
   test "should create item" do
     assert_difference('Item.count') do
       post items_url, params: { item: { checked_out: @item.checked_out, description: @item.description, name: @item.name } }
