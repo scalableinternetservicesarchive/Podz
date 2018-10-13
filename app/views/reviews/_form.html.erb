@@ -12,8 +12,9 @@
   <% end %>
 
   <div class="field">
-    <%= form.label :item_id %>
-    <%= form.number_field :item_id %>
+    <%= form.label :item_id, class: 'field_label' %>
+    <%= form.collection_select :item_id, Item.order(:title),:id,:title, include_blank: false %>
+
   </div>
 
   <div class="field">
