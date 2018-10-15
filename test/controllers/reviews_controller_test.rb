@@ -3,6 +3,7 @@ require 'test_helper'
 class ReviewsControllerTest < ActionDispatch::IntegrationTest
   setup do
     @review = reviews(:one)
+    @user = users(:michael)
   end
 
   test "should get index" do
@@ -18,8 +19,14 @@ class ReviewsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should create review" do
+    get login_path
+    post login_path, params: { session: { email: @user.email,
+                                          password: 'password' } }
+    assert is_logged_in?
+    assert_redirected_to @user
+
     assert_difference('Review.count') do
-      post reviews_url, params: { review: { anonymous: @review.anonymous, body: @review.body, item_id: @review.item_id, rating: @review.rating, title: @review.title, user_id: @review.user_id } }
+      post reviews_url, params: { review: { anonymous: @review.anonymous, body: @review.body, item_id: @review.item_id, rating: @review.rating, title: @review.title, user_id: @user.id} }
     end
 
     assert_redirected_to review_url(Review.last)

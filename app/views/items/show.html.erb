@@ -1,9 +1,6 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Title:</strong>
-  <%= @item.title %>
-</p>
+<h1><%= @item.title %></h1>
 
 <p>
   <strong>Description:</strong>
@@ -18,3 +15,30 @@
 <%= link_to 'Edit', edit_item_path(@item) %> |
 <%= link_to 'Back', items_path %> |
 <%= link_to 'Add review', new_review_path %>
+
+<hr>
+
+<h2>Reviews</h2>
+
+<table class="item_table">
+  <thead class="table_content">
+  <tr class="list_header">
+    <th class="list_item_text">Title</th>
+    <th class="list_item_text">Review</th>
+    <th class="list_item_text">Rating</th>
+    <th class="list_item_text">User</th>
+  </tr>
+  </thead>
+
+  <tbody class="table_content">
+  <% @reviews.each do |review| %>
+
+    <tr class="list_item">
+      <td class="list_item_text"><%= review.title %></td>
+      <td class="list_item_text"><%= review.body %></td>
+      <td class="list_item_text"><%= review.rating %></td>
+      <td class="list_item_text"><%= get_display_name(review) %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
