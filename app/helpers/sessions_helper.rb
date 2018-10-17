@@ -29,6 +29,11 @@ module SessionsHelper
     user == current_user
   end
 
+  # Returns true if current user has admin status
+  def admin?
+    !current_user ? false : current_user.admin?
+  end
+
   # Returns true if the user is logged in, false otherwise.
   def logged_in?
     !current_user.nil?
@@ -76,6 +81,6 @@ module SessionsHelper
 
   # Confirms an admin user.
   def admin_user
-    redirect_to(root_url) unless current_user.admin?
+    redirect_to(root_url) unless admin?
   end
 end
