@@ -1,5 +1,6 @@
 class ItemsController < ApplicationController
-  before_action :set_item, only: [:show, :edit, :update, :destroy]
+  before_action :set_item,        only: [:show, :edit, :update, :destroy]
+  before_action :logged_in_user,  only: [:new, :create, :update, :destroy, :edit]
 
   # GET /items
   # GET /items.json
@@ -15,12 +16,7 @@ class ItemsController < ApplicationController
 
   # GET /items/new
   def new
-    if logged_in?
-      @item = Item.new
-    else
-      flash[:danger] = "Only authenticated users can create items"
-      redirect_to signup_path
-    end
+    @item = Item.new
   end
 
   # GET /items/1/edit
