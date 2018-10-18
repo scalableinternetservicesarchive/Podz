@@ -5,9 +5,3 @@ one:
   description: MyText
   available: false
   price_hourly_usd: 20
-
-two:
-  title: MyString
-  description: MyText
-  available: true
-  price_daily_usd: 100
