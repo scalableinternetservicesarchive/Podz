@@ -27,6 +27,7 @@ class ItemsController < ApplicationController
   # GET /items/1.json
   def show
     @reviews = Review.select { |review| review.item_id == @item.id }
+    @review = Review.new(item_id: @item.id)
   end
 
   # GET /items/new

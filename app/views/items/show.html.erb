@@ -13,8 +13,7 @@
 </p>
 
 <%= link_to 'Edit', edit_item_path(@item) %> |
-<%= link_to 'Back', items_path %> |
-<%= link_to 'Add review', new_review_path %>
+<%= link_to 'Back', items_path %>
 
 <hr>
 
@@ -42,3 +41,5 @@
   <% end %>
   </tbody>
 </table>
+
+<%= render 'reviews/form', review: @review %>

@@ -32,14 +32,12 @@ class ReviewsController < ApplicationController
     @review = Review.new(review_params)
     @review.user_id = current_user.id
 
-    respond_to do |format|
-      if @review.save
-        format.html { redirect_to @review, notice: 'Review was successfully created.' }
-        format.json { render :show, status: :created, location: @review }
-      else
-        format.html { render :new }
-        format.json { render json: @review.errors, status: :unprocessable_entity }
-      end
+    if @review.save
+      flash[:success] = "Added review"
+      redirect_to Item.find(@review.item_id)
+    else
+      flash[:danger] = "Review failed"
+      redirect_to Item.find(@review.item_id)
     end
   end
 
