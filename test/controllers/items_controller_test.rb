@@ -3,6 +3,7 @@ require 'test_helper'
 class ItemsControllerTest < ActionDispatch::IntegrationTest
   setup do
     @item = items(:one)
+    @user = users(:archer)
   end
 
   test "should get index" do
@@ -11,6 +12,7 @@ class ItemsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should create item" do
+    log_in_as(@user)
     assert_difference('Item.count') do
       post items_url, params: { item: { available: @item.available, description: @item.description, title: @item.title } }
     end
@@ -24,16 +26,21 @@ class ItemsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should get edit" do
+    log_in_as(@user)
     get edit_item_url(@item)
     assert_response :success
   end
 
   test "should update item" do
-    patch item_url(@item), params: { item: { available: @item.available, description: @item.description, title: @item.title } }
-    assert_redirected_to item_url(@item)
+    log_in_as(@user)
+    new_title = "new title"
+    patch item_url(@item), params: { item: { title: new_title } }
+    assert_redirected_to item_path(@item)
+    assert_equal new_title, @item.reload.title
   end
 
   test "should destroy item" do
+    log_in_as(@user)
     assert_difference('Item.count', -1) do
       delete item_url(@item)
     end
