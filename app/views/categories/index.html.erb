@@ -5,30 +5,48 @@
 <table class="item_table">
   <thead class="table_content">
     <tr class="list_header">
-      <th class="list_item_text">Name</th>
-      <th class="list_item_text">Description</th>
-      <th class="list_item_gap"></th>
-      <th class="list_item_gap"></th>
-      <th class="list_item_gap"></th>
+      <div class="text_container">
+        <th class="list_item_text">Name</th>
+        <th class="list_item_text">Description</th>
+      </div>
+      <div class="button_container">
+
+        <td class="list_item_button">
+          <th class="empty_btemplate">Show</th>
+        </td>
+        <td class="list_item_button">
+          <th class="empty_btemplate">Show</th>
+        </td>
+        <td class="list_item_button">
+          <th class="empty_btemplate">Show</th>
+        </td>
+
+      </div>
     </tr>
   </thead>
 
   <tbody class="table_content">
     <% @categories.each do |category| %>
       <tr class="list_item">
-        <td class="list_item_text"><%= category.name %></td>
-        <td class="list_item_text"><%= category.description %></td>
-        <td class="list_item_button">
-          <%= link_to 'Show', category, class: 'list_item_button action' %>
-        </td>
-        <% if admin? %>
+
+        <div class="text_container">
+          <td class="list_item_text"><%= category.name %></td>
+          <td class="list_item_text"><%= category.description %></td>
+        </div>
+
+        <div class="button_container">
           <td class="list_item_button">
-            <%= link_to 'Edit', edit_category_path(category), class: 'list_item_button action' %>
+            <%= link_to 'Show', category, class: 'list_item_button action' %>
           </td>
-          <td class="list_item_button">
-            <%= link_to 'Destroy', category, method: :delete, data: { confirm: 'Are you sure?' }, class: 'list_item_button action delete' %>
-          </td>
-        <% end %>
+          <% if admin? %>
+            <td class="list_item_button">
+              <%= link_to 'Edit', edit_category_path(category), class: 'list_item_button action' %>
+            </td>
+            <td class="list_item_button">
+              <%= link_to 'Destroy', category, method: :delete, data: { confirm: 'Are you sure?' }, class: 'list_item_button action delete' %>
+            </td>
+          <% end %>
+        </div>
       </tr>
     <% end %>
   </tbody>

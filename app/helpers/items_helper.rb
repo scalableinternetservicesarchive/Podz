@@ -8,4 +8,8 @@ module ItemsHelper
       @display_name = @user.display_name
     end
   end
+
+  def display_category(category_id)
+    @category_name = Category.find(category_id).name
+  end
 end
