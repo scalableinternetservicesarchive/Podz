@@ -5,7 +5,22 @@ class ItemsController < ApplicationController
   # GET /items
   # GET /items.json
   def index
-    @items = Item.all
+    @items = if params[:test_var] != nil
+               Item.select { |item| item.title.downcase.include? params[:test_var].downcase }
+             else
+               Item.all
+             end
+
+    @items_free   = @items.select { |item| item.available == true}
+    @items_rented = if params[:show_all] == 'true'
+                      @items.select { |item| item.available == false}
+                    else
+                      {}
+                    end
+
+    @items_free   = @items_free.sort_by { |item| item.title.downcase }
+    @items_rented = @items_rented.sort_by { |item| item.title.downcase }
+
   end
 
   # GET /items/1
