@@ -5,9 +5,11 @@ one:
   description: MyText
   available: false
   price_hourly_usd: 20
+  category_id: 1
 
 two:
   title: MyString
   description: MyText
   available: true
   price_daily_usd: 100
+  category_id: 1

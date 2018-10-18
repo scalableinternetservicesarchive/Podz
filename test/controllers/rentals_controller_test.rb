@@ -3,6 +3,8 @@ require 'test_helper'
 class RentalsControllerTest < ActionDispatch::IntegrationTest
   setup do
     @rental = rentals(:one)
+    @user = users(:michael)
+    @item = items(:one)
   end
 
   test "should get index" do
@@ -17,15 +19,10 @@ class RentalsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create rental" do
     assert_difference('Rental.count') do
-      post rentals_url, params: { rental: { item_id: @rental.item_id, length_days: @rental.length_days, length_hours: @rental.length_hours, note: @rental.note, user_id: @rental.user_id } }
+      post rentals_url, params: { rental: { item_id: @item.id, length_days: @rental.length_days, length_hours: @rental.length_hours, note: @rental.note, user_id: @user.id } }
     end
 
     assert_redirected_to rental_url(Rental.last)
-  end
-
-  test "should show rental" do
-    get rental_url(@rental)
-    assert_response :success
   end
 
   test "should get edit" do
@@ -33,16 +30,4 @@ class RentalsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "should update rental" do
-    patch rental_url(@rental), params: { rental: { item_id: @rental.item_id, length_days: @rental.length_days, length_hours: @rental.length_hours, note: @rental.note, user_id: @rental.user_id } }
-    assert_redirected_to rental_url(@rental)
-  end
-
-  test "should destroy rental" do
-    assert_difference('Rental.count', -1) do
-      delete rental_url(@rental)
-    end
-
-    assert_redirected_to rentals_url
-  end
 end
