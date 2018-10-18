@@ -3,10 +3,10 @@
 <h1>Items</h1>
 
 <h3 align="center">Search by Keyword:</h3>
-<div class="input-group" align="center">
-  <div class="form-inline search">
+<div class="search-input-group" align="center">
+  <div class="form-inline search" align="center">
     <%= form_tag items_path, method: :get do %>
-      <%= text_field_tag('test_var', params[:test_var], size: 125, :placeholder=> "What are you looking for?") %>
+      <%= text_field_tag('test_var', params[:test_var], :placeholder=> "What are you looking for?") %>
       <%= button_tag(type: "submit", class: "btn  btn-success") do %>
         Search
       <% end %>
