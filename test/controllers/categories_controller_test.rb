@@ -3,6 +3,7 @@ require 'test_helper'
 class CategoriesControllerTest < ActionDispatch::IntegrationTest
   setup do
     @category = categories(:one)
+    @admin = users(:michael)
   end
 
   test "should get index" do
@@ -11,11 +12,13 @@ class CategoriesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should get new" do
+    log_in_as(@admin)
     get new_category_url
     assert_response :success
   end
 
   test "should create category" do
+    log_in_as(@admin)
     assert_difference('Category.count') do
       post categories_url, params: { category: { description: @category.description, name: @category.name } }
     end
@@ -29,16 +32,19 @@ class CategoriesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should get edit" do
+    log_in_as(@admin)
     get edit_category_url(@category)
     assert_response :success
   end
 
   test "should update category" do
+    log_in_as(@admin)
     patch category_url(@category), params: { category: { description: @category.description, name: @category.name } }
     assert_redirected_to category_url(@category)
   end
 
   test "should destroy category" do
+    log_in_as(@admin)
     assert_difference('Category.count', -1) do
       delete category_url(@category)
     end

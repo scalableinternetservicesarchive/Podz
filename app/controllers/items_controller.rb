@@ -1,10 +1,26 @@
 class ItemsController < ApplicationController
-  before_action :set_item, only: [:show, :edit, :update, :destroy]
+  before_action :set_item,        only: [:show, :edit, :update, :destroy]
+  before_action :logged_in_user,  only: [:new, :create, :update, :destroy, :edit]
 
   # GET /items
   # GET /items.json
   def index
-    @items = Item.all
+    @items = if params[:test_var] != nil
+               Item.select { |item| item.title.downcase.include? params[:test_var].downcase }
+             else
+               Item.all
+             end
+
+    @items_free   = @items.select { |item| item.available == true}
+    @items_rented = if params[:show_all] == 'true'
+                      @items.select { |item| item.available == false}
+                    else
+                      {}
+                    end
+
+    @items_free   = @items_free.sort_by { |item| item.title.downcase }
+    @items_rented = @items_rented.sort_by { |item| item.title.downcase }
+
   end
 
   # GET /items/1
@@ -15,12 +31,7 @@ class ItemsController < ApplicationController
 
   # GET /items/new
   def new
-    if logged_in?
-      @item = Item.new
-    else
-      flash[:danger] = "Only authenticated users can create items"
-      redirect_to signup_path
-    end
+    @item = Item.new
   end
 
   # GET /items/1/edit
@@ -34,6 +45,7 @@ class ItemsController < ApplicationController
     @item = Item.new(item_params)
     @item.category_id = params[:item][:category_id]
     @item.available = true
+    @item.user_id = @current_user.id
 
     respond_to do |format|
       if @item.save
@@ -49,14 +61,11 @@ class ItemsController < ApplicationController
   # PATCH/PUT /items/1
   # PATCH/PUT /items/1.json
   def update
-    respond_to do |format|
-      if @item.update(item_params)
-        format.html { redirect_to @item, notice: 'Item was successfully updated.' }
-        format.json { render :show, status: :ok, location: @item }
-      else
-        format.html { render :edit }
-        format.json { render json: @item.errors, status: :unprocessable_entity }
-      end
+    if @item.update(item_params)
+      flash[:success] = "Updated item"
+      redirect_to @item
+    else
+      render 'items/edit'
     end
   end
 

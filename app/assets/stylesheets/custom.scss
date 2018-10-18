@@ -262,3 +262,26 @@ input {
   flex-direction: column;
   width: 100%;
 }
+
+/* Item Searching */
+.search {
+  width: 30%;
+  position: relative;
+}
+
+.search-input-group {
+  position: relative;
+  display: block;
+}
+
+/* Users index */
+
+.users {
+  list-style: none;
+  margin: 0;
+  li {
+    overflow: auto;
+    padding: 10px 0;
+    border-bottom: 1px solid $gray-lighter;
+  }
+}

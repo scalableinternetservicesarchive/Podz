@@ -2,6 +2,25 @@
 
 <h1>Items</h1>
 
+<h3 align="center">Search by Keyword:</h3>
+<div class="search-input-group" align="center">
+  <div class="form-inline search" align="center">
+    <%= form_tag items_path, method: :get do %>
+      <%= text_field_tag('test_var', params[:test_var], :placeholder=> "What are you looking for?") %>
+      <%= button_tag(type: "submit", class: "btn  btn-success") do %>
+        Search
+      <% end %>
+    <% end %>
+  </div>
+</div>
+
+<hr>
+
+<div>
+  <%= link_to "Show All", request.query_parameters.merge({:show_all => 'true'}) %>
+</div>
+
+
 <table class="item_table">
   <thead class="table_content">
     <tr class="list_header">
@@ -24,7 +43,7 @@
   </thead>
 
   <tbody class="table_content">
-    <% @items.each do |item| %>
+    <% @items_free.each do |item| %>
 
       <tr class="list_item">
         <div class="text_container">
@@ -43,6 +62,25 @@
 
       </tr>
     <% end %>
+    <% @items_rented.each do |item| %>
+
+    <tr class="list_item">
+      <td class="list_item_text"><%= item.title %></td>
+      <td class="list_item_text"><%= item.description %></td>
+      <td class="list_item_text"><%= item.available %></td>
+      <td class="list_item_text"><%= item.category_id %></td>
+
+      <td class="list_item_button">
+        <%= link_to 'Show', item, class: 'list_item_button action' %>
+      </td>
+      <td class="list_item_button">
+        <%= link_to 'Edit', edit_item_path(item), class: 'list_item_button action' %>
+      </td>
+      <td class="list_item_button">
+        <%= link_to 'Destroy', item, method: :delete, data: { confirm: 'Are you sure?' }, class: 'list_item_button action delete' %>
+      </td>
+    </tr>
+  <% end %>
   </tbody>
 </table>
 

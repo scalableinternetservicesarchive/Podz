@@ -38,12 +38,14 @@
           <td class="list_item_button">
             <%= link_to 'Show', category, class: 'list_item_button action' %>
           </td>
-          <td class="list_item_button">
-            <%= link_to 'Edit', edit_category_path(category), class: 'list_item_button action' %>
-          </td>
-          <td class="list_item_button">
-            <%= link_to 'Destroy', category, method: :delete, data: { confirm: 'Are you sure?' }, class: 'list_item_button action delete' %>
-          </td>
+          <% if admin? %>
+            <td class="list_item_button">
+              <%= link_to 'Edit', edit_category_path(category), class: 'list_item_button action' %>
+            </td>
+            <td class="list_item_button">
+              <%= link_to 'Destroy', category, method: :delete, data: { confirm: 'Are you sure?' }, class: 'list_item_button action delete' %>
+            </td>
+          <% end %>
         </div>
       </tr>
     <% end %>
@@ -52,4 +54,6 @@
 
 <br>
 
-<%= link_to 'New Category', new_category_path %>
+<% if admin? %>
+  <%= link_to 'New Category', new_category_path %>
+<% end %>
