@@ -22,7 +22,7 @@
         <td class="list_item_text"><%= item.title %></td>
         <td class="list_item_text"><%= item.description %></td>
         <td class="list_item_text"><%= item.available %></td>
-        <td class="list_item_text"><%= item.category_id %></td>
+        <td class="list_item_text"><%= display_category(item.category_id) %></td>
 
         <td class="list_item_button">
           <%= link_to 'Show', item, class: 'list_item_button action' %>

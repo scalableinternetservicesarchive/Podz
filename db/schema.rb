@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_15_182111) do
+ActiveRecord::Schema.define(version: 2018_10_16_234514) do
 
   create_table "categories", force: :cascade do |t|
     t.string "name"
@@ -28,6 +28,16 @@ ActiveRecord::Schema.define(version: 2018_10_15_182111) do
     t.integer "category_id"
     t.float "price_hourly_usd"
     t.float "price_daily_usd"
+  end
+
+  create_table "rentals", force: :cascade do |t|
+    t.integer "item_id"
+    t.integer "user_id"
+    t.integer "length_days"
+    t.integer "length_hours"
+    t.string "note"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "reviews", force: :cascade do |t|
