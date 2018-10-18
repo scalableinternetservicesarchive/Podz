@@ -13,7 +13,7 @@
   <%= f.label :password_confirmation %>
   <%= f.password_field :password_confirmation, class: 'form-control' %>
 
-  <% if yield(:include_bio) == "false" %>
+  <% if yield(:include_bio) != "false" %>
     <%= f.label :biography %>
     <%= f.text_area :biography, class: 'form-control' %>
   <% end %>
