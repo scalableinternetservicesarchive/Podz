@@ -4,6 +4,7 @@ class ReviewsControllerTest < ActionDispatch::IntegrationTest
   setup do
     @review = reviews(:one)
     @user = users(:michael)
+    @item = items(:one)
   end
 
   test "should get index" do
@@ -26,10 +27,10 @@ class ReviewsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to @user
 
     assert_difference('Review.count') do
-      post reviews_url, params: { review: { anonymous: @review.anonymous, body: @review.body, item_id: @review.item_id, rating: @review.rating, title: @review.title, user_id: @user.id} }
+      post reviews_url, params: { review: { anonymous: @review.anonymous, body: @review.body, item_id: @item.id, rating: @review.rating, title: @review.title, user_id: @user.id} }
     end
 
-    assert_redirected_to review_url(Review.last)
+    assert_redirected_to @item
   end
 
   test "should show review" do
@@ -45,6 +46,11 @@ class ReviewsControllerTest < ActionDispatch::IntegrationTest
   test "should update review" do
     patch review_url(@review), params: { review: { anonymous: @review.anonymous, body: @review.body, item_id: @review.item_id, rating: @review.rating, title: @review.title, user_id: @review.user_id } }
     assert_redirected_to review_url(@review)
+  end
+
+  test "shouldn't update review" do
+    patch review_url(@review), params: { review: { anonymous: @review.anonymous, body: @review.body, item_id: @review.item_id, rating: 6, title: @review.title, user_id: @review.user_id } }
+    assert_not_equal @review.reload.rating, 6
   end
 
   test "should destroy review" do
