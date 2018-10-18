@@ -30,6 +30,7 @@ class ItemsController < ApplicationController
     @item = Item.new(item_params)
     @item.category_id = params[:item][:category_id]
     @item.available = true
+    @item.user_id = @current_user.id
 
     respond_to do |format|
       if @item.save
@@ -45,14 +46,11 @@ class ItemsController < ApplicationController
   # PATCH/PUT /items/1
   # PATCH/PUT /items/1.json
   def update
-    respond_to do |format|
-      if @item.update(item_params)
-        format.html { redirect_to @item, notice: 'Item was successfully updated.' }
-        format.json { render :show, status: :ok, location: @item }
-      else
-        format.html { render :edit }
-        format.json { render json: @item.errors, status: :unprocessable_entity }
-      end
+    if @item.update(item_params)
+      flash[:success] = "Updated item"
+      redirect_to @item
+    else
+      render 'items/edit'
     end
   end
 

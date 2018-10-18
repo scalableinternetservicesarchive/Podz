@@ -33,8 +33,10 @@ class ItemsControllerTest < ActionDispatch::IntegrationTest
 
   test "should update item" do
     log_in_as(@user)
-    patch item_url(@item), params: { item: { available: @item.available, description: @item.description, title: @item.title } }
-    assert_redirected_to item_url(@item)
+    new_title = "new title"
+    patch item_url(@item), params: { item: { title: new_title } }
+    assert_redirected_to item_path(@item)
+    assert_equal new_title, @item.reload.title
   end
 
   test "should destroy item" do

@@ -17,6 +17,8 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
 
   test "valid signup information" do
     get signup_path
+    # Check that biography entry is not showing up in sign up page
+    assert_select "textarea#user_biography", count: 0
     assert_difference 'User.count', 1 do
       post signup_path, params: { user: { display_name:  "Example User",
                                           email: "user@example.com",
