@@ -30,6 +30,7 @@ class ItemsController < ApplicationController
     @item = Item.new(item_params)
     @item.category_id = params[:item][:category_id]
     @item.available = true
+    @item.user_id = @current_user.id
 
     respond_to do |format|
       if @item.save

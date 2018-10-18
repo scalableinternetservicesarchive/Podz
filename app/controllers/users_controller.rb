@@ -15,6 +15,7 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
+    @items = Item.where(user_id: @user.id)
   end
 
   def new
@@ -48,6 +49,6 @@ class UsersController < ApplicationController
 
   private
     def user_params
-      params.require(:user).permit(:display_name, :email, :password, :password_confirmation)
+      params.require(:user).permit(:display_name, :email, :password, :password_confirmation, :biography)
     end
 end
