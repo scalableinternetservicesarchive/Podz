@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   get  '/about',   to: 'static_pages#about'
   get  '/new',   to: 'items#new'
   get  '/items',   to: 'items#index'
+  get  'items_all', to: 'items#all'
   get  'signup', to: 'users#new'
   post 'signup', to: 'users#create'
   get    '/login',   to: 'sessions#new'
