@@ -45,7 +45,7 @@ class ReviewsControllerTest < ActionDispatch::IntegrationTest
 
   test "should update review" do
     patch review_url(@review), params: { review: { anonymous: @review.anonymous, body: @review.body, item_id: @review.item_id, rating: @review.rating, title: @review.title, user_id: @review.user_id } }
-    assert_redirected_to review_url(@review)
+    assert_redirected_to User.find(@review.user_id)
   end
 
   test "shouldn't update review" do
@@ -58,6 +58,6 @@ class ReviewsControllerTest < ActionDispatch::IntegrationTest
       delete review_url(@review)
     end
 
-    assert_redirected_to reviews_url
+    User.find(@review.user_id)
   end
 end
