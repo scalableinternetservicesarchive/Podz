@@ -61,6 +61,15 @@ class RentalsController < ApplicationController
     end
   end
 
+  def rent
+    @rental.available = false
+
+    """respond_to do |format|
+      format.html { redirect_to @rental, notice: 'Item was rented' }
+      format.json { head :no_content }
+    end"""
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_rental
