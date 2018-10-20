@@ -5,15 +5,22 @@ class ItemsController < ApplicationController
   # GET /items
   # GET /items.json
   def index
-    @query = params[:search]
+    @category = params[:category_search]
+    @keyword  = params[:keyword_search]
 
-    @items = if !@query.nil?
-               Item.select do |item|
-                 item.title.downcase.include? @query.downcase or
-                   item.description.downcase.include? @query.downcase
-               end
+    @items = if !@category.nil? && @category.length.positive?
+               Item.select { |item| item.category_id == @category.to_i }
              else
                Item.all
+             end
+
+    @items = if !@keyword.nil?
+               @items.select do |item|
+                 item.title.downcase.include? @keyword.downcase or
+                   item.description.downcase.include? @keyword.downcase
+               end
+             else
+               @items
              end
 
     @items_free = @items.select(&:available).sort_by { |item| item.title.downcase }

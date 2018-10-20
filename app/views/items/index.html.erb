@@ -6,13 +6,23 @@
 <div class="search-input-group" align="center">
   <div class="form-inline search" align="center">
     <%= form_tag items_path, method: :get do %>
-      <%= text_field_tag('search', params[:search], :placeholder=> "What are you looking for?") %>
-      <%= button_tag(type: "submit", class: "btn  btn-success") do %>
-        Search
-      <% end %>
+      <%= text_field_tag('keyword_search', params[:keysearch], :placeholder=> "What are you looking for?") %>
+      <button type="submit" class="btn btn-primary">Search</button>
     <% end %>
   </div>
 </div>
+
+<hr>
+<h3 align="center">Pick a Category:</h3>
+<div class="search-input-group" align="center">
+  <div class="form-inline search" align="center">
+    <%= form_tag items_path, method: :get do %>
+      <%= select_tag 'category_search', options_from_collection_for_select(Category.all, "id", "name"), include_blank: "All" %>
+      <button type="submit" class="btn btn-primary">Search</button>
+    <% end %>
+  </div>
+</div>
+
 
 <hr>
 
