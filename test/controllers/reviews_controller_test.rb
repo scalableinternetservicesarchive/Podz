@@ -57,7 +57,6 @@ class ReviewsControllerTest < ActionDispatch::IntegrationTest
     assert_difference('Review.count', -1) do
       delete review_url(@review)
     end
-
-    User.find(@review.user_id)
+    assert_redirected_to User.find(@review.user_id)
   end
 end

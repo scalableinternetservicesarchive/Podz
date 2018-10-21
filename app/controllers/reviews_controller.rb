@@ -47,7 +47,7 @@ class ReviewsController < ApplicationController
 
     if @review.update(review_params)
       flash[:success] = "Upated review"
-      redirect_to User.find(@review.user_id)
+      redirect_to User.find_by(id: @review.user_id) || root_path
     else
       render "edit"
     end
@@ -58,7 +58,7 @@ class ReviewsController < ApplicationController
   def destroy
     @review.destroy
     flash[:success] = "Review deleted"
-    redirect_to User.find(@review.user_id)
+    redirect_to User.find_by(id: @review.user_id) || root_path
   end
 
   private
