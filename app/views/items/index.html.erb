@@ -2,27 +2,17 @@
 
 <h1>Items</h1>
 
-<h3 align="center">Search by Keyword:</h3>
+<h3 align="center">What are you looking for?</h3>
 <div class="search-input-group" align="center">
   <div class="form-inline search" align="center">
     <%= form_tag items_path, method: :get do %>
-      <%= text_field_tag('keyword_search', params[:keysearch], :placeholder=> "What are you looking for?") %>
+      <%= select_tag 'category_search', options_from_collection_for_select(Category.all, "id", "name", @category), include_blank: "All", onchange: "this.form.submit();"%>
+      <%= text_field_tag('keyword_search', nil, :placeholder=> search_display) %>
       <button type="submit" class="btn btn-primary">Search</button>
     <% end %>
+
   </div>
 </div>
-
-<hr>
-<h3 align="center">Pick a Category:</h3>
-<div class="search-input-group" align="center">
-  <div class="form-inline search" align="center">
-    <%= form_tag items_path, method: :get do %>
-      <%= select_tag 'category_search', options_from_collection_for_select(Category.all, "id", "name"), include_blank: "All" %>
-      <button type="submit" class="btn btn-primary">Search</button>
-    <% end %>
-  </div>
-</div>
-
 
 <hr>
 

@@ -8,4 +8,13 @@ module ItemsHelper
       @display_name = @user.display_name
     end
   end
+
+  # Returns the keyword_search display
+  def search_display
+    @keyword_display = if !@keyword.nil? && @keyword.length.positive?
+                         @keyword
+                       else
+                         'Search by Keyword'
+                       end
+  end
 end
