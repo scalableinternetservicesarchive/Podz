@@ -11,11 +11,13 @@
     </div>
   <% end %>
 
-  <div class="field">
+
+  <div class="field invisible" >
     <%= form.label :item_id, class: 'field_label' %>
     <%= form.collection_select :item_id, Item.order(:title),:id,:title, include_blank: false %>
 
   </div>
+
 
   <div class="field">
     <%= form.label :title %>
@@ -29,7 +31,7 @@
 
   <div class="field">
     <%= form.label :rating %>
-    <%= form.number_field :rating %>
+    <%= form.select :rating, options_for_select(1..5),include_blank: false %>
   </div>
 
   <div class="field">

@@ -9,6 +9,10 @@ module ItemsHelper
     end
   end
 
+  def display_category(category_id)
+    @category_name = Category.find(category_id).name
+  end
+
   # Returns the keyword_search display
   def search_display
     @keyword_display = if !@keyword.nil? && @keyword.length.positive?

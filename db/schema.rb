@@ -31,6 +31,16 @@ ActiveRecord::Schema.define(version: 2018_10_17_221508) do
     t.integer "user_id"
   end
 
+  create_table "rentals", force: :cascade do |t|
+    t.integer "item_id"
+    t.integer "user_id"
+    t.integer "length_days"
+    t.integer "length_hours"
+    t.string "note"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "reviews", force: :cascade do |t|
     t.integer "item_id"
     t.string "title"
