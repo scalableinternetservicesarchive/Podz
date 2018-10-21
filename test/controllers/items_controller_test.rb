@@ -16,8 +16,8 @@ class ItemsControllerTest < ActionDispatch::IntegrationTest
     assert_difference('Item.count') do
       post items_url, params: { item: { available: @item.available, description: @item.description, title: @item.title } }
     end
-
     assert_redirected_to item_url(Item.last)
+    assert_equal @user.id, Item.last.user_id
   end
 
   test "should show item" do
