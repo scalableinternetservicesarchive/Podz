@@ -3,7 +3,7 @@ require 'test_helper'
 class ItemsControllerTest < ActionDispatch::IntegrationTest
   setup do
     @item = items(:one)
-    @user = users(:archer)
+    @user = users(:michael)
   end
 
   test "should get index" do

@@ -1,6 +1,7 @@
 class ItemsController < ApplicationController
   before_action :set_item,        only: [:show, :edit, :update, :destroy]
   before_action :logged_in_user,  only: [:new, :create, :update, :destroy, :edit]
+  before_action :user_owns_item,  only: [:edit, :update, :destroy]
 
   # GET /items
   # GET /items.json
@@ -92,5 +93,10 @@ class ItemsController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def item_params
     params.require(:item).permit(:title, :description, :available, :price_hourly_usd, :price_daily_usd)
+  end
+
+  def user_owns_item
+    user = User.find_by(id: @item.user_id)
+    redirect_to root_path unless current_user?(user)
   end
 end
