@@ -62,12 +62,17 @@ class RentalsController < ApplicationController
   end
 
   def rent
-    @rental.available = false
+    puts 'ITEM ITEM ITEM ITEM ITME ITEM ITEM ITEM'
+    item_id = params[:item_id]
+    puts item_id
+    item = Item.find(item_id)
+    item.available = false
+    item.save
 
-    """respond_to do |format|
-      format.html { redirect_to @rental, notice: 'Item was rented' }
+    respond_to do |format|
+      format.html { redirect_to items_path, notice: 'Item was rented', class: 'rented_text' }
       format.json { head :no_content }
-    end"""
+    end
   end
 
   private

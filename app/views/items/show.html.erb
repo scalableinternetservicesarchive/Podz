@@ -19,7 +19,12 @@
       <% end %>
     </p>
 
-    <%= link_to 'Rent', @item, method: :post, data: { confirm: 'Are you sure you want to rent?' }, class: 'primary_button' %>
+    <%= link_to 'Rent',
+                rent_path(item_id: @item),
+                method: :post,
+                data: { confirm: 'Are you sure you want to rent?', item: @item },
+                class: 'primary_button'
+    %>
 
 
     <div class="bottom_buttons">
