@@ -14,13 +14,14 @@
         <td class="list_item_button">
           <th class="empty_btemplate">Show</th>
         </td>
-        <td class="list_item_button">
-          <th class="empty_btemplate">Show</th>
-        </td>
-        <td class="list_item_button">
-          <th class="empty_btemplate">Show</th>
-        </td>
-
+        <% if admin? %>
+          <td class="list_item_button">
+            <th class="empty_btemplate">Show</th>
+          </td>
+          <td class="list_item_button">
+            <th class="empty_btemplate">Show</th>
+          </td>
+        <% end %>
       </div>
     </tr>
   </thead>

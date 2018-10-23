@@ -27,3 +27,53 @@
     This user does not have any items for rent
   <% end %>
 </div>
+
+
+
+<hr>
+
+<button class="btn btn-primary" data-toggle="collapse" data-target="#reviews">Toggle Reviews</button>
+
+<% if @reviews.length > 0 %>
+  <div id="reviews" class="collapse in">
+  <br>
+    <table class="item_table">
+      <thead class="table_content">
+      <tr class="list_header">
+        <th class="list_item_text">Item ID</th>
+        <th class="list_item_text">Review title</th>
+        <th class="list_item_text">Review description</th>
+        <th class="list_item_text">Rating</th>
+        <th class="list_item_text">Actions</th>
+        <th class="list_item_gap"></th>
+      </tr>
+      </thead>
+
+      <tbody class="table_content">
+      <% @reviews.each do |review| %>
+
+        <tr class="list_item">
+          <td class="list_item_text"><%= review.item_id %></td>
+          <td class="list_item_text"><%= review.title %></td>
+          <td class="list_item_text"><%= review.body %></td>
+          <td class="list_item_text"><%= review.rating %></td>
+
+          <td class="list_item_button">
+            <%= link_to 'Show item', item_path(review.item_id), class: 'list_item_button action' %>
+          </td>
+          <td class="list_item_button">
+            <%= link_to 'Edit review', edit_review_path(review), class: 'list_item_button action' %>
+          </td>
+          <td class="list_item_button">
+            <%= link_to 'Destroy', review, method: :delete, data: { confirm: 'Are you sure?' }, class: 'list_item_button action delete' %>
+          </td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+  <% else %>
+  <div id="reviews" class="collapse">
+    This user does not have any reviews yet
+  </div>
+  <% end %>
