@@ -19,12 +19,17 @@
       <% end %>
     </p>
 
-    <%= link_to 'Rent',
-                rent_path(item_id: @item),
-                method: :post,
-                data: { confirm: 'Are you sure you want to rent?', item: @item },
-                class: 'primary_button'
-    %>
+
+    <% if @item.available and !item_owned(current_user.id, @item.user_id) %>
+
+      <%= link_to 'Rent',
+                  rent_path(item_id: @item),
+                  method: :post,
+                  data: { confirm: 'Are you sure you want to rent?', item: @item },
+                  class: 'primary_button'
+      %>
+
+    <% end %>
 
 
     <div class="bottom_buttons">
