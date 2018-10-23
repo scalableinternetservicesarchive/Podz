@@ -3,7 +3,7 @@ require 'test_helper'
 class ItemsControllerTest < ActionDispatch::IntegrationTest
   setup do
     @item = items(:one)
-    @user = users(:archer)
+    @user = users(:michael)
   end
 
   #test "should get index" do
@@ -16,8 +16,8 @@ class ItemsControllerTest < ActionDispatch::IntegrationTest
     assert_difference('Item.count') do
       post items_url, params: { item: { available: @item.available, description: @item.description, title: @item.title } }
     end
-
     assert_redirected_to item_url(Item.last)
+    assert_equal @user.id, Item.last.user_id
   end
 
   test "should show item" do

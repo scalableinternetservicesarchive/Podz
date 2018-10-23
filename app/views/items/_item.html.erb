@@ -1,0 +1,21 @@
+<tr class="list_item">
+  <div class="text_container">
+    <td class="list_item_text"><%= item.title %></td>
+    <td class="list_item_text"><%= item.available %></td>
+    <td class="list_item_text"><%= display_category(item.category_id) %></td>
+  </div>
+  <div class="button_container">
+    <td class="list_item_button">
+      <%= link_to 'Show', item, class: 'list_item_button action' %>
+    </td>
+
+    <% if current_user?(item.user) %>
+      <td class="list_item_button">
+        <%= link_to 'Edit', edit_item_path(item), class: 'list_item_button action' %>
+      </td>
+      <td class="list_item_button">
+        <%= link_to 'Destroy', item, method: :delete, data: { confirm: 'Are you sure?' }, class: 'list_item_button action delete' %>
+      </td>
+    <% end %>
+  </div>
+</tr>

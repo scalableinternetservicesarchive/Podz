@@ -39,7 +39,7 @@ end
     item = Item.create(title: item_title,
                        description: item_description,
                        user_id: user.id,
-                       category_id: m,
+                       category_id: m + 1,
                        available: true)
     rand(5..10).times do |k|
       Review.create!(title: Faker::Lorem.words(5).join(" "),
