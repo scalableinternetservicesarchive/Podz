@@ -14,19 +14,6 @@ class ItemsController < ApplicationController
                Item.all
              end
 
-
-    @items_free   = @items.select { |item| item.available == true and item.user_id != current_user.id}
-
-
-    @items_rented = if params[:show_all] == 'true'
-                      @items.select { |item| item.available == false}
-                    else
-                      {}
-                    end
-
-    @items_free   = @items_free.sort_by { |item| item.title.downcase }
-    @items_rented = @items_rented.sort_by { |item| item.title.downcase }
-
     @items = if !@keyword.nil?
                @items.select do |item|
                  item.title.downcase.include? @keyword.downcase or
