@@ -21,6 +21,8 @@ module ItemsHelper
       false
     end
 
+  end
+
   # Returns the keyword_search display
   def search_display
     @keyword_display = if !@keyword.nil? && @keyword.length.positive?
