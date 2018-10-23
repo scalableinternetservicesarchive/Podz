@@ -23,8 +23,9 @@ class ItemsController < ApplicationController
                @items
              end
 
+    @items = @items.reject{ |item| item.user_id == current_user.id }
 
-    @items_free = @items.select(&:available).sort_by { |item| item.title.downcase }
+    @items_free   = @items.select(&:available).sort_by { |item| item.title.downcase }
     @items_rented = @items.reject(&:available).sort_by { |item| item.title.downcase }
   end
 
