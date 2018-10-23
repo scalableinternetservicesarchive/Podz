@@ -12,4 +12,15 @@ module ItemsHelper
   def display_category(category_id)
     @category_name = Category.find(category_id).name
   end
+
+  def item_owned(user_id, item_user_id)
+    puts 'IDS IDS IDS IDS IDS IDS'
+    puts user_id
+    puts item_user_id
+    if user_id == item_user_id
+      true
+    else
+      false
+    end
+  end
 end
