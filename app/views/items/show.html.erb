@@ -1,45 +1,83 @@
 <p id="notice"><%= notice %></p>
 
-<h1><%= @item.title %></h1>
 
-<p>
-  <strong>Description:</strong>
-  <%= @item.description %>
-</p>
+<div class="item_container">
+  <h1 class="item_title"><%= @item.title %></h1>
 
-<p>
-  <strong>Available:</strong>
-  <%= @item.available %>
-</p>
+  <div class="item_sub_container">
+    <p>
+      <strong>Description:</strong>
+      <%= @item.description %>
+    </p>
 
-<%= link_to 'Edit', edit_item_path(@item) %> |
-<%= link_to 'Back', items_path %>
+    <p>
+      <strong>Available:</strong>
+      <% if @item.available %>
+        Yes
+      <% else %>
+        No
+      <% end %>
+    </p>
+
+    <%= link_to 'Rent',
+                rent_path(item_id: @item),
+                method: :post,
+                data: { confirm: 'Are you sure you want to rent?', item: @item },
+                class: 'primary_button'
+    %>
+
+
+    <div class="bottom_buttons">
+      <%= link_to 'Edit', edit_item_path(@item) %> |
+      <%= link_to 'Back', items_path %>
+    </div>
+
+  </div>
+
+
+</div>
+
 
 <hr>
 
-<h2>Reviews</h2>
+<h2 id="reviews_title">Reviews</h2>
 
 <table class="item_table">
+  <% if @reviews.count != 0 %>
   <thead class="table_content">
-  <tr class="list_header">
-    <th class="list_item_text">Title</th>
-    <th class="list_item_text">Review</th>
-    <th class="list_item_text">Rating</th>
-    <th class="list_item_text">User</th>
-  </tr>
+
+    <tr class="list_header">
+
+      <div class="text_container">
+        <th class="list_item_text">Title</th>
+        <th class="list_item_text">Review</th>
+        <th class="list_item_text">Rating</th>
+        <th class="list_item_text">User</th>
+      </div>
+    </tr>
   </thead>
+  <% else %>
+    <div id="no_review_container">
+      <h4 id="no_reviews_title">No reviews to show!</h4>
+    </div>
+  <% end %>
 
   <tbody class="table_content">
-  <% @reviews.each do |review| %>
 
-    <tr class="list_item">
-      <td class="list_item_text"><%= review.title %></td>
-      <td class="list_item_text"><%= review.body %></td>
-      <td class="list_item_text"><%= review.rating %></td>
-      <td class="list_item_text"><%= get_display_name(review) %></td>
-    </tr>
-  <% end %>
+    <% @reviews.each do |review| %>
+
+      <tr class="list_item">
+        <div class="text_container">
+          <td class="list_item_text"><%= review.title %></td>
+          <td class="list_item_text"><%= review.body %></td>
+          <td class="list_item_text"><%= review.rating %></td>
+          <td class="list_item_text"><%= get_display_name(review) %></td>
+        </div>
+      </tr>
+    <% end %>
   </tbody>
 </table>
 
-<%= render 'reviews/form', review: @review %>
+<div class="review_container">
+  <%= render 'reviews/form', review: @review %>
+</div>

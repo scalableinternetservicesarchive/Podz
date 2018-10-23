@@ -15,18 +15,18 @@
   <div class="field invisible" >
     <%= form.label :item_id, class: 'field_label' %>
     <%= form.collection_select :item_id, Item.order(:title),:id,:title, include_blank: false %>
-
   </div>
 
+  <h3 class="subtitle">Write a new review</h3>
 
   <div class="field">
-    <%= form.label :title %>
-    <%= form.text_field :title %>
+    <%= form.label :title, class: 'field_label' %>
+    <%= form.text_field :title, class: 'text_field name' %>
   </div>
 
   <div class="field">
-    <%= form.label :body %>
-    <%= form.text_area :body %>
+    <%= form.label :body, class: 'field_label' %>
+    <%= form.text_area :body, class: 'text_field' %>
   </div>
 
   <div class="field">
@@ -40,6 +40,6 @@
   </div>
 
   <div class="actions">
-    <%= form.submit %>
+    <%= form.submit class: 'submit_button' %>
   </div>
 <% end %>
