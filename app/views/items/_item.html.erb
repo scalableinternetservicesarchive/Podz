@@ -9,7 +9,7 @@
       <%= link_to 'Show', item, class: 'list_item_button action' %>
     </td>
 
-    <% if current_user?(@user) %>
+    <% if current_user?(item.user) %>
       <td class="list_item_button">
         <%= link_to 'Edit', edit_item_path(item), class: 'list_item_button action' %>
       </td>

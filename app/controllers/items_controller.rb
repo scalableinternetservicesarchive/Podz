@@ -96,7 +96,6 @@ class ItemsController < ApplicationController
   end
 
   def user_owns_item
-    user = User.find_by(id: @item.user_id)
-    redirect_to root_path unless current_user?(user)
+    redirect_to root_path unless current_user?(@item.user)
   end
 end
