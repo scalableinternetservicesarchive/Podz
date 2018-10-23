@@ -6,35 +6,48 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-User.create!(display_name: "Kasper", email: "k@spe.r", password: "kasper", password_confirmation: "kasper")
-User.create!(display_name: "Alex", email: "a@le.x", password: "kasper", password_confirmation: "kasper")
-User.create!(display_name: "August", email: "a@ugus.t", password: "kasper", password_confirmation: "kasper")
-User.create!(display_name: "Ryan", email: "r@ya.n", password: "kasper", password_confirmation: "kasper")
+User.create!(display_name: "Kasper",
+             email: "k@spe.r",
+             password: "kasper",
+             password_confirmation: "kasper",
+             admin: true)
 
-Category.create!(name: "Furniture", description: "Just some furniture")
-Category.create!(name: "Vehicles", description: "Just some vehicles")
-Category.create!(name: "Gear", description: "Just some gear")
+User.create!(display_name:  "Admin User",
+             email: "admin@example.com",
+             password:              "foobar",
+             password_confirmation: "foobar",
+             admin: true,
+             biography: Faker::Lorem.sentences(6).join(" "))
 
-Item.create!(title: "Bike", description: "Nice bike for rent",available: "true", category_id: "2", price_hourly_usd: "5", price_daily_usd: "30")
-Item.create!(title: "Couch", description: "Nice couch for rent",available: "true", category_id: "1", price_hourly_usd: "2", price_daily_usd: "10")
-Item.create!(title: "Table", description: "Nice table for rent",available: "true", category_id: "1", price_hourly_usd: "3", price_daily_usd: "15")
+10.times do |n|
+  name = Faker::Book.genre
+  description = Faker::Lorem::sentences(5).join(" ")
+  Category.create!(name: name, description: description)
+end
 
-Review.create!(item_id: "1", title: "Positive", body: "This is a positive review", rating: "5", user_id: "1", anonymous: "false")
-Review.create!(item_id: "1", title: "Negative", body: "This is a negative review", rating: "1", user_id: "2", anonymous: "false")
-Review.create!(item_id: "3", title: "Positive", body: "This is a positive review", rating: "5", user_id: "1", anonymous: "false")
-Review.create!(item_id: "3", title: "Negative", body: "This is a negative review", rating: "1", user_id: "2", anonymous: "false")
-Review.create!(item_id: "2", title: "Negative", body: "This is a negative review", rating: "2", user_id: "1", anonymous: "true")
-Review.create!(item_id: "1", title: "Negative", body: "This is a long negative review,
-                                                      This is a long negative review,
-                                                      This is a long negative review,
-                                                      This is a long negative review,This is a long negative review,
-                                                      This is a long negative review,
-                                                      This is a long negative review,This is a long negative review,
-                                                      This is a long negative review,
-                                                      This is a long negative review,This is a long negative review,
-                                                      This is a long negative review,
-                                                      This is a long negative review,
-                                                      This is a long negative review,
-                                                      This is a long negative review,
-                                                      This is a long negative review,
-                                                      This is a long negative review", rating: "1", user_id: "4", anonymous: "false")
+30.times do |n|
+  display_name  = Faker::Name.name
+  email = Faker::Internet.email(name=display_name)
+  password = "password"
+  user = User.create(display_name:  display_name,
+                     email: email,
+                     password:              password,
+                     password_confirmation: password)
+  6.times do |m|
+    item_title = m % 2 == 0? Faker::Book.title : Faker::Beer.name
+    item_description = Faker::Lorem.sentences(5).join(" ")
+    item = Item.create(title: item_title,
+                       description: item_description,
+                       user_id: user.id,
+                       category_id: m,
+                       available: true)
+    rand(5..10).times do |k|
+      Review.create!(title: Faker::Lorem.words(5).join(" "),
+                     item_id: item.id,
+                     body: Faker::Lorem.sentences(rand(1..5)).join(" "),
+                     user_id: user.id,
+                     rating: rand(1..5),
+                     anonymous: rand(1..5) == 1)
+    end
+  end
+end

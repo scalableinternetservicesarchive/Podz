@@ -13,11 +13,20 @@ module ItemsHelper
     @category_name = Category.find(category_id).name
   end
 
+
   def item_owned(user_id, item_user_id)
     if user_id == item_user_id
       true
     else
       false
     end
+
+  # Returns the keyword_search display
+  def search_display
+    @keyword_display = if !@keyword.nil? && @keyword.length.positive?
+                         @keyword
+                       else
+                         'Search by Keyword'
+                       end
   end
 end

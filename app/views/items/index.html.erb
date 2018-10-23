@@ -2,27 +2,69 @@
 
 <h1>Items</h1>
 
-<h3 align="center">Search by Keyword:</h3>
+<h3 align="center">What are you looking for?</h3>
 <div class="search-input-group" align="center">
   <div class="form-inline search" align="center">
     <%= form_tag items_path, method: :get do %>
-      <%= text_field_tag('test_var', params[:test_var], :placeholder=> "What are you looking for?") %>
-      <%= button_tag(type: "submit", class: "btn  btn-success") do %>
-        Search
-      <% end %>
+      <%= select_tag 'category_search', options_from_collection_for_select(Category.all, "id", "name", @category), include_blank: "All", onchange: "this.form.submit();"%>
+      <%= text_field_tag('keyword_search', nil, :placeholder=> search_display) %>
+      <button type="submit" class="btn btn-primary">Search</button>
     <% end %>
+
   </div>
 </div>
 
 <hr>
 
-<div>
-  <%= link_to "Show All", request.query_parameters.merge({:show_all => 'true'}) %>
+<div id="available">
+  <table class="item_table">
+    <thead class="table_content">
+      <tr class="list_header">
+        <div class="text_container">
+          <th class="list_item_text">Title</th>
+          <th class="list_item_text">Available</th>
+          <th class="list_item_text">Category</th>
+        </div>
+        <div class="button_container">
+          <td class="list_item_button">
+            <th class="empty_btemplate">Show</th>
+          </td>
+          <td class="list_item_button">
+            <th class="empty_btemplate">Show</th>
+          </td>
+        </div>
+      </tr>
+    </thead>
+
+    <tbody class="table_content">
+      <% @items_free.each do |item| %>
+        <tr class="list_item">
+          <div class="text_container">
+            <td class="list_item_text"><%= item.title %></td>
+            <td class="list_item_text"><%= item.available %></td>
+            <td class="list_item_text"><%= display_category(item.category_id) %></td>
+          </div>
+          <div class="button_container">
+            <td class="list_item_button">
+              <%= link_to 'Show', item, class: 'list_item_button action' %>
+            </td>
+            <td class="list_item_button">
+              <%= link_to 'Edit', edit_item_path(item), class: 'list_item_button action' %>
+            </td>
+          </div>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 </div>
 
+<hr>
 
-<table class="item_table">
-  <thead class="table_content">
+<button class="btn btn-primary" style="margin-bottom: 1em" data-toggle="collapse" data-target="#rented">Show Unavailable</button>
+
+<div id="rented" class="collapse">
+  <table class="item_table">
+    <thead class="table_content">
     <tr class="list_header">
       <div class="text_container">
         <th class="list_item_text">Title</th>
@@ -30,20 +72,19 @@
         <th class="list_item_text">Category</th>
       </div>
       <div class="button_container">
-
         <td class="list_item_button">
-          <th class="empty_btemplate">Show</th>
+        <th class="empty_btemplate">Show</th>
         </td>
         <td class="list_item_button">
-          <th class="empty_btemplate">Show</th>
+        <th class="empty_btemplate">Show</th>
         </td>
-
       </div>
     </tr>
+
   </thead>
 
   <tbody class="table_content">
-    <% @items_free.each do |item| %>
+    <% @items_free.each do |item| %>    
       <tr class="list_item">
         <div class="text_container">
           <td class="list_item_text"><%= item.title %></td>
@@ -58,7 +99,6 @@
             <%= link_to 'Edit', edit_item_path(item), class: 'list_item_button action' %>
           </td>
         </div>
-
       </tr>
     <% end %>
 
@@ -83,4 +123,6 @@
   <% end %>
   </tbody>
 </table>
+
+</div>
 

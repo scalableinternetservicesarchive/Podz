@@ -5,13 +5,18 @@ class ItemsController < ApplicationController
   # GET /items
   # GET /items.json
   def index
-    @items = if params[:test_var] != nil
-               Item.select { |item| item.title.downcase.include? params[:test_var].downcase }
+    @category = params[:category_search]
+    @keyword  = params[:keyword_search]
+
+    @items = if !@category.nil? && @category.length.positive?
+               Item.select { |item| item.category_id == @category.to_i }
              else
                Item.all
              end
 
+
     @items_free   = @items.select { |item| item.available == true and item.user_id != current_user.id}
+
 
     @items_rented = if params[:show_all] == 'true'
                       @items.select { |item| item.available == false}
@@ -22,6 +27,18 @@ class ItemsController < ApplicationController
     @items_free   = @items_free.sort_by { |item| item.title.downcase }
     @items_rented = @items_rented.sort_by { |item| item.title.downcase }
 
+    @items = if !@keyword.nil?
+               @items.select do |item|
+                 item.title.downcase.include? @keyword.downcase or
+                   item.description.downcase.include? @keyword.downcase
+               end
+             else
+               @items
+             end
+
+
+    @items_free = @items.select(&:available).sort_by { |item| item.title.downcase }
+    @items_rented = @items.reject(&:available).sort_by { |item| item.title.downcase }
   end
 
   # GET /items/1
