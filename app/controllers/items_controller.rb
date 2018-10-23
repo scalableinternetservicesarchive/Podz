@@ -11,7 +11,7 @@ class ItemsController < ApplicationController
                Item.all
              end
 
-    @items_free   = @items.select { |item| item.available == true; item.user_id != current_user.id}
+    @items_free   = @items.select { |item| item.available == true and item.user_id != current_user.id}
 
     @items_rented = if params[:show_all] == 'true'
                       @items.select { |item| item.available == false}

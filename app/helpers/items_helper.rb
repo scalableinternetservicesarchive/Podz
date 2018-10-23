@@ -14,9 +14,6 @@ module ItemsHelper
   end
 
   def item_owned(user_id, item_user_id)
-    puts 'IDS IDS IDS IDS IDS IDS'
-    puts user_id
-    puts item_user_id
     if user_id == item_user_id
       true
     else
