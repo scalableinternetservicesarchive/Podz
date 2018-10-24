@@ -45,18 +45,21 @@ class ReviewsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update review" do
+    log_in_as(@user)
     patch review_url(@review), params: { review: { anonymous: @review.anonymous, body: @review.body, item_id: @review.item_id, rating: @review.rating, title: @review.title, user_id: @review.user_id } }
     assert_redirected_to User.find(@review.user_id)
   end
 
   test "shouldn't update review" do
+    log_in_as(@user)
     patch review_url(@review), params: { review: { anonymous: @review.anonymous, body: @review.body, item_id: @review.item_id, rating: 6, title: @review.title, user_id: @review.user_id } }
     assert_not_equal @review.reload.rating, 6
   end
 
   test "should destroy review" do
+    log_in_as(@user)
     assert_difference('Review.count', -1) do
-      delete review_url(@review.user_id)
+      delete review_url(@review)
     end
     assert_redirected_to User.find(@review.user_id)
   end
