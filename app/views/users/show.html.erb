@@ -28,27 +28,21 @@
   <% end %>
 </div>
 
-
-
 <hr>
 
 <button class="btn btn-primary" data-toggle="collapse" data-target="#reviews">Toggle Reviews</button>
-
+<div id="reviews" class="collapse">
 <% if @reviews.length > 0 %>
-  <div id="reviews" class="collapse in">
   <br>
     <table class="item_table">
       <thead class="table_content">
-      <%= render 'reviews/review_header' %>>
+      <%= render 'reviews/review_header' %>
       </thead>
-
       <tbody class="table_content">
         <%= render @reviews %>
       </tbody>
     </table>
-  </div>
   <% else %>
-  <div id="reviews" class="collapse">
     This user does not have any reviews yet
-  </div>
   <% end %>
+</div>

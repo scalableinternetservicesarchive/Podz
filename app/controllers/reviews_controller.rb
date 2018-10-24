@@ -1,6 +1,7 @@
 class ReviewsController < ApplicationController
   before_action :set_review, only: [:show, :edit, :update, :destroy]
-  before_action :user_owns_review,  only: [:edit, :update, :destroy]
+  before_action :logged_in_user,  only: [:new, :create, :update, :destroy, :edit]
+  before_action :user_owns_review,  only: [:update, :destroy]
 
   # GET /reviews
   # GET /reviews.json
@@ -45,10 +46,13 @@ class ReviewsController < ApplicationController
   # PATCH/PUT /reviews/1
   # PATCH/PUT /reviews/1.json
   def update
+    if @review.update(review_params)
       flash[:success] = "Upated review"
       redirect_to User.find_by(id: @review.user_id) || root_path
     else
-      render "edit"
+      flash[:danger] = "Review failed"
+      render 'edit'
+    end
   end
 
   # DELETE /reviews/1
@@ -71,6 +75,6 @@ class ReviewsController < ApplicationController
     end
 
     def user_owns_review
-      redirect_to root_path unless current_user?(@review.user_id)
+      redirect_to root_path unless current_user?(@review.user)
     end
 end
