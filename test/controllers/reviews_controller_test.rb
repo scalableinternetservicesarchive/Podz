@@ -39,6 +39,7 @@ class ReviewsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should get edit" do
+    log_in_as(@user)
     get edit_review_url(@review)
     assert_response :success
   end
@@ -55,7 +56,7 @@ class ReviewsControllerTest < ActionDispatch::IntegrationTest
 
   test "should destroy review" do
     assert_difference('Review.count', -1) do
-      delete review_url(@review)
+      delete review_url(@review.user_id)
     end
     assert_redirected_to User.find(@review.user_id)
   end

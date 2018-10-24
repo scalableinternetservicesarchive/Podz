@@ -4,6 +4,6 @@ class Item < ApplicationRecord
   has_many :reviews
   validates :title, length: {minimum: 1}
   validates :description, length: {minimum: 1}
-  validates :price_hourly_usd, :inclusion => 0..999999
-  validates :price_daily_usd, :inclusion => 0..999999
+  validates :price_hourly_usd, :inclusion => 0..99999, presence: true, unless: ->(item){item.price_daily_usd.present?}
+  validates :price_daily_usd, :inclusion => 0..99999, presence: true, unless: ->(item){item.price_hourly_usd.present?}
 end

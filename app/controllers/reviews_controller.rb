@@ -48,7 +48,7 @@ class ReviewsController < ApplicationController
   def update
     if @review.update(review_params)
       flash[:success] = "Upated review"
-      redirect_to User.find_by(id: @review.user_id) || root_path
+      redirect_to @current_user || root_path
     else
       flash[:danger] = "Review failed"
       render 'edit'
@@ -60,7 +60,7 @@ class ReviewsController < ApplicationController
   def destroy
     @review.destroy
     flash[:success] = "Review deleted"
-    redirect_to User.find_by(id: @review.user_id) || root_path
+    redirect_to @current_user || root_path
   end
 
   private
