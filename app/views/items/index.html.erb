@@ -7,7 +7,7 @@
   <div class="form-inline search" align="center">
     <%= form_tag items_path, method: :get do %>
       <%= select_tag 'category_search', options_from_collection_for_select(Category.all, "id", "name", @category), include_blank: "All", onchange: "this.form.submit();"%>
-      <%= text_field_tag('keyword_search', nil, :placeholder=> search_display) %>
+      <%= text_field_tag('keyword_search', nil, :placeholder=> search_display, class: 'text_field name') %>
       <button type="submit" class="btn btn-primary">Search</button>
     <% end %>
 

@@ -6,4 +6,7 @@ class Item < ApplicationRecord
   validates :description, length: {minimum: 1}
   validates :price_hourly_usd, :inclusion => 0..999999
   validates :price_daily_usd, :inclusion => 0..999999
+  def self.conditions
+    ['Like new', 'Almost new', 'Good', 'Decent', 'Ok', 'Barely Working 100%', 'Not working 100%']
+  end
 end
