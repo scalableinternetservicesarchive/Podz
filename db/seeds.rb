@@ -44,7 +44,7 @@ end
     rand(5..10).times do |k|
       Review.create!(title: Faker::Lorem.words(5).join(" "),
                      item_id: item.id,
-                     body: Faker::Lorem.sentences(rand(1..5)).join(" "),
+                     body: Faker::Lorem.words(rand(5..10)).join(" "),
                      user_id: user.id,
                      rating: rand(1..5),
                      anonymous: rand(1..5) == 1)
