@@ -1,5 +1,7 @@
 class ReviewsController < ApplicationController
   before_action :set_review, only: [:show, :edit, :update, :destroy]
+  before_action :logged_in_user,  only: [:new, :create, :update, :destroy, :edit]
+  before_action :user_owns_review,  only: [:update, :destroy]
 
   # GET /reviews
   # GET /reviews.json
@@ -44,12 +46,12 @@ class ReviewsController < ApplicationController
   # PATCH/PUT /reviews/1
   # PATCH/PUT /reviews/1.json
   def update
-
     if @review.update(review_params)
       flash[:success] = "Upated review"
-      redirect_to User.find_by(id: @review.user_id) || root_path
+      redirect_to @current_user || root_path
     else
-      render "edit"
+      flash[:danger] = "Review failed"
+      render 'edit'
     end
   end
 
@@ -58,7 +60,7 @@ class ReviewsController < ApplicationController
   def destroy
     @review.destroy
     flash[:success] = "Review deleted"
-    redirect_to User.find_by(id: @review.user_id) || root_path
+    redirect_to @current_user || root_path
   end
 
   private
@@ -70,5 +72,9 @@ class ReviewsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def review_params
       params.require(:review).permit(:item_id, :title, :body, :rating, :user_id, :anonymous)
+    end
+
+    def user_owns_review
+      redirect_to root_path unless current_user?(@review.user)
     end
 end
