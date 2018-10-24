@@ -72,7 +72,7 @@ class ItemsController < ApplicationController
   def update
     if @item.update(item_params)
       flash[:success] = "Updated item"
-      redirect_to @item
+      redirect_to item_path(@item)
     else
       render 'items/edit'
     end

@@ -5,6 +5,7 @@ one:
   description: MyText
   available: false
   price_hourly_usd: 20
+  price_daily_usd: 100
   user_id: 1
   category_id: 1
 
@@ -12,6 +13,7 @@ two:
   title: MyString
   description: MyText
   available: true
-  price_daily_usd: 100
+  price_hourly_usd: 10
+  price_daily_usd: 50
   user_id: 2
   category_id: 1

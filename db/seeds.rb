@@ -6,17 +6,18 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-User.create!(display_name: "Kasper",
-             email: "k@spe.r",
-             password: "kasper",
-             password_confirmation: "kasper",
-             admin: true)
-
 User.create!(display_name:  "Admin User",
              email: "admin@example.com",
              password:              "foobar",
              password_confirmation: "foobar",
              admin: true,
+             biography: Faker::Lorem.sentences(6).join(" "))
+
+User.create!(display_name:  "Normal User",
+             email: "normal@example.com",
+             password:              "foobar",
+             password_confirmation: "foobar",
+             admin: false,
              biography: Faker::Lorem.sentences(6).join(" "))
 
 10.times do |n|
@@ -40,7 +41,8 @@ end
                        description: item_description,
                        user_id: user.id,
                        category_id: m + 1,
-                       available: true)
+                       available: true,
+                       price_hourly_usd: rand(0..50))
     rand(5..10).times do |k|
       Review.create!(title: Faker::Lorem.words(5).join(" "),
                      item_id: item.id,

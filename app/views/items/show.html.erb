@@ -33,6 +33,13 @@
                   class: 'primary_button'
       %>
 
+    <% elsif !@item.available and item_rented(current_user.id, @item.id) %>
+      <%= link_to 'Check in item',
+                  checkin_path(item_id: @item),
+                  method: :post,
+                  data: { confirm: 'Are you sure you want to check in the item?', item: @item },
+                  class: 'primary_button'
+      %>
     <% end %>
 
 
@@ -79,7 +86,7 @@
         <div class="text_container">
           <td class="list_item_text"><%= review.title %></td>
           <td class="list_item_text"><%= review.body %></td>
-          <td class="list_item_text"><%= review.rating %></td>
+          <td class="list_item_text"><%= review.rating %>/5</td>
           <td class="list_item_text"><%= get_display_name(review) %></td>
         </div>
       </tr>
