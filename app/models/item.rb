@@ -9,4 +9,12 @@ class Item < ApplicationRecord
   def self.conditions
     ['Like new', 'Almost new', 'Good', 'Decent', 'Ok', 'Barely Working 100%', 'Not working 100%']
   end
+
+  def rating
+    result = 0
+    reviews.each do |review|
+      result += review.rating
+    end
+    result
+  end
 end

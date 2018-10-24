@@ -9,3 +9,24 @@
     <%= link_to "Sign up now!", signup_path, class: "btn btn-lg btn-primary" %>
   <% end %>
 </div>
+
+<div>
+  <h2>Most Popular Items</h2>
+  <table class="item_table">
+    <thead class="table_content">
+      <%= render 'items/item_header' %>
+    </thead>
+    <tbody class="table_content">
+      <%= render @items %>
+    </tbody>
+  </table>
+</div>
+
+<% if logged_in? %>
+  <div>
+    <h2>Most Popular Users</h2>
+    <ul class="users">
+      <%= render @users %>
+    </ul>
+  </div>
+<% end %>

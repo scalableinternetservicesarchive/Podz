@@ -10,9 +10,15 @@ module ItemsHelper
   end
 
   def display_category(category_id)
-    @category_name = Category.find(category_id).name
+    @category_name = Category.find_by(id: category_id).name || "Uncategorized"
   end
 
+  # Method returns top n items based on sum of ratings
+  def get_top_items(n: 10)
+    items = Item.all.sort_by { |item| item.rating }
+    items.reverse!
+    items[0..n]
+  end
 
   def item_owned(user_id, item_user_id)
     if user_id == item_user_id
