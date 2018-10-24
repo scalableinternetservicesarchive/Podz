@@ -16,6 +16,11 @@
       <td class="list_item_button">
         <%= link_to 'Destroy', item, method: :delete, data: { confirm: 'Are you sure?' }, class: 'list_item_button action delete' %>
       </td>
+    <% else %>
+      <td class="list_item_button">
+        <th class="empty_btemplate">Show</th>
+      </td>
+
     <% end %>
   </div>
 </tr>

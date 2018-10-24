@@ -23,6 +23,15 @@ module ItemsHelper
 
   end
 
+  def item_rented(user_id, item_id)
+    rental = Rental.where(user_id: user_id, item_id: item_id)
+    if rental
+      true
+    else
+      false
+    end
+  end
+
   # Returns the keyword_search display
   def search_display
     @keyword_display = if !@keyword.nil? && @keyword.length.positive?

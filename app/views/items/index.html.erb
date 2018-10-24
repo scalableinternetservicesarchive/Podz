@@ -19,10 +19,10 @@
 <div id="available">
   <table class="item_table">
     <thead class="table_content">
-    <%= render 'item_header' %>
+    <%= render 'item_header', owner: false %>
     </thead>
     <tbody class="table_content">
-    <%= render @items_free %>
+      <%= render @items_free %>
     </tbody>
   </table>
 </div>

@@ -33,6 +33,13 @@
                   class: 'primary_button'
       %>
 
+    <% elsif !@item.available and item_rented(current_user.id, @item.id) %>
+      <%= link_to 'Check in item',
+                  checkin_path(item_id: @item),
+                  method: :post,
+                  data: { confirm: 'Are you sure you want to check in the item?', item: @item },
+                  class: 'primary_button'
+      %>
     <% end %>
 
 

@@ -6,10 +6,18 @@
   </div>
   <div class="button_container">
     <td class="list_item_button">
-    <th class="empty_btemplate">Show</th>
+      <th class="empty_btemplate">Show</th>
     </td>
+    <% if local_assigns[:owner] %>
+      <td class="list_item_button">
+        <th class="empty_btemplate">Show</th>
+      </td>
+    <% end %>
+
     <td class="list_item_button">
-    <th class="empty_btemplate">Show</th>
+      <th class="empty_btemplate">Show</th>
     </td>
+
+
   </div>
 </tr>
