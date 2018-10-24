@@ -41,7 +41,8 @@ end
                        description: item_description,
                        user_id: user.id,
                        category_id: m + 1,
-                       available: true)
+                       available: true,
+                       price_hourly_usd: rand(0..50))
     rand(5..10).times do |k|
       Review.create!(title: Faker::Lorem.words(5).join(" "),
                      item_id: item.id,
