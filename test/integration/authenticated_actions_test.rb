@@ -14,7 +14,7 @@ class AuthenticatedActionsTest < ActionDispatch::IntegrationTest
   end
 
   test "authenticated user should be able to make items" do
-    item = Item.new(title: "New Item", description: "This is a new item")
+    item = Item.new(title: "New Item", description: "This is a new item", price_hourly_usd: "20", price_daily_usd: "100")
 
     get login_path
     post login_path, params: { session: { email:    @user.email,
@@ -23,7 +23,7 @@ class AuthenticatedActionsTest < ActionDispatch::IntegrationTest
     assert_redirected_to @user
     get new_item_path
     assert_template 'items/new'
-    post items_path, params: { item: { title: item.title, description: item.description } }
+    post items_path, params: { item: { title: item.title, description: item.description, price_hourly_usd: item.price_hourly_usd, price_daily_usd: item.price_daily_usd } }
     follow_redirect!
     assert_template "items/show"
   end

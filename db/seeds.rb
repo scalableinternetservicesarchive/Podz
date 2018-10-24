@@ -13,6 +13,13 @@ User.create!(display_name:  "Admin User",
              admin: true,
              biography: Faker::Lorem.sentences(6).join(" "))
 
+User.create!(display_name:  "Normal User",
+             email: "normal@example.com",
+             password:              "foobar",
+             password_confirmation: "foobar",
+             admin: false,
+             biography: Faker::Lorem.sentences(6).join(" "))
+
 10.times do |n|
   name = Faker::Book.genre
   description = Faker::Lorem::sentences(5).join(" ")
@@ -34,7 +41,8 @@ end
                        description: item_description,
                        user_id: user.id,
                        category_id: m + 1,
-                       available: true)
+                       available: true,
+                       price_hourly_usd: rand(0..50))
     rand(5..10).times do |k|
       Review.create!(title: Faker::Lorem.words(5).join(" "),
                      item_id: item.id,
