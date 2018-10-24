@@ -22,9 +22,11 @@
   </table>
 </div>
 
-<div>
-  <h2>Most Popular Users</h2>
-  <ul class="users">
-    <%= render @users %>
-  </ul>
-</div>
+<% if logged_in? %>
+  <div>
+    <h2>Most Popular Users</h2>
+    <ul class="users">
+      <%= render @users %>
+    </ul>
+  </div>
+<% end %>
