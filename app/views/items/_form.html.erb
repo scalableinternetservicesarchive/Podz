@@ -27,6 +27,12 @@
   <%= form.label :category, class: 'field_label' %>
   <%= form.collection_select :category_id, Category.order(:name),:id,:name, include_blank: false %>
 
+<div class="field">
+  <%= form.label :condition, class: 'field_label' %>
+  <%= select_tag(:condition, options_for_select(Item.conditions)) %>
+
+</div>
+
 </div>
 
 <div class="field">
