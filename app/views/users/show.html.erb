@@ -59,14 +59,17 @@
           <td class="list_item_text"><%= review.rating %></td>
 
           <td class="list_item_button">
-            <%= link_to 'Show item', item_path(review.item_id), class: 'list_item_button action' %>
+            <%= link_to 'Show', item_path(review.item_id), class: 'list_item_button action' %>
           </td>
-          <td class="list_item_button">
-            <%= link_to 'Edit review', edit_review_path(review), class: 'list_item_button action' %>
-          </td>
-          <td class="list_item_button">
-            <%= link_to 'Destroy', review, method: :delete, data: { confirm: 'Are you sure?' }, class: 'list_item_button action delete' %>
-          </td>
+
+          <% if current_user?(review.user) %>
+            <td class="list_item_button">
+              <%= link_to 'Edit', edit_review_path(review), class: 'list_item_button action' %>
+            </td>
+            <td class="list_item_button">
+              <%= link_to 'Destroy', review, method: :delete, data: { confirm: 'Are you sure?' }, class: 'list_item_button action delete' %>
+            </td>
+          <% end %>
         </tr>
       <% end %>
       </tbody>

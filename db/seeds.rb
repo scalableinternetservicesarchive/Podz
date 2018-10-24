@@ -19,6 +19,13 @@ User.create!(display_name:  "Admin User",
              admin: true,
              biography: Faker::Lorem.sentences(6).join(" "))
 
+User.create!(display_name:  "Normal User",
+             email: "normal@example.com",
+             password:              "foobar",
+             password_confirmation: "foobar",
+             admin: false,
+             biography: Faker::Lorem.sentences(6).join(" "))
+
 10.times do |n|
   name = Faker::Book.genre
   description = Faker::Lorem::sentences(5).join(" ")
