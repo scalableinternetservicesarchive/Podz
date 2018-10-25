@@ -24,7 +24,7 @@ class UsersController < ApplicationController
     @prev_rented_items = Item.where(id: prev_rentals.select(:item_id), available: true)
   end
 
-  def new3
+  def new
     @user = User.new
   end
 
