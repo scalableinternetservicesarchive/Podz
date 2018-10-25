@@ -1,6 +1,7 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
+  id: 1
   title: MyString
   description: MyText
   available: false
@@ -10,6 +11,7 @@ one:
   category_id: 1
 
 two:
+  id: 2
   title: MyString
   description: MyText
   available: true
