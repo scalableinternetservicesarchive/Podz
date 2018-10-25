@@ -1,7 +1,13 @@
-<li>
-  <%= link_to user.display_name, user %>
-  <% if current_user.admin? && !current_user?(user) %>
-    | <%= link_to "delete", user, method: :delete,
-                  data: { confirm: "You sure?" } %>
+<tr class="list_item">
+  <div class="text_container">
+    <td class="list_item_text"><%= link_to user.display_name, user %></td>
+    <td class="list_item_text"><%= user.rating %></td>
+  </div>
+  <% if admin? %>
+    <div class="button_container">
+        <td class="list_item_button">
+          <%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' }, class: 'list_item_button action delete' %>
+        </td>
+    </div>
   <% end %>
-</li>
+</tr>
