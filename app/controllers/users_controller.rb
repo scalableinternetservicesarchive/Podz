@@ -18,10 +18,10 @@ class UsersController < ApplicationController
     @items = Item.where(user_id: @user.id)
     @reviews = Review.where(user_id: @user.id)
     rentals = Rental.where(user_id: params[:id], history: false)
-    @rented_items = Item.where(id: rentals.select(:item_id))
+    @rented_items = Item.where(id: rentals.select(:item_id), available: false)
 
     prev_rentals = Rental.where(user_id: params[:id], history: true)
-    @prev_rented_items = Item.where(id: prev_rentals.select(:item_id))
+    @prev_rented_items = Item.where(id: prev_rentals.select(:item_id), available: true)
   end
 
   def new
