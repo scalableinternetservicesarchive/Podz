@@ -95,6 +95,9 @@
   </tbody>
 </table>
 
-<div class="review_container">
-  <%= render 'reviews/form', review: @review %>
-</div>
+
+<%if  @isPrevRented and !@isPrevReviewed %>
+  <div class="review_container">
+    <%= render 'reviews/form', review: @review %>
+  </div>
+<% end %>
