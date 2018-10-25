@@ -44,6 +44,6 @@ class User < ApplicationRecord
     items.each do |item|
       result += item.rating
     end
-    result
+    items.length != 0 ? result / items.length : 0
   end
 end
