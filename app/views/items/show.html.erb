@@ -95,6 +95,9 @@
   </tbody>
 </table>
 
-<div class="review_container">
-  <%= render 'reviews/form', review: @review %>
-</div>
+
+<% if @item.id == Item.where(id: Rental.where(user_id: @current_user.id, history: true))%>
+  <div class="review_container">
+    <%= render 'reviews/form', review: @review %>
+  </div>
+<% end %>
