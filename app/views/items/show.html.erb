@@ -54,6 +54,74 @@
 
 </div>
 
+<div id="map-container">
+  <div id="map">
+  </div>
+</div>
+
+
+<input type="hidden" id="item_lat" name="item_lat" value='<%= @item.latitude %>'>
+<input type="hidden" id="item_lng" name="item_lng" value='<%= @item.longitude %>'>
+
+<script type="text/javascript">
+    var map, infoWindow;
+    function initMap() {
+
+
+
+        var latitude = parseFloat(document.getElementById("item_lat").value);
+        var longitude = parseFloat(document.getElementById("item_lng").value);
+
+        console.log('COMING Lat');
+        console.log(latitude);
+
+        var pos = {
+            lat: latitude,
+            lng: longitude
+        };
+
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: {
+                lat: latitude,
+                lng: longitude
+            },
+            zoom: 13
+        });
+
+        var infowindow = new google.maps.InfoWindow({
+            content: "Items position"
+        });
+
+        var marker = new google.maps.Marker({
+            position: pos,
+            map: map,
+            title: 'Hello!'
+        });
+
+        marker.addListener('click', function() {
+            infowindow.open(map, marker);
+        });
+
+        marker.setMap(map);
+
+
+
+        // Try HTML5 geolocation.
+    }
+
+    function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+        infoWindow.setPosition(pos);
+        infoWindow.setContent(browserHasGeolocation ?
+            'Error: The Geolocation service failed.' :
+            'Error: Your browser doesn\'t support geolocation.');
+        infoWindow.open(map);
+    }
+
+    initMap();
+
+
+</script>
+
 
 <hr>
 
