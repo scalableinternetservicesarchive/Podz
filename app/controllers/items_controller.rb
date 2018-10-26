@@ -63,6 +63,8 @@ class ItemsController < ApplicationController
     @item.available = true
     @item.user_id = @current_user.id
     @item.condition = params[:condition]
+    @item.latitude = params[:user_lat]
+    @item.longitude = params[:user_lng]
 
     respond_to do |format|
       if @item.save

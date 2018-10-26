@@ -11,6 +11,8 @@ gem 'jquery-rails', '~> 4.3', '>= 4.3.3'
 gem 'rails-ujs', '~> 0.1.0'
 gem 'will_paginate',           '3.1.6'
 gem 'bootstrap-will_paginate', '1.0.0'
+
+gem 'gmaps4rails'
 # Install faker for real sounding names in DB
 gem 'faker',                   '1.7.3'
 # Necessary for has_secure_password function in User model

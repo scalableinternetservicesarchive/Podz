@@ -42,6 +42,8 @@ end
                        user_id: user.id,
                        category_id: m + 1,
                        available: true,
+                       latitude: 34.41333 + rand(1..3)**(-(rand(1..2))),
+                       longitude: -119.86097 + rand(1..3)**(-rand(1..2)),
                        price_hourly_usd: rand(0..50))
     rand(5..10).times do |k|
       Review.create!(title: Faker::Lorem.words(5).join(" "),
