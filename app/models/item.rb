@@ -1,7 +1,7 @@
 class Item < ApplicationRecord
   belongs_to :category, required: false
   belongs_to :user,     required: false
-  has_many :reviews
+  has_many :reviews, dependent: :destroy
   has_many :favorites, dependent: :destroy
 
   validates :title, length: {minimum: 1}
