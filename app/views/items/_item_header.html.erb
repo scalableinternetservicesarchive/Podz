@@ -1,4 +1,11 @@
 <tr class="list_header">
+  <% if logged_in? %>
+    <div class="button_container">
+      <td class="list_item_button favorite-pad">
+      <th class="empty_btemplate">Favorite</th>
+      </td>
+    </div>
+  <% end %>
   <div class="text_container">
     <th class="list_item_text">Title</th>
     <th class="list_item_text">Available</th>

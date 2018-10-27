@@ -1,4 +1,11 @@
 <tr class="list_item">
+  <% if logged_in? %>
+    <div class="button_container" id="<%= item.id %>">
+      <td class="list_item_button">
+        <%= render partial: "favorites/favorite_button", locals: { item: item }%>
+      </td>
+    </div>
+  <% end %>
   <div class="text_container">
     <td class="list_item_text"><%= item.title %></td>
     <td class="list_item_text"><%= item.available %></td>
