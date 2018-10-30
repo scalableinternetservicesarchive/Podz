@@ -1,33 +1,23 @@
 require 'test_helper'
 
 class RentalsControllerTest < ActionDispatch::IntegrationTest
-  setup do
+  def setup
     @rental = rentals(:one)
     @user = users(:michael)
     @item = items(:one)
   end
 
-  test "should get index" do
-    get rentals_url
-    assert_response :success
-  end
-
-  test "should get new" do
-    get new_rental_url
-    assert_response :success
-  end
-
-  test "should create rental" do
+  test "should rent item then check item back in" do
+    log_in_as(@user)
     assert_difference('Rental.count') do
-      post rentals_url, params: { rental: { item_id: @item.id, length_days: @rental.length_days, length_hours: @rental.length_hours, note: @rental.note, user_id: @user.id } }
+      post rent_path(item_id: @item.id)
     end
 
-    assert_redirected_to rental_url(Rental.last)
-  end
+    assert_redirected_to items_path
+    assert_equal Rental.last.item_id, @item.id
 
-  test "should get edit" do
-    get edit_rental_url(@rental)
-    assert_response :success
+    post checkin_path(item_id: @item.id)
+    assert Rental.last.history = true
   end
 
 end

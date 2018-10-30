@@ -58,6 +58,15 @@
 </div>
 
 
+<%if  @isPrevRented and !@isPrevReviewed %>
+  <div id="review" class="collapse">
+    <div class="review_container">
+      <%= render 'reviews/form', review: @review %>
+    </div>
+  </div>
+<% end %>
+
+
 <div id="map-container">
   <div id="map">
   </div>
@@ -125,15 +134,6 @@
 
 
 </script>
-
-
-<%if  @isPrevRented and !@isPrevReviewed %>
-  <div id="review" class="collapse">
-  <div class="review_container">
-    <%= render 'reviews/form', review: @review %>
-  </div>
-  </div>
-<% end %>
 
 
 <hr>
