@@ -15,6 +15,17 @@
     </p>
 
     <p>
+      <strong>Hourly price USD:</strong>
+      <%= @item.price_hourly_usd %>
+    </p>
+
+    <p>
+      <strong>Daily price USD:</strong>
+      <%= @item.price_daily_usd %>
+    </p>
+
+
+    <p>
       <strong>Available:</strong>
       <% if @item.available %>
         Yes
@@ -71,8 +82,6 @@
     var map, infoWindow;
     function initMap() {
 
-
-
         var latitude = parseFloat(document.getElementById("item_lat").value);
         var longitude = parseFloat(document.getElementById("item_lng").value);
 
@@ -107,10 +116,6 @@
         });
 
         marker.setMap(map);
-
-
-
-        // Try HTML5 geolocation.
     }
 
     function handleLocationError(browserHasGeolocation, infoWindow, pos) {
