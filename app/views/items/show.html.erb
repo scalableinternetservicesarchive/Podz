@@ -22,15 +22,19 @@
       <%= @item.condition %>
     </p>
 
+    <% if @item.price_hourly_usd != nil %>
     <p>
       <strong>Hourly price USD:</strong>
       <%= @item.price_hourly_usd %>
     </p>
+    <% end %>
 
+    <% if @item.price_daily_usd != nil %>
     <p>
       <strong>Daily price USD:</strong>
       <%= @item.price_daily_usd %>
     </p>
+    <% end %>
 
 
     <p>
