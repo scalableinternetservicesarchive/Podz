@@ -38,6 +38,11 @@ class ItemsController < ApplicationController
   def show
     @reviews = Review.select { |review| review.item_id == @item.id }
     @review = Review.new(item_id: @item.id)
+    @ratingSum = 0.0
+    @reviews.each do |review|
+      @ratingSum = @ratingSum + review.rating
+    end
+    @avgRating = (@ratingSum/@reviews.count).round(1)
     if logged_in?
       @isPrevRented = Rental.find_by(user_id: current_user.id, history: true, item_id: params[:id])
       @isPrevReviewed = Review.find_by(user_id: current_user, item_id: params[:id])
