@@ -30,6 +30,25 @@
 
 <hr>
 
+<button class="btn btn-primary" data-toggle="collapse" data-target="#favorites">Favorites</button>
+<div id="favorites" class="collapse">
+  <% get_favorites(@user) %>
+  <% if @favorites.length > 0 %>
+    <table class="item_table">
+      <thead class="table_content">
+      <%= render 'items/item_header', owner: true %>
+      </thead>
+      <tbody class="table_content">
+      <%= render @favorite_items %>
+      </tbody>
+    </table>
+  <% else %>
+    This user does not have any favorited items
+  <% end %>
+</div>
+
+<hr>
+
 <button class="btn btn-primary" data-toggle="collapse" data-target="#reviews">Toggle Reviews</button>
 
 <div id="reviews" class="collapse">

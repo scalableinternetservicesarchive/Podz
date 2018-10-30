@@ -1,6 +1,7 @@
 class User < ApplicationRecord
-  has_many :items
+  has_many :items, dependent: :destroy
   has_many :reviews
+  has_many :favorites, dependent: :destroy
 
   attr_accessor :remember_token
   before_save { self.email = email.downcase }
@@ -45,5 +46,10 @@ class User < ApplicationRecord
       result += item.rating
     end
     items.length != 0 ? result / items.length : 0
+  end
+
+  # Returns true if the given item is favorited by the user
+  def favorite?(item)
+    !Favorite.find_by(item_id: item.id, user_id: id).nil?
   end
 end

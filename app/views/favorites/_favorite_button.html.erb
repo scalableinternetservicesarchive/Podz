@@ -1,0 +1,5 @@
+<% if current_user.favorite?(item) %>
+  <%= link_to image_tag("full_star.png"), favorite_path(item_id: item.id), method: :delete %>
+<% else %>
+  <%= link_to image_tag("empty_star.png"), favorite_path(item_id: item.id), method: :post %>
+<% end %>
