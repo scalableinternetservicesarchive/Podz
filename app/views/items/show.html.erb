@@ -6,6 +6,14 @@
 
   <div class="item_sub_container">
     <p>
+      <strong>Rating:</strong>
+      <% if @reviews.count > 0 %>
+        <%= @avgRating %>/5 based on <%= @reviews.count %> review(s)
+        <% else %>
+        No rating yet.
+        <% end %>
+    </p>
+    <p>
       <strong>Description:</strong>
       <%= @item.description %>
     </p>
@@ -173,7 +181,14 @@
         <div class="text_container">
           <td class="list_item_text"><%= review.title %></td>
           <td class="list_item_text"><%= review.body %></td>
-          <td class="list_item_text"><%= review.rating %>/5</td>
+          <td class="list_item_text">
+            <% review.rating.to_i.times do  %>
+              <span class="glyphicon glyphicon-star"></span>
+            <% end %>
+            <% (5-review.rating).to_i.times do %>
+              <span class="glyphicon glyphicon-star-empty"></span>
+            <% end %>
+          </td>
           <td class="list_item_text"><%= get_display_name(review) %></td>
         </div>
       </tr>
