@@ -7,7 +7,11 @@
   <div class="item_sub_container">
     <p>
       <strong>Rating:</strong>
-      <%= @avgRating %>/5
+      <% if @reviews.count > 0 %>
+        <%= @avgRating %>/5 based on <%= @reviews.count %> review(s)
+        <% else %>
+        No rating yet.
+        <% end %>
     </p>
     <p>
       <strong>Description:</strong>
@@ -211,7 +215,7 @@
 
   <tbody class="table_content">
 
-  <% @rentals.each do |rental| %>
+  <<% @rentals.each do |rental| %>
 
     <tr class="list_item">
       <div class="text_container">
@@ -220,6 +224,6 @@
         <td class="list_item_text"><%= rental.check_in_date %></td>
       </div>
     </tr>
-  <% end %>
+  <% end %>>
   </tbody>
 </table>
