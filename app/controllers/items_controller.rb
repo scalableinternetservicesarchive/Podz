@@ -75,6 +75,7 @@ class ItemsController < ApplicationController
         flash[:success] = "Item created"
         redirect_to item_path(@item)
       else
+        flash[:danger] = "Failed"
         render 'items/new'
       end
 
