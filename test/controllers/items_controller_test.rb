@@ -14,8 +14,8 @@ class ItemsControllerTest < ActionDispatch::IntegrationTest
   test "should create item" do
     log_in_as(@user)
     assert_difference('Item.count') do
-      post items_path, params: { item: { title: item.title, description: item.description, category_id: item.category_id, price_hourly_usd: item.price_hourly_usd, price_daily_usd: item.price_daily_usd },
-                                 condition: item.condition, user_lat: item.latitude, user_lng: item.longitude}
+      post items_path, params: { item: { title: @item.title, description: @item.description, category_id: @item.category_id, price_hourly_usd: @item.price_hourly_usd, price_daily_usd: @item.price_daily_usd },
+                                 condition: @item.condition, user_lat: @item.latitude, user_lng: @item.longitude}
     end
     assert_redirected_to item_url(Item.last)
     assert_equal @user.id, Item.last.user_id
