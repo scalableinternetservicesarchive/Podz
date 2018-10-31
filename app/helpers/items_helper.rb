@@ -38,6 +38,44 @@ module ItemsHelper
     end
   end
 
+  def rental_length(start_date, end_date)
+
+    seconds_diff = (start_date - end_date).to_i.abs
+
+    days = (seconds_diff / 3600) / 24
+    seconds_diff -= days * 24 * 3600
+
+    hours = seconds_diff / 3600
+    seconds_diff -= hours * 3600
+
+    days_display = ""
+    if days > 0
+      days_display = "#{days.to_s.rjust(1, '0')} days, "
+    end
+
+    hours_display = ""
+    if hours > 0
+      hours_display = "#{hours.to_s.rjust(1, '0')} hours, "
+    end
+
+    minutes = seconds_diff / 60
+
+    minutes_display = ""
+    if minutes > 0
+      minutes_display = "#{minutes.to_s.rjust(1, '0')} minutes"
+    end
+
+
+    seconds_diff -= minutes * 60
+
+    seconds = seconds_diff
+    seconds_display = "#{seconds.to_s.rjust(1, '0')}"
+
+    days_display + hours_display + minutes_display
+
+
+  end
+
   # Returns the keyword_search display
   def search_display
     @keyword_display = if !@keyword.nil? && @keyword.length.positive?
