@@ -23,7 +23,8 @@ class AuthenticatedActionsTest < ActionDispatch::IntegrationTest
     assert_redirected_to @user
     get new_item_path
     assert_template 'items/new'
-    post items_path, params: { item: { title: item.title, description: item.description, price_hourly_usd: item.price_hourly_usd, price_daily_usd: item.price_daily_usd } }
+    post items_path, params: { item: { title: item.title, description: item.description, category_id: item.category_id, price_hourly_usd: item.price_hourly_usd, price_daily_usd: item.price_daily_usd },
+                               condition: item.condition, user_lat: item.latitude, user_lng: item.longitude}
     follow_redirect!
     assert_template "items/show"
   end
