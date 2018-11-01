@@ -48,6 +48,7 @@ class ItemsController < ApplicationController
       @isPrevReviewed = Review.find_by(user_id: current_user, item_id: params[:id])
     end
     @rentals = Rental.where(item_id: params[:id], history: true)
+
   end
 
   # GET /items/new

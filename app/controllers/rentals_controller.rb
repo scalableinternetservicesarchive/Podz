@@ -9,7 +9,7 @@ class RentalsController < ApplicationController
     rental.save
 
 
-    flash[:success] = "Item is now rented"
+    flash[:success] = "Item is now rented."
     redirect_to item_path(item)
 
   end
@@ -24,7 +24,7 @@ class RentalsController < ApplicationController
     rental.history = true
     rental.save
 
-    flash[:success] = "Item is now checked in. Feel free to write a review to elaborate on your experience"
+    flash[:success] = "Item is now checked in. Feel free to write a review to elaborate on your experience!"
     redirect_to item_path(item)
 
   end
