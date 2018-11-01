@@ -15,7 +15,7 @@ class Item < ApplicationRecord
   end
 
   def rating
-    result = 0
+    result = 0.0
     reviews.each do |review|
       result += review.rating
     end
