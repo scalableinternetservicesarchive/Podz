@@ -153,82 +153,82 @@
 
 <h2 id="reviews_title">Reviews</h2>
 
-<table class="item_table">
+<div class="item_table">
   <% if @reviews.count != 0 %>
-  <thead class="table_content">
+  <div class="table_content">
 
-    <tr class="list_header">
+    <div class="list_header">
 
       <div class="text_container">
-        <th class="list_item_text">Title</th>
-        <th class="list_item_text">Review</th>
-        <th class="list_item_text">Rating</th>
-        <th class="list_item_text">User</th>
+        <p class="list_item_text header">Title</p>
+        <p class="list_item_text header">Review</p>
+        <p class="list_item_text header">Rating</p>
+        <p class="list_item_text header">User</p>
       </div>
-    </tr>
-  </thead>
+    </div>
+  </div>
   <% else %>
     <div id="no_review_container">
       <h4 id="no_reviews_title">No reviews to show!</h4>
     </div>
   <% end %>
 
-  <tbody class="table_content">
+  <div class="table_content">
 
     <% @reviews.each do |review| %>
 
-      <tr class="list_item">
+      <div class="list_item">
         <div class="text_container">
-          <td class="list_item_text"><%= review.title %></td>
-          <td class="list_item_text"><%= review.body %></td>
-          <td class="list_item_text">
+          <p class="list_item_text"><%= review.title %></p>
+          <p class="list_item_text"><%= review.body %></p>
+          <p class="list_item_text">
             <% review.rating.to_i.times do  %>
               <span class="glyphicon glyphicon-star"></span>
             <% end %>
             <% (5-review.rating).to_i.times do %>
               <span class="glyphicon glyphicon-star-empty"></span>
             <% end %>
-          </td>
-          <td class="list_item_text"><%= get_display_name(review) %></td>
+          </p>
+          <p class="list_item_text"><%= get_display_name(review) %></p>
         </div>
-      </tr>
+      </div>
     <% end %>
-  </tbody>
-</table>
+  </div>
+</div>
 
 
 <h2 id="reviews_title">Rentals</h2>
 
-<table class="item_table">
+<div class="item_table">
   <% if @rentals.count != 0 %>
-    <thead class="table_content">
+    <div class="table_content">
 
-    <tr class="list_header">
+    <div class="list_header">
 
       <div class="text_container">
-        <th class="list_item_text">Name</th>
-        <th class="list_item_text">Rental length</th>
-        <th class="list_item_text">Check-in date</th>
+        <p class="list_item_text header">Name</p>
+        <p class="list_item_text header">Rental length</p>
+        <p class="list_item_text header">Check-in date</p>
       </div>
-    </tr>
-    </thead>
+    </div>
+    </div>
   <% else %>
     <div id="no_review_container">
       <h4 id="no_reviews_title">No rentals to show!</h4>
     </div>
   <% end %>
 
-  <tbody class="table_content">
+  <div class="table_content">
 
   <% @rentals.each do |rental| %>
 
-    <tr class="list_item">
+    <div class="list_item">
       <div class="text_container">
-        <td class="list_item_text"><%= display_renter_title(rental) %></td>
-        <td class="list_item_text"><%= rental_length(rental.created_at, rental.check_in_date) %></td>
-        <td class="list_item_text"><%= rental.check_in_date %></td>
+        <p class="list_item_text"><%= display_renter_title(rental) %></p>
+        <p class="list_item_text"><%= rental_length(rental.created_at, rental.check_in_date) %></p>
+        <p class="list_item_text"><%= rental.check_in_date %></p>
       </div>
-    </tr>
+    </div>
   <% end %>
-  </tbody>
-</table>
+  </div>
+</div>

@@ -17,14 +17,14 @@
 <hr>
 
 <div id="available">
-  <table class="item_table">
-    <thead class="table_content">
+  <div class="item_table">
+    <div class="table_content">
     <%= render 'item_header', owner: false %>
-    </thead>
-    <tbody class="table_content">
+    </div>
+    <div class="table_content">
       <%= render @items_free %>
-    </tbody>
-  </table>
+    </div>
+  </div>
 </div>
 
 <hr>
@@ -32,12 +32,12 @@
 <button class="btn btn-primary" style="margin-bottom: 1em" data-toggle="collapse" data-target="#rented">Show Unavailable</button>
 
 <div id="rented" class="collapse">
-  <table class="item_table">
-    <thead class="table_content">
+  <div class="item_table">
+    <div class="table_content">
       <%= render 'item_header' %>
-    </thead>
-    <tbody class="table_content">
+    </div>
+    <div class="table_content">
       <%= render @items_rented %>
-    </tbody>
-  </table>
+    </div>
+  </div>
 </div>

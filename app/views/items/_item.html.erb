@@ -1,32 +1,34 @@
-<tr class="list_item">
+<div class="list_item">
+
   <% if logged_in? %>
-    <div class="button_container" id="<%= item.id %>">
-      <td class="list_item_button">
+    <div class="fav_container">
+      <div class="list_item_button">
         <%= render partial: "favorites/favorite_button", locals: { item: item }%>
-      </td>
+      </div>
     </div>
   <% end %>
   <div class="text_container">
-    <td class="list_item_text"><%= item.title %></td>
-    <td class="list_item_text"><%= display_availability(item.available) %></td>
-    <td class="list_item_text"><%= display_category(item.category_id) %></td>
+
+    <div class="list_item_text"><%= item.title %></div>
+    <div class="list_item_text"><%= display_availability(item.available) %></div>
+    <div class="list_item_text"><%= display_category(item.category_id) %></div>
   </div>
   <div class="button_container">
-    <td class="list_item_button">
+    <div class="list_item_button">
       <%= link_to 'Show', item, class: 'list_item_button action' %>
-    </td>
+    </div>
 
     <% if current_user?(item.user) %>
-      <td class="list_item_button">
+      <div class="list_item_button">
         <%= link_to 'Edit', edit_item_path(item), class: 'list_item_button action' %>
-      </td>
-      <td class="list_item_button">
+      </div>
+      <div class="list_item_button">
         <%= link_to 'Destroy', item, method: :delete, data: { confirm: 'Are you sure?' }, class: 'list_item_button action delete' %>
-      </td>
+      </div>
     <% else %>
-      <td class="list_item_button">
-        <th class="empty_btemplate">Show</th>
-      </td>
+      <div class="list_item_button">
+        <button class="empty_btemplate">Show</button>
+      </div>
     <% end %>
   </div>
-</tr>
+</div>
