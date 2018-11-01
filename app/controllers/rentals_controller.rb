@@ -2,16 +2,18 @@ class RentalsController < ApplicationController
 
   def rent
     item_id = params[:item_id]
-    item = Item.find(item_id)
-    item.available = false
-    item.save
-    rental = Rental.new(item_id: item_id, user_id: current_user.id)
-    rental.save
-
-    respond_to do |format|
-      format.html { redirect_to items_path, notice: 'Item was rented', class: 'rented_text' }
-      format.json { head :no_content }
+    item = Item.find_by(id: item_id)
+    if item == nil || !item.available
+      flash[:danger] = "Item is currently checked out"
+    else
+      item.available = false
+      item.save
+      rental = Rental.new(item_id: item_id, user_id: current_user.id)
+      rental.save
+      flash[:success] = "Item was rented"
     end
+
+    redirect_to items_path
   end
 
   def check_in
@@ -24,10 +26,8 @@ class RentalsController < ApplicationController
     rental.history = true
     rental.save
 
-    respond_to do |format|
-      format.html { redirect_to current_user, notice: 'Item was checked in', class: 'rented_text' }
-      format.json { head :no_content }
-    end
+    flash[:success] = "Item was checked in"
+    redirect_to current_user
 
   end
 
