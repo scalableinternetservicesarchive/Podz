@@ -2,33 +2,33 @@ class RentalsController < ApplicationController
 
   def rent
     item_id = params[:item_id]
-    item = Item.find(item_id)
-    item.available = false
-    item.save
-    rental = Rental.new(item_id: item_id, user_id: current_user.id)
-    rental.save
-
-    respond_to do |format|
-      format.html { redirect_to items_path, notice: 'Item was rented', class: 'rented_text' }
-      format.json { head :no_content }
+    item = Item.find_by(id: item_id)
+    if item.nil? || !item.available
+      flash[:danger] = "Item is currently checked out"
+    else
+      ActiveRecord::Base.transaction do
+        item.update(available: false)
+        Rental.create(item_id: item_id, user_id: current_user.id)
+      end
+      flash[:success] = "Item was rented"
     end
+    redirect_to item_path(item_id)
   end
 
   def check_in
     item_id = params[:item_id]
-    item = Item.find(item_id)
-    item.available = true
-    item.save
-    rental = Rental.find_by(item_id: item_id, user_id: current_user.id)
-    rental.check_in_date = DateTime.now
-    rental.history = true
-    rental.save
-
-    respond_to do |format|
-      format.html { redirect_to current_user, notice: 'Item was checked in', class: 'rented_text' }
-      format.json { head :no_content }
+    item = Item.find_by(id: item_id)
+    if item.nil? || item.available
+      flash[:danger] = "Item is already checked in"
+    else
+      rental = Rental.find_by(item_id: item_id, user_id: current_user.id)
+      ActiveRecord::Base.transaction do
+        item.update(available: true)
+        rental.update(check_in_date: DateTime.now, history: true)
+      end
+      flash[:success] = "Item was checked in"
     end
-
+    redirect_to item_path(item_id)
   end
 
   private

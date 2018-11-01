@@ -1,7 +1,7 @@
 <div class="list_item">
   <div class="text_container">
     <p class="list_item_text"><%= link_to user.display_name, user %></p>
-    <p class="list_item_text"><%= user.rating %></p>
+    <p class="list_item_text"><%= user.rating.round(1) %></p>
   </div>
   <% if admin? %>
     <div class="button_container">

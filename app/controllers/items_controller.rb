@@ -71,15 +71,14 @@ class ItemsController < ApplicationController
     @item.latitude = params[:user_lat]
     @item.longitude = params[:user_lng]
 
-    respond_to do |format|
       if @item.save
-        format.html { redirect_to @item, notice: 'Item was successfully created.' }
-        format.json { render :show, status: :created, location: @item }
+        flash[:success] = "Item created"
+        redirect_to item_path(@item)
       else
-        format.html { render :new }
-        format.json { render json: @item.errors, status: :unprocessable_entity }
+        flash[:danger] = "Failed"
+        render 'items/new'
       end
-    end
+
   end
 
   # PATCH/PUT /items/1

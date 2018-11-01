@@ -6,6 +6,8 @@ class Item < ApplicationRecord
 
   validates :title, length: {minimum: 1}
   validates :description, length: {minimum: 1}
+  validates :category_id, presence:  true
+  validates :condition, presence:  true
   validates :price_hourly_usd, :inclusion => 0..99999, presence: true, unless: ->(item){item.price_daily_usd.present?}
   validates :price_daily_usd, :inclusion => 0..99999, presence: true, unless: ->(item){item.price_hourly_usd.present?}
   def self.conditions
@@ -13,7 +15,7 @@ class Item < ApplicationRecord
   end
 
   def rating
-    result = 0
+    result = 0.0
     reviews.each do |review|
       result += review.rating
     end
