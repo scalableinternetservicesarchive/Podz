@@ -1,29 +1,28 @@
-<tr class="list_item">
+<div class="list_item">
   <div class="text_container">
-  <td class="list_item_text"><%= display_item_title(review) %></td>
-  <td class="list_item_text"><%= review.title %></td>
-  <td class="list_item_text"><%= review.body %></td>
-    <td class="list_item_text">
+    <p class="list_item_text"><%= display_item_title(review) %></p>
+    <p class="list_item_text"><%= review.title %></p>
+    <p class="list_item_text">
       <% review.rating.to_i.times do  %>
         <span class="glyphicon glyphicon-star"></span>
       <% end %>
       <% (5-review.rating).to_i.times do %>
         <span class="glyphicon glyphicon-star-empty"></span>
       <% end %>
-    </td>
+    </p>
   </div>
   <div class="button_container">
-  <td class="list_item_button">
-    <%= link_to 'Show', item_path(review.item_id), class: 'list_item_button action' %>
-  </td>
+    <div class="list_item_button">
+      <%= link_to 'Show', item_path(review.item_id), class: 'list_item_button action' %>
+    </div>
 
-  <% if current_user?(review.user) %>
-    <td class="list_item_button">
-      <%= link_to 'Edit', edit_review_path(review), class: 'list_item_button action' %>
-    </td>
-    <td class="list_item_button">
-      <%= link_to 'Destroy', review, method: :delete, data: { confirm: 'Are you sure?' }, class: 'list_item_button action delete' %>
-    </td>
-  <% end %>
+    <% if current_user?(review.user) %>
+      <div class="list_item_button">
+        <%= link_to 'Edit', edit_review_path(review), class: 'list_item_button action' %>
+      </div>
+      <div class="list_item_button">
+        <%= link_to 'Destroy', review, method: :delete, data: { confirm: 'Are you sure?' }, class: 'list_item_button action delete' %>
+      </div>
+    <% end %>
   </div>
-</tr>
+</div>

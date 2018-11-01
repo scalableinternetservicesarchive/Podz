@@ -1,13 +1,13 @@
-<tr class="list_item">
+<div class="list_item">
   <div class="text_container">
-    <td class="list_item_text"><%= link_to user.display_name, user %></td>
-    <td class="list_item_text"><%= user.rating.round(1) %></td>
+    <p class="list_item_text"><%= link_to user.display_name, user %></p>
+    <p class="list_item_text"><%= user.rating.round(1) %></p>
   </div>
   <% if admin? %>
     <div class="button_container">
-        <td class="list_item_button">
+        <div class="list_item_button">
           <%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' }, class: 'list_item_button action delete' %>
-        </td>
+        </div>
     </div>
   <% end %>
-</tr>
+</div>
