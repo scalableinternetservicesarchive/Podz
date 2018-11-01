@@ -9,6 +9,7 @@ one:
   price_daily_usd: 100
   user_id: 1
   category_id: 1
+  condition: Good
 
 two:
   id: 2
@@ -19,3 +20,4 @@ two:
   price_daily_usd: 50
   user_id: 2
   category_id: 1
+  condition: Good
