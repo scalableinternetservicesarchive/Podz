@@ -8,10 +8,10 @@ class RentalsController < ApplicationController
     rental = Rental.new(item_id: item_id, user_id: current_user.id)
     rental.save
 
-    respond_to do |format|
-      format.html { redirect_to items_path, notice: 'Item was rented', class: 'rented_text' }
-      format.json { head :no_content }
-    end
+
+    flash[:success] = "Item is now rented"
+    redirect_to item_path(item)
+
   end
 
   def check_in
@@ -24,10 +24,8 @@ class RentalsController < ApplicationController
     rental.history = true
     rental.save
 
-    respond_to do |format|
-      format.html { redirect_to current_user, notice: 'Item was checked in', class: 'rented_text' }
-      format.json { head :no_content }
-    end
+    flash[:success] = "Item is now checked in. Feel free to write a review to elaborate on your experience"
+    redirect_to item_path(item)
 
   end
 

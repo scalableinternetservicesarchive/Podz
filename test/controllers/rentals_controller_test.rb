@@ -13,7 +13,7 @@ class RentalsControllerTest < ActionDispatch::IntegrationTest
       post rent_path(item_id: @item.id)
     end
 
-    assert_redirected_to items_path
+    assert_redirected_to @item
     assert_equal Rental.last.item_id, @item.id
 
     post checkin_path(item_id: @item.id)
