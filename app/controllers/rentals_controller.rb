@@ -12,8 +12,7 @@ class RentalsController < ApplicationController
       end
       flash[:success] = "Item was rented"
     end
-
-    redirect_to items_path
+    redirect_to item_path(item_id)
   end
 
   def check_in
@@ -29,9 +28,7 @@ class RentalsController < ApplicationController
       end
       flash[:success] = "Item was checked in"
     end
-
-    redirect_to current_user
-
+    redirect_to item_path(item_id)
   end
 
   private
