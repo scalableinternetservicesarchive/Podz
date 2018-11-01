@@ -83,16 +83,14 @@ end
 
 # Renting/checking in random items
 3.times do |n|
-  items = Item.where(available: true)
-  item_index = 0
 
   User.all.each do |user|
     # Renting out a couple of items
+    items = Item.where(available: true).where.not(user_id: user.id)
     rand(2..5).times do |m|
-      item = items[item_index]
-      item_index += 1
+      item = items[m]
       item.update(available: false)
-      Rental.create(user_id: user.id, item_id: item.id)
+      Rental.create(user_id: user.id, item_id: item.id, created_at: DateTime.now - rand(1..10))
     end
 
     # Checking in a couple of items
