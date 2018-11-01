@@ -76,7 +76,8 @@ end
                  available: true,
                  latitude: 34.41333 + rand(1..3)**(-(rand(1..2))),
                  longitude: -119.86097 + rand(1..3)**(-rand(1..2)),
-                 price_hourly_usd: rand(0..50))
+                 price_hourly_usd: rand(0..50),
+                 condition: Item.conditions[rand(0..6)])
   end
 end
 
