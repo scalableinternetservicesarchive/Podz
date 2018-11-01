@@ -8,7 +8,7 @@
   <% end %>
   <div class="text_container">
     <td class="list_item_text"><%= item.title %></td>
-    <td class="list_item_text"><%= item.available %></td>
+    <td class="list_item_text"><%= display_availability(item.available) %></td>
     <td class="list_item_text"><%= display_category(item.category_id) %></td>
   </div>
   <div class="button_container">
