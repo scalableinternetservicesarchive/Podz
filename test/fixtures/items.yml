@@ -4,7 +4,7 @@ one:
   id: 1
   title: MyString
   description: MyText
-  available: false
+  available: true
   price_hourly_usd: 20
   price_daily_usd: 100
   user_id: 1
