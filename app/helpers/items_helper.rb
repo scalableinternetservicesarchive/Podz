@@ -47,5 +47,12 @@ module ItemsHelper
                        end
   end
 
+  def display_availability(availability)
+    @available_display = if availability
+                           'Available'
+                         else
+                           'Rented'
+                         end
+  end
 
 end
