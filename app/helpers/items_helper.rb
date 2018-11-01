@@ -15,7 +15,7 @@ module ItemsHelper
 
   # Method returns top n items based on sum of ratings
   def get_top_items(n: 10)
-    items = Item.all.sort_by { |item| item.rating }
+    items = Item.all.sort_by { |item| [item.rating * (item.reviews.length > 2 ? 1 : 0), item.reviews.length] }
     items.reverse!
     items[0..n]
   end
