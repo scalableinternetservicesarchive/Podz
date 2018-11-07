@@ -33,3 +33,4 @@
 
 # Ignore .ds_store, it is used for MacOS Finder
 .DS_Store
+Gemfile.lock
