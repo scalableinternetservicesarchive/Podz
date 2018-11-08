@@ -18,15 +18,15 @@
       <users arrivalrate="8" unit="second"></users>
     </arrivalphase>
 
-    <arrivalphase phase="2" duration="10" unit="minute">
+    <arrivalphase phase="2" duration="1" unit="minute">
       <users arrivalrate="16" unit="second"></users>
     </arrivalphase>
 
-    <arrivalphase phase="3" duration="10" unit="minute">
+    <arrivalphase phase="3" duration="1" unit="minute">
       <users arrivalrate="32" unit="second"></users>
     </arrivalphase>
 
-    <arrivalphase phase="4" duration="10" unit="minute">
+    <arrivalphase phase="4" duration="1" unit="minute">
       <users arrivalrate="64" unit="second"></users>
     </arrivalphase>
   </load>
@@ -42,9 +42,6 @@
 
   <sessions>
     <session name="http-example" probability="100" type="ts_http">
-      <request>
-        <http url='/' version='1.1' method='GET'></http>
-      </request>
       <request>
         <http url='/items' version='1.1' method='GET'></http>
       </request>
