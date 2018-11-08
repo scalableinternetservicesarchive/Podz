@@ -20,15 +20,16 @@ normal_user = User.create(display_name:  "Normal User",
                    admin: false,
                    biography: Faker::Lorem.sentences(15).join(" "))
 
+# Creating faker categories
 10.times do |n|
-  name = Faker::Book.genre
+  name = "Category #{n}"
   description = Faker::Lorem::sentences(5).join(" ")
   Category.create!(name: name, description: description)
 end
 
 8.times do |m|
   # Creating fake item for admin user
-  item_title = m % 2 == 0? Faker::LordOfTheRings.character : Faker::Beer.name
+  item_title = "Admin Item #{m}"
   item_description = Faker::Lorem.sentences(5).join(" ")
   Item.create(title: item_title,
               description: item_description,
@@ -42,7 +43,7 @@ end
 
 8.times do |m|
   # Creating fake item for normal user
-  item_title = m % 2 == 0? Faker::LordOfTheRings.character : Faker::Beer.name
+  item_title = "Normal Item #{m}"
   item_description = Faker::Lorem.sentences(5).join(" ")
   Item.create(title: item_title,
               description: item_description,
@@ -54,37 +55,38 @@ end
               price_hourly_usd: rand(0..50))
 end
 
-60.times do |n|
+1000.times do |n|
   # Creating fake user
-  display_name  = Faker::Name.name
-  email = Faker::Internet.email(name=display_name)
-  password = "password"
+  display_name  = "User #{n}"
+  email = "user#{n}@example.com"
+  password = "foobar"
   user = User.create(display_name:  display_name,
                      email: email,
                      password:              password,
                      password_confirmation: password,
                      biography: Faker::Lorem.sentences(15).join(" "))
 
-  8.times do |m|
-    # Creating fake item
-    item_title = m % 2 == 0? Faker::Book.title : Faker::Beer.name
-    item_description = Faker::Lorem.sentences(5).join(" ")
-    Item.create!(title: item_title,
-                 description: item_description,
-                 user_id: user.id,
-                 category_id: m + 1,
-                 available: true,
-                 latitude: 34.41333 + rand(1..3)**(-(rand(1..2))),
-                 longitude: -119.86097 + rand(1..3)**(-rand(1..2)),
-                 price_hourly_usd: rand(0..50),
-                 condition: Item.conditions[rand(0..6)])
+  if n < 60
+    8.times do |m|
+      # Creating fake item
+      item_title = "Item #{n} #{m}"
+      item_description = Faker::Lorem.sentences(5).join(" ")
+      Item.create!(title: item_title,
+                   description: item_description,
+                   user_id: user.id,
+                   category_id: m + 1,
+                   available: true,
+                   latitude: 34.41333 + rand(1..3)**(-(rand(1..2))),
+                   longitude: -119.86097 + rand(1..3)**(-rand(1..2)),
+                   price_hourly_usd: rand(0..50),
+                   condition: Item.conditions[rand(0..6)])
+    end
   end
 end
 
 # Renting/checking in random items
 3.times do |n|
-
-  User.all.each do |user|
+  User.first(60).each do |user|
     # Renting out a couple of items
     items = Item.where(available: true).where.not(user_id: user.id)
     rand(2..5).times do |m|
