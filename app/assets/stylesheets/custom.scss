@@ -163,7 +163,7 @@ input {
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 
   &.name {
-    padding: 5px
+    padding: 5px;
   }
 }
 
@@ -221,7 +221,6 @@ input {
   flex-direction: row;
   display: flex;
   height: auto;
-  //background-color: black;
 }
 
 .text_container {
@@ -230,7 +229,6 @@ input {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  //background-color: black;
   margin-right: 2px;
   height: auto;
 }
@@ -328,7 +326,6 @@ input {
 #map {
   margin-top: 10px;
   width: 100%;
-  //width: 42rem;
   height: 50rem;
 }
 
@@ -348,5 +345,6 @@ input {
 }
 /* Bootstrap Css Map Fix*/
 #map-container #map-canvas label {
-  width: auto; display:inline;
+  width: auto;
+  display:inline;
 }
