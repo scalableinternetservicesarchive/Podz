@@ -9,7 +9,7 @@
 
   <!-- Server side setup -->
   <servers>
-    <server host="Podz-Alex.42dz3asytu.us-west-2.elasticbeanstalk.com" port="80" type="tcp"></server>
+    <server host="http://podz-augustle.42dz3asytu.us-west-2.elasticbeanstalk.com" port="80" type="tcp"></server>
   </servers>
 
 
@@ -45,9 +45,54 @@
       <request>
         <http url='/' version='1.1' method='GET'></http>
       </request>
-      <request>
-        <http url='/login' version='1.1' method='GET'></http>
+
+      <!-- Pick random user  -->
+      <!-- WARNING: assumes you've seeded the db with at least 1000 users named User2, User3, ... -->
+      <setdynvars sourcetype="random_number" start="2" end="10">
+        <var name="random_user_number" />
+      </setdynvars>
+
+      <!-- Get home -->
+      <request><http url="/login" method="GET" version="1.1" /></request>
+
+      <!-- wait while guest looks at home page -->
+      <thinktime value="1" random="true"></thinktime>
+
+      <!-- Sign in -->
+      <request subst="true">
+        <http
+                url="/login"
+                method="POST"
+                version="1.1"
+                contents="session[email]=User%%_random_user_number%%@example.com&amp;session[password]=foobar&amp;commit=Login"
+                content_type="application/x-www-form-urlencoded"
+        />
       </request>
+
+      <request><http url="/items" method="GET" version="1.1" /></request>
+
+      <request><http url="/items?utf8=✓&amp;category_search=1&amp;keyword_search=" method="GET" version="1.1" /></request>
+
+      <request><http url="/items/186" method="GET" version="1.1" /></request>
+
+      <transaction name="new_rental_post">
+        <request subst="true">
+          <dyn_variable name="rent_path" re="[Ll]ocation: (.*)\r"/>
+          <dyn_variable name="item_id" re="[Ll]ocation: http://.*/rentals/(.*)\r"/>
+          <dyn_variable name="user_id" re="[Ll]ocation: http://.*/rentals/(.*)\r"/>
+          <http
+                  url="/rentals"
+                  method="POST"
+                  version="1.1"
+                  contents="rental[item_id]=%%_item_id%%&amp;rental[user_id]=%%_user_id%%"
+                  content_type="application/x-www-form-urlencoded"
+          />
+        </request>
+      </transaction>
+
+      <!-- follow redirect -->
+      <request subst="true"><http url="%%_item_path%%" method="GET" version="1.1" /></request>
+
 
     </session>
   </sessions>
