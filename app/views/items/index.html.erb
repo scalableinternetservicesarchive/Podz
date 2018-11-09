@@ -45,13 +45,3 @@
 <script>
   <%= render partial: "favorites/favorite_ajax_request.js", locals: { items: @items_free + @items_rented } %>
 </script>
-<!--<script>-->
-<!--    $( document ).ready(function() {-->
-<!--        $.ajax({-->
-<!--            url: "/favorite_ajax_response",-->
-<!--            type: "get",-->
-<!--            cache: false,-->
-<!--            data: { item_ids: <%#= @items_free.pluck(:id) %> }-->
-<!--        })-->
-<!--    });-->
-<!--</script>-->
