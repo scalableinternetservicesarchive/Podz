@@ -36,3 +36,7 @@
     </div>
   </div>
 <% end %>
+
+<script>
+    <%= render partial: "favorites/favorite_ajax_request.js", locals: { items: @items } %>
+</script>
