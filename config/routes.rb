@@ -20,4 +20,5 @@ Rails.application.routes.draw do
   post   '/checkin',    to: 'rentals#check_in'
   post   'favorite',    to: 'favorites#favorite'
   delete 'favorite',    to: 'favorites#unfavorite'
+  get    'favorite_ajax_response', to: 'favorites#favorite_ajax_response'
 end

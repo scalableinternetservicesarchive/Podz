@@ -1,15 +1,32 @@
 class FavoritesController < ApplicationController
+  respond_to? :js
 
   def favorite
-    puts params
+    @item = Item.find_by(id: params[:item_id])
     Favorite.create!(user_id: current_user.id, item_id: params[:item_id])
-    redirect_to items_path
+    respond_to do |format|
+      format.js
+      format.html { redirect_to items_path }
+    end
   end
 
   def unfavorite
-    puts params
+    @item = Item.find_by(id: params[:item_id])
     @favorite = Favorite.find_by(user_id: current_user.id, item_id: params[:item_id])
     @favorite.destroy!
-    redirect_to items_path
+    respond_to do |format|
+      format.js
+      format.html { redirect_to items_path }
+    end
+  end
+
+  def favorite_ajax_response
+    item_ids = params[:item_ids]
+    current_user_id = current_user.nil? ? nil : current_user.id
+    @favorites = Favorite.where(item_id: item_ids, user_id: current_user_id)
+
+    respond_to do |format|
+      format.js
+    end
   end
 end
