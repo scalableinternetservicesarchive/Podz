@@ -15,10 +15,6 @@ class Item < ApplicationRecord
   end
 
   def rating
-    result = 0.0
-    reviews.each do |review|
-      result += review.rating
-    end
-    reviews.length != 0 ? result / reviews.length : 0
+    reviews.length != 0 ? reviews.sum(:rating) / reviews.length : 0
   end
 end
