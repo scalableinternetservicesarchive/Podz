@@ -9,28 +9,40 @@ class ItemsController < ApplicationController
     @category = params[:category_search]
     @keyword  = params[:keyword_search]
 
-    @items = if !@category.nil? && @category.length.positive?
-               Item.select { |item| item.category_id == @category.to_i }
-             else
-               Item.all
-             end
+    @items = Item
+    if !@category.nil? && @category.length.positive?
+      @items = @items.where('category_id == ?', @category.to_i)
+    end
+    # @items = if !@category.nil? && @category.length.positive?
+    #            Item.select { |item| item.category_id == @category.to_i }
+    #          else
+    #            Item.all
+    #          end
 
-    @items = if !@keyword.nil?
-               @items.select do |item|
-                 item.title.downcase.include? @keyword.downcase or
-                   item.description.downcase.include? @keyword.downcase
-               end
-             else
-               @items
-             end
+    unless @keyword.nil? || !@keyword.length.positive?
+      @items = @items.where('title.downcase.include? :keyword OR description.downcase.include? :keyword', { keyword: @keyword.downcase })
+    end
+    # @items = if !@keyword.nil?
+    #            @items.select do |item|
+    #              item.title.downcase.include? @keyword.downcase or
+    #                item.description.downcase.include? @keyword.downcase
+    #            end
+    #          else
+    #            @items
+    #          end
 
     unless current_user.nil?
-      @items = @items.reject{ |item| item.user_id == current_user.id }
+      @items = @items.where('user_id != ?', current_user.id)
     end
+    # unless current_user.nil?
+    #   @items = @items.reject{ |item| item.user_id == current_user.id }
+    # end
 
+    @items_free = @items.where('available == true').paginate(per_page: 5, page: params[:page])
+    @items_rented = @items.where('available == false').paginate(per_page: 5, page: params[:page])
 
-    @items_free   = @items.select(&:available).sort_by { |item| item.title.downcase }
-    @items_rented = @items.reject(&:available).sort_by { |item| item.title.downcase }
+    #@items_free   = @items.select(&:available).sort_by { |item| item.title.downcase }
+    #@items_rented = @items.reject(&:available).sort_by { |item| item.title.downcase }
   end
 
   # GET /items/1
