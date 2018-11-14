@@ -3,6 +3,7 @@ class Item < ApplicationRecord
   belongs_to :user,     required: false
   has_many :reviews, dependent: :destroy
   has_many :favorites, dependent: :destroy
+  has_one :top_item, dependent: :destroy
 
   validates :title, length: {minimum: 1}
   validates :description, length: {minimum: 1}
@@ -15,10 +16,6 @@ class Item < ApplicationRecord
   end
 
   def rating
-    result = 0.0
-    reviews.each do |review|
-      result += review.rating
-    end
-    reviews.length != 0 ? result / reviews.length : 0
+    reviews.length != 0 ? reviews.sum(:rating) / reviews.length : 0
   end
 end

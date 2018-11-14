@@ -41,3 +41,7 @@
     </div>
   </div>
 </div>
+
+<script>
+  <%= render partial: "favorites/favorite_ajax_request.js", locals: { items: @items_free + @items_rented } %>
+</script>

@@ -1,7 +1,7 @@
 class StaticPagesController < ApplicationController
   def home
-    @items = get_top_items
-    @users = get_top_users
+    @items = Item.joins(:top_item)
+    @users = User.joins(:top_user)
   end
 
   def about

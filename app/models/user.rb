@@ -2,6 +2,8 @@ class User < ApplicationRecord
   has_many :items, dependent: :destroy
   has_many :reviews
   has_many :favorites, dependent: :destroy
+  has_many :reviews, through: :items
+  has_one :top_user, dependent: :destroy
 
   attr_accessor :remember_token
   before_save { self.email = email.downcase }
@@ -41,11 +43,7 @@ class User < ApplicationRecord
   end
 
   def rating
-    result = 0
-    items.each do |item|
-      result += item.rating
-    end
-    items.length != 0 ? result / items.length : 0
+    reviews.length != 0 ? reviews.sum(:rating) / reviews.length : 0
   end
 
   # Returns true if the given item is favorited by the user
