@@ -9,12 +9,11 @@
 
   <!-- Server side setup -->
   <servers>
-    <server host="Podz-Alex.42dz3asytu.us-west-2.elasticbeanstalk.com" port="80" type="tcp"></server>
+    <server host="localhost" port="3000" type="tcp"></server>
   </servers>
 
-
   <load>
-    <arrivalphase phase="1" duration="1" unit="minute">
+    <arrivalphase phase="1" duration="5" unit="second">
       <users arrivalrate="8" unit="second"></users>
     </arrivalphase>
 
@@ -42,8 +41,24 @@
 
   <sessions>
     <session name="http-example" probability="100" type="ts_http">
-      <request>
-        <http url='/' version='1.1' method='GET'></http>
+      <!-- Set dynamic variable for use in item viewing request -->
+      <setdynvars sourcetype="random_number" start="1" end="1000">
+        <var name="rndint" />
+      </setdynvars>
+
+      <!-- Visit homepage -->
+      <request><http url='/' version='1.1' method='GET'/></request>
+
+      <!-- Visit items page -->
+      <request><http url='/items' version='1.1' method='GET'/></request>
+
+      <!-- Wait to simulate user looking around -->
+      <thinktime value="1" random="false"/>
+
+      <!-- Select random item from item page (we know we generate ~8000 items) -->
+      <request subst="true">
+        <dyn_variable name="rndint"/>
+        <http url="/items/%%_rndint%%"/>
       </request>
     </session>
   </sessions>
