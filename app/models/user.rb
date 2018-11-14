@@ -3,6 +3,7 @@ class User < ApplicationRecord
   has_many :reviews
   has_many :favorites, dependent: :destroy
   has_many :reviews, through: :items
+  has_one :top_user, dependent: :destroy
 
   attr_accessor :remember_token
   before_save { self.email = email.downcase }
