@@ -1,115 +1,296 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
-#   Character.create(name: 'Luke', movie: movies.first)
+# Setting environment variables to correctly form sql query strings for sqlite vs. postgres
+puts '=============================='
+if Rails.env == 'test' || Rails.env == 'development'
+  puts 'IN LOCAL MODE (' + Rails.env + ')'
+  how_many = {user: 1000, items_per_user: 3, category: 10, rentals_per_user: 2, favorites_per_user: 3}
+  col_name_delim = "`"  # sqlite3
+  val_delim = '"'       # sqlite3
+  direct_sql_inject = true
+else
+  # Production environment - use postgres
+  puts 'IN REMOTE MODE (production)'
+  how_many = {user: 1000, items_per_user: 8, category: 10, rentals_per_user: 3, favorites_per_user: 3}
+  col_name_delim = "" # postgres
+  val_delim = "'"     # postgres
+  direct_sql_inject = true
+end
+puts '=============================='
 
-admin_user = User.create(display_name:  "Admin User",
-                   email: "admin@example.com",
-                   password:              "foobar",
-                   password_confirmation: "foobar",
-                   admin: true,
-                   biography: Faker::Lorem.sentences(15).join(" "))
-
-normal_user = User.create(display_name:  "Normal User",
-                   email: "normal@example.com",
-                   password:              "foobar",
-                   password_confirmation: "foobar",
-                   admin: false,
-                   biography: Faker::Lorem.sentences(15).join(" "))
-
-# Creating faker categories
-10.times do |n|
-  name = "Category #{n}"
-  description = Faker::Lorem::sentences(5).join(" ")
-  Category.create!(name: name, description: description)
+if direct_sql_inject
+  # turn off logger (we turn it back @ end of file)
+  # (This prevents rails db:seed from spewing)
+  ActiveRecord::Base.logger.level = 1
 end
 
-8.times do |m|
-  # Creating fake item for admin user
-  item_title = "Admin Item #{m}"
-  item_description = Faker::Lorem.sentences(5).join(" ")
-  Item.create(title: item_title,
-              description: item_description,
-              user_id: admin_user.id,
-              category_id: m + 1,
-              available: true,
-              latitude: 34.41333 + rand(1..3)**(-(rand(1..2))),
-              longitude: -119.86097 + rand(1..3)**(-rand(1..2)),
-              price_hourly_usd: rand(0..50))
+def dict_to_db_str(d, cols, delim)
+  # Usage:
+  # > di = {name: "Justin", age: 34, ssn: "\"Um no,\" he said"}
+  #   => {:name=>"Justin", :age=>34, :ssn=>"\"Um no,\" he said"}
+  # > cols = ["name","age","ssn","nope"]
+  # > puts dict_to_db_str(di,cols,"'")
+  #   ('Justin', 34, '\'Um no,\' he said', nil)
+
+  if d.keys.first.is_a? Symbol and cols.first.is_a? String
+    cols.map! {|s| s.to_sym}
+  elsif d.keys.first.is_a? String and cols.first.is_a? Symbol
+    cols.map! {|s| s.to_s}
+  end
+  col_vals = d.values_at(*cols)
+  col_string = col_vals.inspect
+  col_string[0] = '('
+  col_string[-1] = ')'
+  col_string.gsub! '"', delim
+  return col_string
 end
 
-8.times do |m|
-  # Creating fake item for normal user
-  item_title = "Normal Item #{m}"
-  item_description = Faker::Lorem.sentences(5).join(" ")
-  Item.create(title: item_title,
-              description: item_description,
-              user_id: normal_user.id,
-              category_id: m + 1,
-              available: true,
-              latitude: 34.41333 + rand(1..3)**(-(rand(1..2))),
-              longitude: -119.86097 + rand(1..3)**(-rand(1..2)),
-              price_hourly_usd: rand(0..50))
-end
+NOW_DT = DateTime.current
+NOW_STR = NOW_DT.strftime("%FT%T")
 
-1000.times do |n|
-  # Creating fake user
-  display_name  = "User #{n}"
-  email = "user#{n}@example.com"
-  password = "foobar"
-  user = User.create(display_name:  display_name,
-                     email: email,
-                     password:              password,
-                     password_confirmation: password,
-                     biography: Faker::Lorem.sentences(15).join(" "))
+# USERS
+cols = User.column_names - ["remember_digest"]
+delimited_cols = cols.map {|s| col_name_delim + "#{s}" + col_name_delim}
+sql = "INSERT INTO users (#{delimited_cols.join(',')}) VALUES "
+user_ids = (1..how_many[:user]).to_a
 
-  if n < 60
-    8.times do |m|
-      # Creating fake item
-      item_title = "Item #{n} #{m}"
-      item_description = Faker::Lorem.sentences(5).join(" ")
-      Item.create!(title: item_title,
-                   description: item_description,
-                   user_id: user.id,
-                   category_id: m + 1,
-                   available: true,
-                   latitude: 34.41333 + rand(1..3)**(-(rand(1..2))),
-                   longitude: -119.86097 + rand(1..3)**(-rand(1..2)),
-                   price_hourly_usd: rand(0..50),
-                   condition: Item.conditions[rand(0..6)])
-    end
+PASSWORD = "foobar"
+PASSWORD_DIGEST = User.digest(PASSWORD)
+
+user_ids.each do |i|
+
+  user_values = {
+      id: i,
+      display_name: "User #{i}",
+      password: PASSWORD,
+      password_confirmation: PASSWORD,
+      email: "user#{i}@example.com",
+      biography: Faker::Lorem.sentences(5).join(" "),
+      admin: false
+  }
+
+  if i == 1
+    # Admin user
+    user_values.merge! display_name: "Admin User", email: "admin@example.com", admin: true
+  end
+
+  if direct_sql_inject
+    user_values[:created_at]      = NOW_STR
+    user_values[:updated_at]      = NOW_STR
+    user_values[:admin]           = user_values[:admin] ? 1 : 0
+    user_values[:password_digest] = PASSWORD_DIGEST
+    vals = dict_to_db_str(user_values, cols, val_delim)
+    sql += i==1 ? vals : ',' + vals
+  else
+    user_values.delete(:id)
+    User.create!(user_values)
   end
 end
 
-# Renting/checking in random items
-3.times do |n|
-  User.first(60).each do |user|
-    # Renting out a couple of items
-    items = Item.where(available: true).where.not(user_id: user.id)
-    rand(2..5).times do |m|
-      item = items[m]
-      item.update(available: false)
-      Rental.create(user_id: user.id, item_id: item.id, created_at: DateTime.now - rand(1..10))
-    end
+if direct_sql_inject
+  ActiveRecord::Base.connection.execute sql
+end
 
-    # Checking in a couple of items
-    rentals = Rental.where(user_id: user.id)
-    unless Rental.where(user_id: user.id).count == 0
-      rand(0..[rentals.count - 2, 0].max).times do |m|
-        rental = rentals[m]
-        item = Item.find(rental.item_id)
-        rental.update(check_in_date: DateTime.now, history: true)
-        item.update(available: true)
-        Review.create!(title: Faker::Lorem.words(5).join(" "),
-                       item_id: item.id,
-                       body: Faker::Lorem.sentences(rand(1..5)).join(" "),
-                       user_id: user.id,
-                       rating: rand(1..5),
-                       anonymous: rand(1..5) == 1)
+puts "Generated #{User.count} users"
+
+# CATEGORIES
+cols = Category.column_names
+delimited_cols = cols.map {|s| col_name_delim + "#{s}" + col_name_delim}
+sql = "INSERT INTO categories (#{delimited_cols.join(',')}) VALUES "
+category_ids = (1..how_many[:category]).to_a
+
+category_ids.each do |i|
+
+  category_vals = {
+      id: i,
+      name: "Category #{i}",
+      description: Faker::Lorem::sentences(5).join(" ")
+  }
+
+  if direct_sql_inject
+    category_vals[:created_at]      = NOW_STR
+    category_vals[:updated_at]      = NOW_STR
+    vals = dict_to_db_str(category_vals, cols, val_delim)
+    sql += i==1 ? vals : ',' + vals
+  else
+    category_vals.delete(:id)
+    Category.create!(category_vals)
+  end
+end
+
+if direct_sql_inject
+  ActiveRecord::Base.connection.execute sql
+end
+
+puts "Generated #{Category.count} categories"
+
+# ITEMS
+cols = Item.column_names
+delimited_cols = cols.map {|s| col_name_delim + "#{s}" + col_name_delim}
+sql = "INSERT INTO items (#{delimited_cols.join(',')}) VALUES "
+item_ids = (1..(how_many[:user]*how_many[:items_per_user])).to_a
+conditions = Item.conditions.to_a
+
+item_ids.each do |i|
+
+  item_vals = {
+      id: i,
+      title: "Item #{i}",
+      description: Faker::Lorem.sentences(5).join(" "),
+      available: true,
+      category_id: rand(1..how_many[:category]),
+      price_hourly_usd: rand(1..25),
+      price_daily_usd: rand(25..50),
+      user_id: ((i - 1) / how_many[:items_per_user]) + 1, # Ensures items assigned to users in order of user ID
+      condition: conditions[rand(0...conditions.length)],
+      latitude: 34.41333 + rand(1..3)**(-(rand(1..2))),
+      longitude: -119.86097 + rand(1..3)**(-rand(1..2)),
+  }
+
+  if direct_sql_inject
+    item_vals[:created_at]      = NOW_STR
+    item_vals[:updated_at]      = NOW_STR
+    item_vals[:available]       = 1
+    vals = dict_to_db_str(item_vals, cols, val_delim)
+    sql += i==1 ? vals : ',' + vals
+  else
+    item_vals.delete(:id)
+    Item.create!(item_vals)
+  end
+end
+
+if direct_sql_inject
+  ActiveRecord::Base.connection.execute sql
+end
+
+puts "Generated #{Item.count} items"
+
+# RENTAL HISTORY
+# Rentals
+cols = Rental.column_names - ["length_days", "length_hours", "note"]
+delimited_cols = cols.map {|s| col_name_delim + "#{s}" + col_name_delim}
+sql = "INSERT INTO rentals (#{delimited_cols.join(',')}) VALUES "
+
+# Reviews
+review_cols = Review.column_names
+delimited_rev_cols = review_cols.map {|s| col_name_delim + "#{s}" + col_name_delim}
+review_sql = "INSERT INTO reviews (#{delimited_rev_cols.join(',')}) VALUES "
+review_id = 0
+
+# Items to update as unavailable
+unavailable_item_ids = []
+
+user_ids.each do |user_id|
+  how_many[:rentals_per_user].times do |i|
+
+    review_id += 1
+
+    item_id = ((user_id + 1) % how_many[:user]) * how_many[:items_per_user] + i
+
+    rental_vals = {
+        id: i + 1 + (user_id - 1) * how_many[:rentals_per_user],
+        item_id: item_id,
+        user_id: user_id,
+        history: i + 1 != how_many[:rentals_per_user]
+    }
+
+    if i + 1 == how_many[:rentals_per_user]
+      # Item is not checked in
+      unavailable_item_ids.append(item_id)
+    else
+      # Make a review
+      review_vals = {
+          id: review_id,
+          item_id: item_id,
+          user_id: user_id,
+          title: Faker::Lorem.words(5).join(" "),
+          body: Faker::Lorem.sentences(rand(1..5)).join(" "),
+          rating: rand(1..5),
+          anonymous: rand(0..1)
+      }
+
+      if direct_sql_inject
+        review_vals[:created_at]    = NOW_STR
+        review_vals[:updated_at]    = NOW_STR
+        vals = dict_to_db_str(review_vals, review_cols, val_delim)
+        review_sql += i == 0 && user_id == 1 ? vals : ',' + vals
+      else
+        review_vals.delete(:id)
+        review_vals[:anonymous] == 1 ? true : false
+        Review.create!(review_vals)
       end
+
+    end
+
+    if direct_sql_inject
+      rental_vals[:created_at]      = NOW_STR
+      rental_vals[:updated_at]      = NOW_STR
+
+      if rental_vals[:history]
+        rental_vals[:check_in_date] = NOW_STR
+      else
+        rental_vals[:check_in_date] = "NILL"
+      end
+
+      rental_vals[:history]         = rental_vals[:history] ? 1 : 0
+
+      vals = dict_to_db_str(rental_vals, cols, val_delim)
+      sql += i == 0 && user_id == 1 ? vals : ',' + vals
+    else
+      rental_vals.delete(:id)
+
+      if rental_vals[:history]
+        rental_vals[:check_in_date] = NOW_DT
+      end
+
+      Rental.create!(rental_vals)
+      Item.update(available: i + 1 != how_many[:rentals_per_user])
     end
   end
+end
+
+if direct_sql_inject
+  ActiveRecord::Base.connection.execute sql
+  ActiveRecord::Base.connection.execute "UPDATE items SET available=0 WHERE id IN (#{unavailable_item_ids.join(",")})"
+  ActiveRecord::Base.connection.execute review_sql
+end
+
+puts "Generated #{Rental.count} rentals"
+puts "Generated #{Review.count} reviews"
+
+# Favorites
+cols = Favorite.column_names
+delimited_cols = cols.map {|s| col_name_delim + "#{s}" + col_name_delim}
+sql = "INSERT INTO favorites (#{delimited_cols.join(',')}) VALUES "
+
+user_ids.each do |user_id|
+  item_id = rand(1..(how_many[:user] * how_many[:items_per_user] / how_many[:favorites_per_user]))
+  how_many[:favorites_per_user].times do |i|
+    favorite_vals = {
+        id: i + 1 + (user_id - 1) * how_many[:favorites_per_user],
+        user_id: user_id,
+        item_id: item_id
+    }
+    item_id += rand(1..(how_many[:user] * how_many[:items_per_user] / how_many[:favorites_per_user]))
+
+    if direct_sql_inject
+      favorite_vals[:created_at]      = NOW_STR
+      favorite_vals[:updated_at]      = NOW_STR
+
+      vals = dict_to_db_str(favorite_vals, cols, val_delim)
+      sql += i == 0 && user_id == 1 ? vals : ',' + vals
+    else
+      favorite_vals.delete(:id)
+      Favorite.create!(favorite_vals)
+    end
+  end
+end
+
+if direct_sql_inject
+  ActiveRecord::Base.connection.execute sql
+end
+
+puts "Generated #{Favorite.count} favorites"
+
+# re-enable logger
+if direct_sql_inject
+  ActiveRecord::Base.logger.level = 0
 end
