@@ -6,6 +6,8 @@ if Rails.env == 'test' || Rails.env == 'development'
   col_name_delim = "`"  # sqlite3
   val_delim = '"'       # sqlite3
   direct_sql_inject = true
+  true_val = 1
+  false_val = 0
 else
   # Production environment - use postgres
   puts 'IN REMOTE MODE (production)'
@@ -13,6 +15,8 @@ else
   col_name_delim = "" # postgres
   val_delim = "'"     # postgres
   direct_sql_inject = true
+  true_val = "TRUE"
+  false_val = "FALSE"
 end
 puts '=============================='
 
@@ -75,7 +79,7 @@ user_ids.each do |i|
   if direct_sql_inject
     user_values[:created_at]      = NOW_STR
     user_values[:updated_at]      = NOW_STR
-    user_values[:admin]           = user_values[:admin] ? 1 : 0
+    user_values[:admin]           = user_values[:admin] ? true_val : false_val
     user_values[:password_digest] = PASSWORD_DIGEST
     vals = dict_to_db_str(user_values, cols, val_delim)
     sql += i==1 ? vals : ',' + vals
@@ -148,7 +152,7 @@ item_ids.each do |i|
   if direct_sql_inject
     item_vals[:created_at]      = NOW_STR
     item_vals[:updated_at]      = NOW_STR
-    item_vals[:available]       = 1
+    item_vals[:available]       = true_val
     vals = dict_to_db_str(item_vals, cols, val_delim)
     sql += i==1 ? vals : ',' + vals
   else
@@ -204,7 +208,7 @@ user_ids.each do |user_id|
           title: Faker::Lorem.words(5).join(" "),
           body: Faker::Lorem.sentences(rand(1..5)).join(" "),
           rating: rand(1..5),
-          anonymous: rand(0..1)
+          anonymous: rand(0..1) == 1 ? true_val : false_val
       }
 
       if direct_sql_inject
@@ -227,7 +231,7 @@ user_ids.each do |user_id|
       if rental_vals[:history]
         rental_vals[:check_in_date] = NOW_STR
       else
-        rental_vals[:check_in_date] = "NILL"
+        rental_vals[:check_in_date] = "NULL"
       end
 
       rental_vals[:history]         = rental_vals[:history] ? 1 : 0
