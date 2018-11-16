@@ -4,7 +4,7 @@ class RatingsCalculatorJob < ApplicationJob
   def perform(*args)
     # Check if table exists (necessary to pass Travis CI checks)
     if ActiveRecord::Base.connection.table_exists? 'top_users'
-      sql = "SELECT users.id as id, count(rating) as count, sum(rating) as sum
+      sql = "SELECT users.id AS id, COUNT(rating) AS count, SUM(rating) AS sum
              FROM users JOIN items ON (users.id = items.user_id)
                         JOIN reviews ON (items.id = reviews.item_id)
              GROUP BY users.id
@@ -37,7 +37,7 @@ class RatingsCalculatorJob < ApplicationJob
 
     if ActiveRecord::Base.connection.table_exists? 'top_items'
 
-      sql = "SELECT items.id as id, count(rating) as count, sum(rating) as sum
+      sql = "SELECT items.id AS id, COUNT(rating) AS count, SUM(rating) AS sum
              FROM items JOIN reviews ON (items.id = reviews.item_id)
              GROUP BY items.id
              ORDER BY sum DESC"
