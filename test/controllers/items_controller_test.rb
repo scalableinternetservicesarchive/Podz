@@ -48,4 +48,19 @@ class ItemsControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to items_url
   end
+
+  test "should get index with category search" do
+    get items_url, params: { category_search: 'test_search' }
+    assert_response :success
+  end
+
+  test "should get index with keyword search" do
+    get items_url, params: { keyword_search: 'test_search' }
+    assert_response :success
+  end
+
+  test "should get index with category and keyword search" do
+    get items_url, params: { category_search: 'test_category', keyword_search: 'test_keyword' }
+    assert_response :success
+  end
 end

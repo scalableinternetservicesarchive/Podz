@@ -23,6 +23,7 @@
     </div>
     <div class="table_content">
       <%= render @items_free %>
+      <%= will_paginate @items_free %>
     </div>
   </div>
 </div>
@@ -38,6 +39,7 @@
     </div>
     <div class="table_content">
       <%= render @items_rented %>
+      <%= will_paginate @items_rented %>
     </div>
   </div>
 </div>
