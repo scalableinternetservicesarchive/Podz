@@ -46,7 +46,7 @@
   <sessions>
     <session name="http-example" probability="100" type="ts_http">
 
-      <setdynvars sourcetype="random_number" start="2" end="1000">
+      <setdynvars sourcetype="random_number" start="2" end="10">
         <var name="random_user_number" />
       </setdynvars>
 
@@ -55,30 +55,27 @@
           <http url='/' version='1.1' method='GET'></http>
         </request>
 
-
-
         <request subst="true">
           <http url='/login' version='1.1' method='POST'
-                contents="session[email]=user2@example.com&amp;
+                contents="session[email]=user%%_random_user_number%%@example.com&amp;
                           session[password]=foobar&amp;"
                 content_type="application/x-www-form-urlencoded" />
         </request>
 
         <request>
-          <http url='/new' version='1.1' method='POST'
-                contents="id=3002&amp;
-                        user_id=2&amp;
-                        title=b2&amp;
-                        description=description&amp;
-                        category_id=1&amp;
-                        available=true&amp;
-                        price_hourly_usd=5&amp;
-                        price_daily_usd=5&amp;
-                        condition=Good&amp;"
+          <http url='/items' version='1.1' method='POST'
+                contents="item[title]=Tsung-item&amp;
+                        item[description]=description&amp;
+                        item[category_id]=1&amp;
+                        item[price_hourly_usd]=5&amp;
+                        condition=Good&amp;
+                        commit=Create Item"
                 content_type="application/x-www-form-urlencoded" />
         </request>
 
-
+        <request>
+          <http url='/logout' version='1.1' method='DELETE'></http>
+        </request>
 
     </session>
   </sessions>
