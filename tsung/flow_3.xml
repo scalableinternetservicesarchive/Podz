@@ -9,7 +9,7 @@
 
   <!-- Server side setup -->
   <servers>
-    <server host="http://podz-augustle.42dz3asytu.us-west-2.elasticbeanstalk.com" port="80" type="tcp"></server>
+    <server host="localhost:3000" port="80" type="tcp"></server>
   </servers>
 
 
@@ -29,6 +29,7 @@
     <arrivalphase phase="4" duration="1" unit="minute">
       <users arrivalrate="64" unit="second"></users>
     </arrivalphase>
+
   </load>
 
   <options>
@@ -59,6 +60,7 @@
       <thinktime value="1" random="true"></thinktime>
 
       <!-- Sign in -->
+
       <request subst="true">
         <http
                 url="/login"
@@ -69,11 +71,13 @@
         />
       </request>
 
+
       <request><http url="/items" method="GET" version="1.1" /></request>
 
       <request><http url="/items?utf8=✓&amp;category_search=1&amp;keyword_search=" method="GET" version="1.1" /></request>
 
       <request><http url="/items/186" method="GET" version="1.1" /></request>
+
 
       <transaction name="new_rental_post">
         <request subst="true">
@@ -90,8 +94,11 @@
         </request>
       </transaction>
 
+
       <!-- follow redirect -->
+
       <request subst="true"><http url="%%_item_path%%" method="GET" version="1.1" /></request>
+
 
 
     </session>
