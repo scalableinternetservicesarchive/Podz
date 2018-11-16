@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   get    '/reviews',    to: 'reviews#index'
   get    '/about',      to: 'static_pages#about'
   get    '/new',        to: 'items#new'
+  post   '/new',        to: 'items#new'
   get    '/items',      to: 'items#index'
   get    'items_all',   to: 'items#all'
   get    'signup',      to: 'users#new'
