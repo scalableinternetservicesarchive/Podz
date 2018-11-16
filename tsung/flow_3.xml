@@ -9,15 +9,16 @@
 
   <!-- Server side setup -->
   <servers>
-    <server host="localhost:3000" port="80" type="tcp"></server>
+    <server host="localhost" port="3000" type="tcp"></server>
   </servers>
 
 
   <load>
-    <arrivalphase phase="1" duration="1" unit="minute">
+    <arrivalphase phase="1" duration="1" unit="second">
       <users arrivalrate="8" unit="second"></users>
     </arrivalphase>
 
+    <!--
     <arrivalphase phase="2" duration="1" unit="minute">
       <users arrivalrate="16" unit="second"></users>
     </arrivalphase>
@@ -29,6 +30,7 @@
     <arrivalphase phase="4" duration="1" unit="minute">
       <users arrivalrate="64" unit="second"></users>
     </arrivalphase>
+    -->
 
   </load>
 
@@ -57,7 +59,7 @@
       <request><http url="/login" method="GET" version="1.1" /></request>
 
       <!-- wait while guest looks at home page -->
-      <thinktime value="1" random="true"></thinktime>
+      <!--<thinktime value="1" random="true"></thinktime> -->
 
       <!-- Sign in -->
 
@@ -72,23 +74,21 @@
       </request>
 
 
-      <request><http url="/items" method="GET" version="1.1" /></request>
+      <!--<request><http url="/items?utf8=✓&amp;category_search=1&amp;keyword_search=" method="GET" version="1.1" /></request>-->
 
-      <request><http url="/items?utf8=✓&amp;category_search=1&amp;keyword_search=" method="GET" version="1.1" /></request>
-
-      <request><http url="/items/186" method="GET" version="1.1" /></request>
+      <setdynvars sourcetype="random_number" start="2" end="3000">
+        <var name="item_id" />
+      </setdynvars>
 
 
       <transaction name="new_rental_post">
         <request subst="true">
-          <dyn_variable name="rent_path" re="[Ll]ocation: (.*)\r"/>
-          <dyn_variable name="item_id" re="[Ll]ocation: http://.*/rentals/(.*)\r"/>
-          <dyn_variable name="user_id" re="[Ll]ocation: http://.*/rentals/(.*)\r"/>
+
           <http
-                  url="/rentals"
+                  url="/rent"
                   method="POST"
                   version="1.1"
-                  contents="rental[item_id]=%%_item_id%%&amp;rental[user_id]=%%_user_id%%"
+                  contents="item_id=%%_item_id%%&amp;user_id=%%_random_user_number%%&amp;commit=Rent"
                   content_type="application/x-www-form-urlencoded"
           />
         </request>
