@@ -100,4 +100,12 @@ module ItemsHelper
   def cache_key_for_top_item_table
     "top_item_table/#{TopItem.maximum(:updated_at)}"
   end
+
+  def cache_key_for_item(item)
+    "item/#{item.id}/#{item.updated_at}/#{item.available}"
+  end
+
+  def cache_key_for_item_table
+    "item_table/#{Item.maximum(:updated_at)}"
+  end
 end
