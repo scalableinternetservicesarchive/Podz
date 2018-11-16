@@ -232,7 +232,7 @@ user_ids.each do |user_id|
       if rental_vals[:history]
         rental_vals[:check_in_date] = NOW_STR
       else
-        rental_vals[:check_in_date] = nil
+        rental_vals[:check_in_date] = "NULL"
       end
 
       rental_vals[:history]         = rental_vals[:history] ? true_val : false_val
