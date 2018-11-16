@@ -15,3 +15,26 @@ Team Podz is creating a platform for renting services and goods, including tools
 
 ## [Alex Rich](https://github.com/alexrich021)
 ![Alex](headshots/IMG_1539.PNG)
+
+# Deployment using elastic beanstalk
+
+## Seeding Database
+
+After `eb create` has finished running and app is successfully launched, do the following (from the Podz directory on the ec2 instance)
+
+- `eb ssh podz-yourname` to ssh into the running app instance
+- `cd /var/app/current` to enter the app directory
+- `sudo su` to enable root privileges
+- `rails db:seed RAILS_ENV=production` to seed the database
+
+# Tsung
+
+## Local installation
+
+Run `brew install tsung`
+
+- Note that when running a tsung server pointing at a locally hosted app server, the server port is 3000, not 80
+
+## Using tsplot
+
+To generate plots from multiple *tsung.log* files from multiple tsung tests, use the command `tsplot "test-1" /path/to/test-1/tsung.log "test-2" /path/to/test-2/tsung.log -d /output/directory/for/graphs/`
