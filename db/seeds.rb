@@ -2,7 +2,7 @@
 puts '=============================='
 if Rails.env == 'test' || Rails.env == 'development'
   puts 'IN LOCAL MODE (' + Rails.env + ')'
-  how_many = {user: 1000, items_per_user: 3, category: 10, rentals_per_user: 2, favorites_per_user: 3}
+  how_many = {user: 10, items_per_user: 3, category: 3, rentals_per_user: 0, favorites_per_user: 0}
   col_name_delim = "`"  # sqlite3
   val_delim = '"'       # sqlite3
   direct_sql_inject = true
@@ -183,79 +183,81 @@ review_id = 0
 # Items to update as unavailable
 unavailable_item_ids = []
 
-user_ids.each do |user_id|
-  how_many[:rentals_per_user].times do |i|
+if how_many[:rentals_per_user] != 0
+  user_ids.each do |user_id|
+    how_many[:rentals_per_user].times do |i|
 
-    review_id += 1
+      review_id += 1
 
-    item_id = ((user_id + 1) % how_many[:user]) * how_many[:items_per_user] + i
+      item_id = ((user_id + 1) % how_many[:user]) * how_many[:items_per_user] + i
 
-    rental_vals = {
-        id: i + 1 + (user_id - 1) * how_many[:rentals_per_user],
-        item_id: item_id,
-        user_id: user_id,
-        history: i + 1 != how_many[:rentals_per_user]
-    }
-
-    if i + 1 == how_many[:rentals_per_user]
-      # Item is not checked in
-      unavailable_item_ids.append(item_id)
-    else
-      # Make a review
-      review_vals = {
-          id: review_id,
+      rental_vals = {
+          id: i + 1 + (user_id - 1) * how_many[:rentals_per_user],
           item_id: item_id,
           user_id: user_id,
-          title: Faker::Lorem.words(5).join(" "),
-          body: Faker::Lorem.sentences(rand(1..5)).join(" "),
-          rating: rand(1..5),
-          anonymous: rand(0..1) == 1 ? true_val : false_val
+          history: i + 1 != how_many[:rentals_per_user]
       }
 
+      if i + 1 == how_many[:rentals_per_user]
+        # Item is not checked in
+        unavailable_item_ids.append(item_id)
+      else
+        # Make a review
+        review_vals = {
+            id: review_id,
+            item_id: item_id,
+            user_id: user_id,
+            title: Faker::Lorem.words(5).join(" "),
+            body: Faker::Lorem.sentences(rand(1..5)).join(" "),
+            rating: rand(1..5),
+            anonymous: rand(0..1) == 1 ? true_val : false_val
+        }
+
+        if direct_sql_inject
+          review_vals[:created_at]    = NOW_STR
+          review_vals[:updated_at]    = NOW_STR
+          vals = dict_to_db_str(review_vals, review_cols, val_delim)
+          review_sql += i == 0 && user_id == 1 ? vals : ',' + vals
+        else
+          review_vals.delete(:id)
+          review_vals[:anonymous] == 1 ? true : false
+          Review.create!(review_vals)
+        end
+
+      end
+
       if direct_sql_inject
-        review_vals[:created_at]    = NOW_STR
-        review_vals[:updated_at]    = NOW_STR
-        vals = dict_to_db_str(review_vals, review_cols, val_delim)
-        review_sql += i == 0 && user_id == 1 ? vals : ',' + vals
+        rental_vals[:created_at]      = NOW_STR
+        rental_vals[:updated_at]      = NOW_STR
+
+        if rental_vals[:history]
+          rental_vals[:check_in_date] = NOW_STR
+        else
+          rental_vals[:check_in_date] = "NULL"
+        end
+
+        rental_vals[:history]         = rental_vals[:history] ? true_val : false_val
+
+        vals = dict_to_db_str(rental_vals, cols, val_delim)
+        sql += i == 0 && user_id == 1 ? vals : ',' + vals
       else
-        review_vals.delete(:id)
-        review_vals[:anonymous] == 1 ? true : false
-        Review.create!(review_vals)
+        rental_vals.delete(:id)
+
+        if rental_vals[:history]
+          rental_vals[:check_in_date] = NOW_DT
+        end
+
+        Rental.create!(rental_vals)
+        Item.update(available: i + 1 != how_many[:rentals_per_user])
       end
-
-    end
-
-    if direct_sql_inject
-      rental_vals[:created_at]      = NOW_STR
-      rental_vals[:updated_at]      = NOW_STR
-
-      if rental_vals[:history]
-        rental_vals[:check_in_date] = NOW_STR
-      else
-        rental_vals[:check_in_date] = "NULL"
-      end
-
-      rental_vals[:history]         = rental_vals[:history] ? true_val : false_val
-
-      vals = dict_to_db_str(rental_vals, cols, val_delim)
-      sql += i == 0 && user_id == 1 ? vals : ',' + vals
-    else
-      rental_vals.delete(:id)
-
-      if rental_vals[:history]
-        rental_vals[:check_in_date] = NOW_DT
-      end
-
-      Rental.create!(rental_vals)
-      Item.update(available: i + 1 != how_many[:rentals_per_user])
     end
   end
-end
 
-if direct_sql_inject
-  ActiveRecord::Base.connection.execute sql
-  ActiveRecord::Base.connection.execute "UPDATE items SET available=#{false_val} WHERE id IN (#{unavailable_item_ids.join(",")})"
-  ActiveRecord::Base.connection.execute review_sql
+  if direct_sql_inject
+    ActiveRecord::Base.connection.execute sql
+    ActiveRecord::Base.connection.execute "UPDATE items SET available=#{false_val} WHERE id IN (#{unavailable_item_ids.join(",")})"
+    ActiveRecord::Base.connection.execute review_sql
+  end
 end
 
 puts "Generated #{Rental.count} rentals"
@@ -266,31 +268,33 @@ cols = Favorite.column_names
 delimited_cols = cols.map {|s| col_name_delim + "#{s}" + col_name_delim}
 sql = "INSERT INTO favorites (#{delimited_cols.join(',')}) VALUES "
 
-user_ids.each do |user_id|
-  item_id = rand(1..(how_many[:user] * how_many[:items_per_user] / how_many[:favorites_per_user]))
-  how_many[:favorites_per_user].times do |i|
-    favorite_vals = {
-        id: i + 1 + (user_id - 1) * how_many[:favorites_per_user],
-        user_id: user_id,
-        item_id: item_id
-    }
-    item_id += rand(1..(how_many[:user] * how_many[:items_per_user] / how_many[:favorites_per_user]))
+if how_many[:favorites_per_user] != 0
+  user_ids.each do |user_id|
+    item_id = rand(1..(how_many[:user] * how_many[:items_per_user] / how_many[:favorites_per_user]))
+    how_many[:favorites_per_user].times do |i|
+      favorite_vals = {
+          id: i + 1 + (user_id - 1) * how_many[:favorites_per_user],
+          user_id: user_id,
+          item_id: item_id
+      }
+      item_id += rand(1..(how_many[:user] * how_many[:items_per_user] / how_many[:favorites_per_user]))
 
-    if direct_sql_inject
-      favorite_vals[:created_at]      = NOW_STR
-      favorite_vals[:updated_at]      = NOW_STR
+      if direct_sql_inject
+        favorite_vals[:created_at]      = NOW_STR
+        favorite_vals[:updated_at]      = NOW_STR
 
-      vals = dict_to_db_str(favorite_vals, cols, val_delim)
-      sql += i == 0 && user_id == 1 ? vals : ',' + vals
-    else
-      favorite_vals.delete(:id)
-      Favorite.create!(favorite_vals)
+        vals = dict_to_db_str(favorite_vals, cols, val_delim)
+        sql += i == 0 && user_id == 1 ? vals : ',' + vals
+      else
+        favorite_vals.delete(:id)
+        Favorite.create!(favorite_vals)
+      end
     end
   end
-end
 
-if direct_sql_inject
-  ActiveRecord::Base.connection.execute sql
+  if direct_sql_inject
+    ActiveRecord::Base.connection.execute sql
+  end
 end
 
 puts "Generated #{Favorite.count} favorites"
