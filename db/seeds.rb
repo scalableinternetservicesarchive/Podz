@@ -234,7 +234,7 @@ user_ids.each do |user_id|
         rental_vals[:check_in_date] = "NULL"
       end
 
-      rental_vals[:history]         = rental_vals[:history] ? 1 : 0
+      rental_vals[:history]         = rental_vals[:history] ? true_val : false_val
 
       vals = dict_to_db_str(rental_vals, cols, val_delim)
       sql += i == 0 && user_id == 1 ? vals : ',' + vals
