@@ -44,7 +44,7 @@
         <% @users.each do |user| %>
           <% cache(cache_key_for_top_user(user)) do %>
             <%= render user %>
-          <% end %>>
+          <% end %>
         <% end %>
       </div>
     </div>
