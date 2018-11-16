@@ -11,25 +11,20 @@ class RatingsCalculatorJob < ApplicationJob
              ORDER BY sum DESC"
 
       users = ActiveRecord::Base.connection.execute sql
-      top_users = users[0...10]
-
-      # # Calculate top 10 Users
-      # users = User.all.sort_by { |user| user.rating * user.items.length }
-      # users.reverse!
-      # users = users[0...10]
+      length = users.class == Array ? users.length : users.ntuples  # Necessary to handle PG return values in production
 
       # If a top user ranking has changed, update
       ActiveRecord::Base.transaction do
         index = 0
         TopUser.all.each do |user|
-          unless user.user_id == top_users[index]["id"]
+          unless user.user_id == users[index]["id"]
             puts "Updating"
-            user.update(user_id: top_users[index]["id"])
+            user.update(user_id: users[index]["id"])
           end
           index += 1
         end
-        while index < 10 && index < top_users.length
-          TopUser.create(user_id: top_users[index]["id"])
+        while index < 10 && index < length
+          TopUser.create(user_id: users[index]["id"])
           index += 1
         end
       end
@@ -43,19 +38,19 @@ class RatingsCalculatorJob < ApplicationJob
              ORDER BY sum DESC"
 
       items = ActiveRecord::Base.connection.execute sql
-      top_items = items[0...10]
+      length = items.class == Array ? items.length : items.ntuples  # Necessary to handle PG return values in production
 
       # If a top item ranking has changed, update
       ActiveRecord::Base.transaction do
         index = 0
         TopItem.all.each do |item|
-          unless item.item_id == top_items[index]["id"]
-            item.update(item_id: top_items[index]["id"])
+          unless item.item_id == items[index]["id"]
+            item.update(item_id: items[index]["id"])
           end
           index += 1
         end
-        while index < 10 && index < top_items.length
-          TopItem.create(item_id: top_items[index]["id"])
+        while index < 10 && index < length
+          TopItem.create(item_id: items[index]["id"])
           index += 1
         end
       end
