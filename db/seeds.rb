@@ -254,7 +254,7 @@ end
 
 if direct_sql_inject
   ActiveRecord::Base.connection.execute sql
-  ActiveRecord::Base.connection.execute "UPDATE items SET available=0 WHERE id IN (#{unavailable_item_ids.join(",")})"
+  ActiveRecord::Base.connection.execute "UPDATE items SET available=#{false_val} WHERE id IN (#{unavailable_item_ids.join(",")})"
   ActiveRecord::Base.connection.execute review_sql
 end
 
