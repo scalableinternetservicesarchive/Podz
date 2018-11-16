@@ -1,0 +1,138 @@
+<?xml version="1.0"?>
+<!DOCTYPE tsung SYSTEM "/usr/local/share/tsung/tsung-1.0.dtd" [] >
+<tsung loglevel="notice">
+
+  <!-- Client side setup -->
+  <clients>
+    <client host="localhost" use_controller_vm="true" maxusers='15000'/>
+  </clients>
+
+  <!-- Server side setup -->
+  <servers>
+    <server host="localhost" port="3000" type="tcp"></server>
+  </servers>
+
+  <load>
+    <arrivalphase phase="1" duration="1" unit="second">
+      <users arrivalrate="1" unit="second"></users>
+    </arrivalphase>
+
+    <!-- <arrivalphase phase="2" duration="1" unit="minute">
+      <users arrivalrate="16" unit="second"></users>
+    </arrivalphase>
+
+    <arrivalphase phase="3" duration="1" unit="minute">
+      <users arrivalrate="32" unit="second"></users>
+    </arrivalphase>
+
+    <arrivalphase phase="4" duration="1" unit="minute">
+      <users arrivalrate="64" unit="second"></users>
+    </arrivalphase> -->
+  </load>
+
+  <options>
+    <!-- Set connection timeout to 2 seconds -->
+    <option name="global_ack_timeout" value="2000"></option>
+
+    <option type="ts_http" name="user_agent">
+      <user_agent probability="100">Mozilla/5.0 (Windows; U; Windows NT 5.2; fr-FR; rv:1.7.8) Gecko/20050511 Firefox/1.0.4</user_agent>
+    </option>
+  </options>
+
+  <sessions>
+    <session name="User Browsing" probability="100" type="ts_http">
+      
+      <!-- Pick random user -->
+      <!-- WARNING: assumes you've seeded the db with at least 1000 users named user2, user3, ... -->
+      <setdynvars sourcetype="random_number" start="2" end="1000">
+        <var name="random_user_number" />
+      </setdynvars>
+      <!-- Pick random category -->
+      <!-- WARNING: assumes you've seeded the db with atleast 10 categories named Category 1 ... Category 10 -->
+      <setdynvars sourcetype="random_number" start="1" end="10">
+        <var name="random_category_number" />
+      </setdynvars>
+      <!-- Pick random keyword -->
+      <!-- WARNING: assumes you've seeded the db with atleast 10 categories named Category 1 ... Category 10 -->
+      <setdynvars sourcetype="random_number" start="1" end="10">
+        <var name="random_keyword_number" />
+      </setdynvars>
+      <!-- Pick random item -->
+      <setdynvars sourcetype="random_number" start="1" end="1000">
+        <var name="item1">
+        <var name="item2">
+      </setdynvars>
+      
+      <transaction name="SIGN_IN">
+        <!-- Visit homepage -->
+        <request><http url='/' version='1.1' method='GET'/></request>
+
+        <!-- User log in -->
+        <request subst="true">
+          <http 
+	         url="/login" 
+	         method="POST" 
+	         version="1.1" 
+	         contents="session[email]=user%%_random_user_number%%@example.com&amp;session[password]=foobar&amp;commit=Login" 
+	         content_type="application/x-www-form-urlencoded" 
+	       />
+        </request>
+      </transaction>
+
+      <transaction name="SEARCH_CATEGORY">
+        <!-- Go to item index page -->
+        <!-- <request><http url='/items' version='1.1' method='GET'/></request> -->
+
+        <!-- Search by category -->
+        <request subst="true">
+          <http
+            url="/items?category_search=%%_random_category_numer%%"
+            method="GET"
+            version="1.1"
+            content_type="application/x-www-form-urlencoded"
+          />
+        </request>
+
+        <!-- Wait to simulate user looking around -->
+        <thinktime value="1" random="false"/>
+
+        <!-- Favorite Item -->
+        <request subst="true">
+          <http
+            url="/favorite"
+            method="POST"
+            version="1.1"
+            contents="item_id=%%_item1%%"
+            content_type="application/x-www-form-urlencoded"
+          />
+        </request>
+      </transaction>
+
+      <transaction name="SEARCH_KEYWORD"> -->
+        <!-- Search by keyword -->
+        <request subst="true">
+          <http
+            url="/items?keyword_search=%%_random_keyword_number%%"
+            method="GET"
+            version="1.1"
+            content_type="application/x-www-form-urlencoded"
+          />
+        </request>
+
+        <!-- Wait to simulate user looking around -->
+        <thinktime value="1" random="false"/>
+
+        <!-- Favorite Item -->
+        <request subst="true">
+          <http
+            url="/favorite"
+            method="POST"
+            version="1.1"
+            contents="item_id=%%_item2%%"
+            content_type="application/x-www-form-urlencoded"
+          />
+        </request>
+      </transaction>
+    </session>
+  </sessions>
+</tsung>
