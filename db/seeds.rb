@@ -295,6 +295,12 @@ end
 
 puts "Generated #{Favorite.count} favorites"
 
+if Rails.env == 'production'
+  ["users", "categories", "items", "rentals", "reviews", "favorites"].each do |table|
+    ActiveRecord::Base.connection.execute "SELECT setval('#{table}_id_seq', (SELECT max(id) FROM #{table}))"
+  end
+end
+
 # re-enable logger
 if direct_sql_inject
   ActiveRecord::Base.logger.level = 0
