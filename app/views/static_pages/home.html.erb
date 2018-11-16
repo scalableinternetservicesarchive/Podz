@@ -10,6 +10,8 @@
   <% end %>
 </div>
 
+<% cache(cache_key_for_top_item_table) do %>
+
 <div>
   <h1>Most Popular Items</h1>
   <div class="item_table">
@@ -17,10 +19,18 @@
       <%= render 'items/item_header' %>
     </div>
     <div class="table_content">
-      <%= render @items %>
+      <% @items.each do |item| %>
+        <% cache(cache_key_for_top_item(item)) do %>
+          <%= render item %>
+        <% end %>
+      <% end %>
     </div>
   </div>
 </div>
+
+<% end %>
+
+<% cache(cache_key_for_top_user_table) do %>
 
 <% if logged_in? %>
   <div>
@@ -31,10 +41,16 @@
         <%= render 'users/user_header' %>
       </div>
       <div class="table_content">
-        <%= render @users %>
+        <% @users.each do |user| %>
+          <% cache(cache_key_for_top_user(user)) do %>
+            <%= render user %>
+          <% end %>>
+        <% end %>
       </div>
     </div>
   </div>
+<% end %>
+
 <% end %>
 
 <script>
