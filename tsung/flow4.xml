@@ -13,7 +13,7 @@
   </servers>
 
   <load>
-    <arrivalphase phase="1" duration="1" unit="second">
+    <arrivalphase phase="1" duration="10" unit="second">
       <users arrivalrate="1" unit="second"></users>
     </arrivalphase>
 
@@ -44,12 +44,12 @@
       
       <!-- Pick random user -->
       <!-- WARNING: assumes you've seeded the db with at least 1000 users named user2, user3, ... -->
-      <setdynvars sourcetype="random_number" start="2" end="1000">
+      <setdynvars sourcetype="random_number" start="2" end="10">
         <var name="random_user_number" />
       </setdynvars>
       <!-- Pick random category -->
       <!-- WARNING: assumes you've seeded the db with atleast 10 categories named Category 1 ... Category 10 -->
-      <setdynvars sourcetype="random_number" start="1" end="10">
+      <setdynvars sourcetype="random_number" start="1" end="3">
         <var name="random_category_number" />
       </setdynvars>
       <!-- Pick random keyword -->
@@ -58,9 +58,9 @@
         <var name="random_keyword_number" />
       </setdynvars>
       <!-- Pick random item -->
-      <setdynvars sourcetype="random_number" start="1" end="1000">
-        <var name="item1">
-        <var name="item2">
+      <setdynvars sourcetype="random_number" start="1" end="30">
+        <var name="item1" />
+        <var name="item2" />
       </setdynvars>
       
       <transaction name="SIGN_IN">
@@ -81,12 +81,12 @@
 
       <transaction name="SEARCH_CATEGORY">
         <!-- Go to item index page -->
-        <!-- <request><http url='/items' version='1.1' method='GET'/></request> -->
+        <request><http url='/items' version='1.1' method='GET'/></request>
 
         <!-- Search by category -->
         <request subst="true">
           <http
-            url="/items?category_search=%%_random_category_numer%%"
+            url="/items?category_search=%%_random_category_number%%"
             method="GET"
             version="1.1"
             content_type="application/x-www-form-urlencoded"
@@ -108,7 +108,7 @@
         </request>
       </transaction>
 
-      <transaction name="SEARCH_KEYWORD"> -->
+      <transaction name="SEARCH_KEYWORD">
         <!-- Search by keyword -->
         <request subst="true">
           <http
@@ -132,6 +132,10 @@
             content_type="application/x-www-form-urlencoded"
           />
         </request>
+      </transaction>
+
+      <transaction name="SIGN_OUT">
+        <request><http url='/logout' version='1.1' method='DELETE'/></request>
       </transaction>
     </session>
   </sessions>
