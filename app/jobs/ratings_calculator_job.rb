@@ -2,7 +2,6 @@ class RatingsCalculatorJob < ApplicationJob
   queue_as :default
 
   def perform(*args)
-
     # Check if table exists (necessary to pass Travis CI checks)
     if ActiveRecord::Base.connection.table_exists? 'top_users'
       # Calculate top 10 Users
@@ -26,26 +25,28 @@ class RatingsCalculatorJob < ApplicationJob
       end
     end
 
-    return unless ActiveRecord::Base.connection.table_exists? 'top_items'
+    if ActiveRecord::Base.connection.table_exists? 'top_items'
+      # Calculate top 10 Items
+      items = Item.all.sort_by { |item| [item.rating * (item.reviews.length > 2 ? 1 : 0), item.reviews.length] }
+      items.reverse!
+      items = items[0...10]
 
-    # Calculate top 10 Items
-    items = Item.all.sort_by { |item| [item.rating * (item.reviews.length > 2 ? 1 : 0), item.reviews.length] }
-    items.reverse!
-    items = items[0...10]
-
-    # If a top item ranking has changed, update
-    ActiveRecord::Base.transaction do
-      index = 0
-      TopItem.all.each do |item|
-        unless item.item_id == items[index].id
-          item.update(item_id: items[index].id)
+      # If a top item ranking has changed, update
+      ActiveRecord::Base.transaction do
+        index = 0
+        TopItem.all.each do |item|
+          unless item.item_id == items[index].id
+            item.update(item_id: items[index].id)
+          end
+          index += 1
         end
-        index += 1
-      end
-      while index < 10 && index < items.count
-        TopItem.create(item_id: items[index].id)
-        index += 1
+        while index < 10 && index < items.count
+          TopItem.create(item_id: items[index].id)
+          index += 1
+        end
       end
     end
+
+    RatingsCalculatorJob.set(wait: 10.seconds).perform_later
   end
 end
