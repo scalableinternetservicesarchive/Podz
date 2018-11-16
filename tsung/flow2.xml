@@ -59,22 +59,22 @@
 
         <request subst="true">
           <http url='/login' version='1.1' method='POST'
-                contents="session[email]=user%%_random_user_number%%@example.com&amp;
-                          session[password]=foobar&amp;
-                          commit=Login"
+                contents="session[email]=user2@example.com&amp;
+                          session[password]=foobar&amp;"
                 content_type="application/x-www-form-urlencoded" />
         </request>
 
-
         <request>
           <http url='/new' version='1.1' method='POST'
-                contents="title=a1&amp;
-                          description=description&amp;
-                          category_id=1&amp;
-                          available=true&amp;
-                          price_hourly_usd=5&amp;
-                          condition=1&amp;
-                          commit=Create+Item"
+                contents="id=3002&amp;
+                        user_id=2&amp;
+                        title=b2&amp;
+                        description=description&amp;
+                        category_id=1&amp;
+                        available=true&amp;
+                        price_hourly_usd=5&amp;
+                        price_daily_usd=5&amp;
+                        condition=Good&amp;"
                 content_type="application/x-www-form-urlencoded" />
         </request>
 
