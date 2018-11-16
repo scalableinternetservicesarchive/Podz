@@ -44,6 +44,7 @@ def dict_to_db_str(d, cols, delim)
   col_string[0] = '('
   col_string[-1] = ')'
   col_string.gsub! '"', delim
+  col_string.gsub! "'NULL'", "NULL" # Just for postgres, won't mess with sqlite
   return col_string
 end
 
@@ -231,7 +232,7 @@ user_ids.each do |user_id|
       if rental_vals[:history]
         rental_vals[:check_in_date] = NOW_STR
       else
-        rental_vals[:check_in_date] = "NULL"
+        rental_vals[:check_in_date] = nil
       end
 
       rental_vals[:history]         = rental_vals[:history] ? true_val : false_val
