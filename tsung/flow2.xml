@@ -14,22 +14,20 @@
 
 
   <load>
-    <arrivalphase phase="1" duration="1" unit="second">
-      <users arrivalrate="1" unit="second"></users>
+    <arrivalphase phase="1" duration="1" unit="minute">
+      <users arrivalrate="2" unit="second"></users>
     </arrivalphase>
-    <!--
-        <arrivalphase phase="2" duration="10" unit="minute">
-          <users arrivalrate="4" unit="second"></users>
-        </arrivalphase>
+    <arrivalphase phase="2" duration="1" unit="minute">
+      <users arrivalrate="4" unit="second"></users>
+    </arrivalphase>
 
-        <arrivalphase phase="3" duration="10" unit="minute">
-          <users arrivalrate="32" unit="second"></users>
-        </arrivalphase>
+    <arrivalphase phase="3" duration="1" unit="minute">
+      <users arrivalrate="8" unit="second"></users>
+    </arrivalphase>
 
-        <arrivalphase phase="4" duration="10" unit="minute">
-          <users arrivalrate="64" unit="second"></users>
-        </arrivalphase>
-        -->
+    <arrivalphase phase="4" duration="1" unit="minute">
+      <users arrivalrate="16" unit="second"></users>
+    </arrivalphase>
   </load>
 
   <options>
@@ -46,7 +44,7 @@
   <sessions>
     <session name="http-example" probability="100" type="ts_http">
 
-      <setdynvars sourcetype="random_number" start="2" end="10">
+      <setdynvars sourcetype="random_number" start="2" end="100">
         <var name="random_user_number" />
       </setdynvars>
 
