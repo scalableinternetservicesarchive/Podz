@@ -9,8 +9,8 @@ module ItemsHelper
     end
   end
 
-  def display_category(category_id)
-    @category_name = Category.find_by(id: category_id).name || "Uncategorized"
+  def display_category(category)
+    category.nil? ? "Uncategorized" : category.name
   end
 
   # Method returns top n items based on sum of ratings
