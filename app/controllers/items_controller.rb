@@ -18,10 +18,6 @@ class ItemsController < ApplicationController
       @items = @items.where('LOWER(title) LIKE :keyword OR LOWER(description) LIKE :keyword', { keyword: "%#{@keyword.downcase}%" })
     end
 
-    unless current_user.nil?
-      @items = @items.where('user_id != ?', current_user.id)
-    end
-
     @items_free = @items.where(available: true).paginate(per_page: 20, page: params[:page])
     @items_rented = @items.where(available: false).paginate(per_page: 20, page: params[:page])
   end
