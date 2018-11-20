@@ -16,6 +16,8 @@ class RatingsCalculatorJob < ApplicationJob
       users = ActiveRecord::Base.connection.execute sql
       length = users.class == Array ? users.length : users.ntuples  # Necessary to handle PG return values in production
 
+      return unless length > 0
+
       # If a top user ranking has changed, update
       ActiveRecord::Base.transaction do
         index = 0
@@ -42,6 +44,8 @@ class RatingsCalculatorJob < ApplicationJob
 
       items = ActiveRecord::Base.connection.execute sql
       length = items.class == Array ? items.length : items.ntuples  # Necessary to handle PG return values in production
+
+      return unless length > 0
 
       # If a top item ranking has changed, update
       ActiveRecord::Base.transaction do
