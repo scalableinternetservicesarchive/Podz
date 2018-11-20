@@ -73,7 +73,7 @@
         />
       </request>
 
-      <!--<request><http url="/items" method="GET" version="1.1" /></request> -->
+      <request><http url="/items" method="GET" version="1.1" /></request>
       <request><http url="/items?utf8=&amp;category_search=1&amp;keyword_search=" method="GET" version="1.1" /></request>
 
       <setdynvars sourcetype="random_number" start="2" end="20">
