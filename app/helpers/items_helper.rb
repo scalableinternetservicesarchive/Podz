@@ -9,8 +9,8 @@ module ItemsHelper
     end
   end
 
-  def display_category(category_id)
-    @category_name = Category.find_by(id: category_id).name || "Uncategorized"
+  def display_category(category)
+    category.nil? ? "Uncategorized" : category.name
   end
 
   # Method returns top n items based on sum of ratings
@@ -93,4 +93,19 @@ module ItemsHelper
                          end
   end
 
+  def cache_key_for_top_item(item)
+    "item/#{item.top_item.id}/#{item.top_item.updated_at}/#{item.top_item.item_id}"
+  end
+
+  def cache_key_for_top_item_table
+    "top_item_table/#{TopItem.maximum(:updated_at)}"
+  end
+
+  def cache_key_for_item(item)
+    "item/#{item.id}/#{item.updated_at}/#{item.available}"
+  end
+
+  def cache_key_for_item_table
+    "item_table/#{Item.maximum(:updated_at)}"
+  end
 end

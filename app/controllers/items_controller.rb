@@ -10,28 +10,17 @@ class ItemsController < ApplicationController
     @category = params[:category_search]
     @keyword  = params[:keyword_search]
 
-    @items = if !@category.nil? && @category.length.positive?
-               Item.select { |item| item.category_id == @category.to_i }
-             else
-               Item.all
-             end
-
-    @items = if !@keyword.nil?
-               @items.select do |item|
-                 item.title.downcase.include? @keyword.downcase or
-                   item.description.downcase.include? @keyword.downcase
-               end
-             else
-               @items
-             end
-
-    unless current_user.nil?
-      @items = @items.reject{ |item| item.user_id == current_user.id }
+    @items = Item
+    if !@category.nil? && @category.length.positive?
+      @items = @items.where('category_id == ?', @category.to_i)
     end
 
+    if !@keyword.nil? && @keyword.length.positive?
+      @items = @items.where('LOWER(title) LIKE :keyword OR LOWER(description) LIKE :keyword', { keyword: "%#{@keyword.downcase}%" })
+    end
 
-    @items_free   = @items.select(&:available).sort_by { |item| item.title.downcase }
-    @items_rented = @items.reject(&:available).sort_by { |item| item.title.downcase }
+    @items_free = @items.where(available: true).includes(:category).paginate(per_page: 20, page: params[:page])
+    @items_rented = @items.where(available: false).includes(:category).paginate(per_page: 20, page: params[:page])
   end
 
   # GET /items/1
