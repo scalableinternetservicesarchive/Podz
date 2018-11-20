@@ -11,24 +11,15 @@
 
     <div class="list_item_text"><%= item.title %></div>
     <div class="list_item_text"><%= display_availability(item.available) %></div>
-    <div class="list_item_text"><%= display_category(item.category_id) %></div>
+    <div class="list_item_text"><%= display_category(item.category) %></div>
   </div>
   <div class="button_container">
     <div class="list_item_button">
       <%= link_to 'Show', item, class: 'list_item_button action' %>
     </div>
 
-    <% if current_user?(item.user) %>
-      <div class="list_item_button">
-        <%= link_to 'Edit', edit_item_path(item), class: 'list_item_button action' %>
-      </div>
-      <div class="list_item_button">
-        <%= link_to 'Destroy', item, method: :delete, data: { confirm: 'Are you sure?' }, class: 'list_item_button action delete' %>
-      </div>
-    <% else %>
-      <div class="list_item_button">
-        <button class="empty_btemplate">Show</button>
-      </div>
-    <% end %>
+    <div class="list_item_button">
+      <button class="empty_btemplate">Show</button>
+    </div>
   </div>
 </div>

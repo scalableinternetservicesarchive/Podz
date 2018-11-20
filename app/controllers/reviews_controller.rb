@@ -36,7 +36,6 @@ class ReviewsController < ApplicationController
 
     if @review.save
       flash[:success] = "Added review"
-      RatingsCalculatorJob.perform_later
       redirect_to Item.find(@review.item_id)
     else
       flash[:danger] = "Review failed"
@@ -49,7 +48,6 @@ class ReviewsController < ApplicationController
   def update
     if @review.update(review_params)
       flash[:success] = "Upated review"
-      RatingsCalculatorJob.perform_later
       redirect_to @current_user || root_path
     else
       flash[:danger] = "Review failed"

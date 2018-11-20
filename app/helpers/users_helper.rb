@@ -19,4 +19,11 @@ module UsersHelper
     end
   end
 
+  def cache_key_for_top_user(user)
+    "user/#{user.top_user.id}/#{user.top_user.updated_at}/#{user.top_user.user_id}"
+  end
+
+  def cache_key_for_top_user_table
+    "top_user_table/#{TopUser.maximum(:updated_at)}"
+  end
 end
