@@ -2,6 +2,9 @@ class RatingsCalculatorJob < ApplicationJob
   queue_as :default
 
   def perform(*args)
+    # Queue job in the beginning in case the job errors out
+    RatingsCalculatorJob.set(wait: 15.seconds).perform_later
+
     # Check if table exists (necessary to pass Travis CI checks)
     if ActiveRecord::Base.connection.table_exists? 'top_users'
       sql = "SELECT users.id AS id, COUNT(rating) AS count, SUM(rating) AS sum
@@ -55,7 +58,5 @@ class RatingsCalculatorJob < ApplicationJob
         end
       end
     end
-
-    RatingsCalculatorJob.set(wait: 10.seconds).perform_later
   end
 end
