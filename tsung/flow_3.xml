@@ -14,23 +14,21 @@
 
 
   <load>
-    <arrivalphase phase="1" duration="1" unit="second">
+    <arrivalphase phase="1" duration="1" unit="minute">
+      <users arrivalrate="4" unit="second"></users>
+    </arrivalphase>
+
+    <arrivalphase phase="2" duration="1" unit="minute">
       <users arrivalrate="8" unit="second"></users>
     </arrivalphase>
 
-    <!--
-    <arrivalphase phase="2" duration="1" unit="minute">
+    <arrivalphase phase="3" duration="1" unit="minute">
       <users arrivalrate="16" unit="second"></users>
     </arrivalphase>
 
-    <arrivalphase phase="3" duration="1" unit="minute">
+    <arrivalphase phase="4" duration="1" unit="minute">
       <users arrivalrate="32" unit="second"></users>
     </arrivalphase>
-
-    <arrivalphase phase="4" duration="1" unit="minute">
-      <users arrivalrate="64" unit="second"></users>
-    </arrivalphase>
-    -->
 
   </load>
 
@@ -97,12 +95,8 @@
         </request>
       </transaction>
 
-
       <!-- follow redirect -->
-
       <request subst="true"><http url="%%_item_path%%" method="GET" version="1.1" /></request>
-
-
 
     </session>
   </sessions>
