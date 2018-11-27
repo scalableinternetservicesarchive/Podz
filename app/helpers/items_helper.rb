@@ -106,6 +106,7 @@ module ItemsHelper
   end
 
   def cache_key_for_item_table
-    "item_table/#{Item.maximum(:updated_at)}"
+    page = params[:page].nil? ? 1 : params[:page]
+    "item_table/#{Item.maximum(:updated_at)}/#{page}"
   end
 end
