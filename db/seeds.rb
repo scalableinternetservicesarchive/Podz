@@ -2,7 +2,8 @@
 puts '=============================='
 if Rails.env == 'test' || Rails.env == 'development'
   puts 'IN LOCAL MODE (' + Rails.env + ')'
-  how_many = {user: 100, items_per_user: 5, category: 3, rentals_per_user: 2, favorites_per_user: 0}
+  how_many = {user: 100, items_per_user: 5, category: 3, rentals_per_user: 2, favorites_per_user: 0,
+              check_in_all_items: true}
   col_name_delim = "`"  # sqlite3
   val_delim = '"'       # sqlite3
   direct_sql_inject = true
@@ -11,7 +12,8 @@ if Rails.env == 'test' || Rails.env == 'development'
 else
   # Production environment - use postgres
   puts 'IN REMOTE MODE (production)'
-  how_many = {user: 1000, items_per_user: 8, category: 10, rentals_per_user: 3, favorites_per_user: 3}
+  how_many = {user: 1000, items_per_user: 8, category: 10, rentals_per_user: 3, favorites_per_user: 3,
+              check_in_all_items: true}
   col_name_delim = "" # postgres
   val_delim = "'"     # postgres
   direct_sql_inject = true
@@ -206,10 +208,10 @@ if how_many[:rentals_per_user] != 0
           id: i + 1 + (user_id - 1) * how_many[:rentals_per_user],
           item_id: item_id,
           user_id: user_id,
-          history: i + 1 != how_many[:rentals_per_user]
+          history: (i + 1 != how_many[:rentals_per_user] and !how_many[:check_in_all_items])
       }
 
-      if i + 1 == how_many[:rentals_per_user]
+      if i + 1 == how_many[:rentals_per_user] and !how_many[:check_in_all_items]
         # Item is not checked in
         unavailable_item_ids.append(item_id)
       else
