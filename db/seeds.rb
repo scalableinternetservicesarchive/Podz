@@ -268,7 +268,9 @@ if how_many[:rentals_per_user] != 0
 
   if direct_sql_inject
     ActiveRecord::Base.connection.execute sql
-    ActiveRecord::Base.connection.execute "UPDATE items SET available=#{false_val} WHERE id IN (#{unavailable_item_ids.join(",")})"
+    if !how_many[:check_in_all_items]
+      ActiveRecord::Base.connection.execute "UPDATE items SET available=#{false_val} WHERE id IN (#{unavailable_item_ids.join(",")})"
+    end
     ActiveRecord::Base.connection.execute review_sql
   end
 end
