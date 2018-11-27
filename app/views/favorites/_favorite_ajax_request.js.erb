@@ -1,8 +1,0 @@
-$( document ).ready(function() {
-    $.ajax({
-        url: "/favorite_ajax_response",
-        type: "get",
-        cache: false,
-        data: { item_ids: <%= items.pluck(:id) %> }
-    })
-});

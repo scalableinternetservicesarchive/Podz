@@ -1,9 +1,9 @@
 <div class="list_item">
 
   <% if logged_in? %>
-    <div class="list_item_button">
-      <div class="fav_container" id="<%= item.id %>">
-        <%= link_to image_tag("empty_star.png"), favorite_path(item_id: item.id), remote: true, method: :post %>
+    <div class="fav_container", id="<%= item.id %>">
+      <div class="list_item_button">
+        <%= render partial: "favorites/favorite_button", locals: { item: item }%>
       </div>
     </div>
   <% end %>
