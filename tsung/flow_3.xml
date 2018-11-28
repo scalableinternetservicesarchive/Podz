@@ -9,26 +9,26 @@
 
   <!-- Server side setup -->
   <servers>
-    <server host="localhost" port="3000" type="tcp"></server>
+    <server host="podz-ryan.42dz3asytu.us-west-2.elasticbeanstalk.com" port="80" type="tcp" />
   </servers>
 
 
   <load>
     <arrivalphase phase="1" duration="1" unit="minute">
-      <users arrivalrate="4" unit="second"></users>
+      <users arrivalrate="2" unit="second" />
     </arrivalphase>
 
-    <arrivalphase phase="2" duration="1" unit="minute">
-      <users arrivalrate="8" unit="second"></users>
+    <!--<arrivalphase phase="2" duration="1" unit="minute">
+      <users arrivalrate="16" unit="second" />
     </arrivalphase>
 
     <arrivalphase phase="3" duration="1" unit="minute">
-      <users arrivalrate="16" unit="second"></users>
+      <users arrivalrate="32" unit="second" />
     </arrivalphase>
 
     <arrivalphase phase="4" duration="1" unit="minute">
-      <users arrivalrate="32" unit="second"></users>
-    </arrivalphase>
+      <users arrivalrate="64" unit="second" />
+    </arrivalphase> -->
 
   </load>
 
@@ -44,12 +44,11 @@
   <sessions>
     <session name="http-example" probability="100" type="ts_http">
       <request>
-        <http url='/' version='1.1' method='GET'></http>
+        <http url='/' version='1.1' method='GET' />
       </request>
 
       <!-- Pick random user  -->
-      <!-- WARNING: assumes you've seeded the db with at least 1000 users named User2, User3, ... -->
-      <setdynvars sourcetype="random_number" start="2" end="10">
+      <setdynvars sourcetype="random_number" start="2" end="1000">
         <var name="random_user_number" />
       </setdynvars>
 
@@ -62,6 +61,7 @@
       <!-- Sign in -->
 
       <request subst="true">
+        <dyn_variable name="random_user_number" />
         <http
                 url="/login"
                 method="POST"
@@ -72,9 +72,9 @@
       </request>
 
       <request><http url="/items" method="GET" version="1.1" /></request>
-      <request><http url="/items?utf8=&amp;category_search=1&amp;keyword_search=" method="GET" version="1.1" /></request>
+      <request><http url="/items?category_search=1&amp;keyword_search=" method="GET" version="1.1" /></request>
 
-      <setdynvars sourcetype="random_number" start="2" end="20">
+      <setdynvars sourcetype="random_number" start="1" end="8000">
         <var name="item_id" />
       </setdynvars>
       <setdynvars sourcetype="value" value="4">
@@ -84,7 +84,8 @@
 
       <transaction name="new_rental_post">
         <request subst="true">
-
+          <dyn_variable name="random_user_number" />
+          <dyn_variable name="item_id" />
           <http
                   url="/rent"
                   method="POST"
