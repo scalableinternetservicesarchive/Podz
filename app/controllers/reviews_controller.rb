@@ -1,4 +1,5 @@
 class ReviewsController < ApplicationController
+  skip_before_action :verify_authenticity_token
   before_action :set_review, only: [:show, :edit, :update, :destroy]
   before_action :logged_in_user,  only: [:new, :create, :update, :destroy, :edit]
   before_action :user_owns_review,  only: [:update, :destroy]

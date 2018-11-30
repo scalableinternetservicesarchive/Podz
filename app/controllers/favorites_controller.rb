@@ -1,5 +1,6 @@
 class FavoritesController < ApplicationController
   respond_to? :js
+  skip_before_action :verify_authenticity_token
 
   def favorite
     @item = Item.find_by(id: params[:item_id])
