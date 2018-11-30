@@ -9,15 +9,15 @@
 
   <!-- Server side setup -->
   <servers>
-    <server host="localhost" port="3000" type="tcp"></server>
+    <server host="podz-scale.42dz3asytu.us-west-2.elasticbeanstalk.com" port="80" type="tcp"></server>
   </servers>
 
   <load>
-    <arrivalphase phase="1" duration="10" unit="second">
-      <users arrivalrate="1" unit="second"></users>
+    <arrivalphase phase="1" duration="1" unit="minute">
+      <users arrivalrate="8" unit="second"></users>
     </arrivalphase>
 
-    <!-- <arrivalphase phase="2" duration="1" unit="minute">
+    <arrivalphase phase="2" duration="1" unit="minute">
       <users arrivalrate="16" unit="second"></users>
     </arrivalphase>
 
@@ -27,7 +27,7 @@
 
     <arrivalphase phase="4" duration="1" unit="minute">
       <users arrivalrate="64" unit="second"></users>
-    </arrivalphase> -->
+    </arrivalphase>
   </load>
 
   <options>
@@ -86,9 +86,10 @@
         <!-- Search by category -->
         <request subst="true">
           <http
-            url="/items?category_search=%%_random_category_number%%"
+            url="/items"
             method="GET"
             version="1.1"
+            contents="category_search=%%_random_category_number%%"
             content_type="application/x-www-form-urlencoded"
           />
         </request>
@@ -112,9 +113,10 @@
         <!-- Search by keyword -->
         <request subst="true">
           <http
-            url="/items?keyword_search=%%_random_keyword_number%%"
+            url="/items"
             method="GET"
             version="1.1"
+            contents="keyword_search=%%_random_keyword_number%%"
             content_type="application/x-www-form-urlencoded"
           />
         </request>
