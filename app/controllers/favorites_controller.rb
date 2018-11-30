@@ -1,5 +1,4 @@
 class FavoritesController < ApplicationController
-  skip_before_action :verify_authenticity_token
   respond_to? :js
   skip_before_action :verify_authenticity_token
 
