@@ -48,6 +48,17 @@ def dict_to_db_str(d, cols, delim)
   return col_string
 end
 
+ActiveRecord::Base.transaction do
+  Favorite.delete_all
+  TopItem.delete_all
+  TopUser.delete_all
+  Review.delete_all
+  Rental.delete_all
+  Item.delete_all
+  Category.delete_all
+  User.delete_all
+end
+
 NOW_DT = DateTime.current
 NOW_STR = NOW_DT.strftime("%FT%T")
 
