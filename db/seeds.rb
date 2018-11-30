@@ -2,7 +2,7 @@
 puts '=============================='
 if Rails.env == 'test' || Rails.env == 'development'
   puts 'IN LOCAL MODE (' + Rails.env + ')'
-  how_many = {user: 10, items_per_user: 3, category: 3, rentals_per_user: 0, favorites_per_user: 0}
+  how_many = {user: 100, items_per_user: 1, category: 3, rentals_per_user: 2, favorites_per_user: 0}
   col_name_delim = "`"  # sqlite3
   val_delim = '"'       # sqlite3
   direct_sql_inject = true
@@ -46,6 +46,17 @@ def dict_to_db_str(d, cols, delim)
   col_string.gsub! '"', delim
   col_string.gsub! "'NULL'", "NULL" # Just for postgres, won't mess with sqlite
   return col_string
+end
+
+ActiveRecord::Base.transaction do
+  Favorite.delete_all
+  TopItem.delete_all
+  TopUser.delete_all
+  Review.delete_all
+  Rental.delete_all
+  Item.delete_all
+  Category.delete_all
+  User.delete_all
 end
 
 NOW_DT = DateTime.current

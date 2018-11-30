@@ -16,20 +16,31 @@
 
 <hr>
 
+<% cache(cache_key_for_item_table) do %>
+
 <div id="available">
   <div class="item_table">
     <div class="table_content">
     <%= render 'item_header', owner: false %>
     </div>
     <div class="table_content">
-      <%= render @items_free %>
+      <% @items_free.each do |item| %>
+        <% cache(cache_key_for_item(item)) do %>
+          <%= render item %>
+        <% end %>
+      <% end %>
+      <%= will_paginate @items_free %>
     </div>
   </div>
 </div>
 
+<% end %>
+
 <hr>
 
 <button class="btn btn-primary" style="margin-bottom: 1em" data-toggle="collapse" data-target="#rented">Show Unavailable</button>
+
+<% cache(cache_key_for_item_table) do %>
 
 <div id="rented" class="collapse">
   <div class="item_table">
@@ -37,10 +48,17 @@
       <%= render 'item_header' %>
     </div>
     <div class="table_content">
-      <%= render @items_rented %>
+      <% @items_rented.each do |item| %>
+        <% cache(cache_key_for_item(item)) do %>
+          <%= render item %>
+        <% end %>
+      <% end %>
+      <%= will_paginate @items_rented %>
     </div>
   </div>
 </div>
+
+<% end %>
 
 <script>
   <%= render partial: "favorites/favorite_ajax_request.js", locals: { items: @items_free + @items_rented } %>

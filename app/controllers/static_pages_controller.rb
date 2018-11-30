@@ -1,7 +1,8 @@
 class StaticPagesController < ApplicationController
+  skip_before_action :verify_authenticity_token
   def home
-    @items = Item.joins(:top_item)
-    @users = User.joins(:top_user)
+    @items = Item.joins(:top_item).includes(:top_item)
+    @users = User.joins(:top_user).includes(:top_user)
   end
 
   def about

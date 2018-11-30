@@ -70,6 +70,7 @@
     <div class="bottom_buttons">
       <% unless current_user.nil? or !item_owned(current_user.id, @item.user_id) %>
         <%= link_to 'Edit', edit_item_path(@item) ,class: "primary_button light"%>
+        <%= link_to 'Destroy', @item, method: :delete, data: { confirm: 'Are you sure?' }, class: "primary_button light" %>
       <% end %>
       <%= link_to 'Back', items_path ,class: "primary_button light"%>
       <%if  @isPrevRented and !@isPrevReviewed %>
