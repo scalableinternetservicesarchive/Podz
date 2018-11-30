@@ -9,7 +9,7 @@
 
   <!-- Server side setup -->
   <servers>
-    <server host="podz-ryan.42dz3asytu.us-west-2.elasticbeanstalk.com" port="80" type="tcp" />
+    <server host="podz-alex.42dz3asytu.us-west-2.elasticbeanstalk.com" port="80" type="tcp" />
   </servers>
 
 
@@ -18,17 +18,17 @@
       <users arrivalrate="2" unit="second" />
     </arrivalphase>
 
-    <!--<arrivalphase phase="2" duration="1" unit="minute">
-      <users arrivalrate="16" unit="second" />
+    <arrivalphase phase="2" duration="1" unit="minute">
+      <users arrivalrate="4" unit="second" />
     </arrivalphase>
 
     <arrivalphase phase="3" duration="1" unit="minute">
-      <users arrivalrate="32" unit="second" />
+      <users arrivalrate="8" unit="second" />
     </arrivalphase>
 
     <arrivalphase phase="4" duration="1" unit="minute">
-      <users arrivalrate="64" unit="second" />
-    </arrivalphase> -->
+      <users arrivalrate="16" unit="second" />
+    </arrivalphase>
 
   </load>
 
@@ -48,56 +48,43 @@
       </request>
 
       <!-- Pick random user  -->
-      <setdynvars sourcetype="random_number" start="2" end="1000">
+      <setdynvars sourcetype="random_number" start="2" end="100">
         <var name="random_user_number" />
       </setdynvars>
 
-      <!-- Get home -->
-      <request><http url="/login" method="GET" version="1.1" /></request>
 
-      <!-- wait while guest looks at home page -->
-      <!--<thinktime value="1" random="true"></thinktime> -->
-
-      <!-- Sign in -->
-
-      <request subst="true">
-        <dyn_variable name="random_user_number" />
-        <http
-                url="/login"
-                method="POST"
-                version="1.1"
-                contents="session[email]=User%%_random_user_number%%@example.com&amp;session[password]=foobar&amp;commit=Login"
-                content_type="application/x-www-form-urlencoded"
-        />
+      <request>
+        <http url='/' version='1.1' method='GET' />
       </request>
 
-      <request><http url="/items" method="GET" version="1.1" /></request>
-      <request><http url="/items?category_search=1&amp;keyword_search=" method="GET" version="1.1" /></request>
+      <request subst="true">
+        <http url='/login' version='1.1' method='POST'
+              contents="session[email]=user%%_random_user_number%%@example.com&amp;
+                          session[password]=foobar&amp;"
+              content_type="application/x-www-form-urlencoded" />
+      </request>
+
+      <!--<request><http url="/items" method="GET" version="1.1" /></request>-->
+      <!--<request><http url="/items?category_search=1" method="GET" version="1.1" /></request>-->
 
       <setdynvars sourcetype="random_number" start="1" end="8000">
         <var name="item_id" />
       </setdynvars>
-      <setdynvars sourcetype="value" value="4">
-        <var name="item_fixed" />
-      </setdynvars>
-
 
       <transaction name="new_rental_post">
         <request subst="true">
-          <dyn_variable name="random_user_number" />
-          <dyn_variable name="item_id" />
           <http
                   url="/rent"
                   method="POST"
                   version="1.1"
-                  contents="item_id=%%_item_id%%&amp;user_id=%%_random_user_number%%&amp;commit=Rent"
+                  contents="item_id=%%_item_id%%"
                   content_type="application/x-www-form-urlencoded"
           />
         </request>
       </transaction>
 
       <!-- follow redirect -->
-      <request subst="true"><http url="%%_item_path%%" method="GET" version="1.1" /></request>
+      <!--<request subst="true"><http url="%%_item_path%%" method="GET" version="1.1" /></request>-->
 
     </session>
   </sessions>
