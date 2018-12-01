@@ -1,5 +1,6 @@
 class RentalsController < ApplicationController
   skip_before_action :verify_authenticity_token
+  
   def rent
     item_id = params[:item_id]
     item = Item.find_by(id: item_id)

@@ -1,6 +1,7 @@
 class CategoriesController < ApplicationController
   before_action :set_category, only: [:show, :edit, :update, :destroy]
   before_action :admin_user,   only: [:create, :new, :update, :edit, :destroy]
+  skip_before_action :verify_authenticity_token
 
   # GET /categories
   # GET /categories.json

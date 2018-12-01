@@ -16,11 +16,10 @@ class ItemsController < ApplicationController
     end
 
     if !@keyword.nil? && @keyword.length.positive?
-      @items = @items.where('LOWER(title) LIKE :keyword OR LOWER(description) LIKE :keyword', { keyword: "%#{@keyword.downcase}%" })
+      @items = @items.where('LOWER(items.title) LIKE :keyword OR LOWER(items.description) LIKE :keyword', { keyword: "%#{@keyword.downcase}%" })
     end
 
-    @items_free = @items.where(available: true).includes(:category).paginate(per_page: 20, page: params[:page])
-    @items_rented = @items.where(available: false).includes(:category).paginate(per_page: 20, page: params[:page])
+    @items = @items.includes(:category).paginate(per_page: 20, page: params[:page])
   end
 
   # GET /items/1
