@@ -50,31 +50,38 @@
       </setdynvars>
 
       <!-- landing page -->
-      <request>
-        <http url='/' version='1.1' method='GET' />
-      </request>
+      <transaction name="initial_pages">
+        <request>
+          <http url='/' version='1.1' method='GET' />
+        </request>
 
-      <!-- login page -->
-      <request>
-        <http url='/login' version='1.1' method='GET' />
-      </request>
+        <!-- login page -->
+        <request>
+          <http url='/login' version='1.1' method='GET' />
+        </request>
+      </transaction>
 
       <!-- login post request -->
-      <request subst="true">
-        <http url='/login' version='1.1' method='POST'
-              contents="session[email]=user%%_random_user_number%%@example.com&amp;
+      <transaction name="login">
+        <request subst="true">
+          <http url='/login' version='1.1' method='POST'
+                contents="session[email]=user%%_random_user_number%%@example.com&amp;
                           session[password]=foobar&amp;"
-              content_type="application/x-www-form-urlencoded" />
-      </request>
+                content_type="application/x-www-form-urlencoded" />
+        </request>
 
-      <request><http url="/items" method="GET" version="1.1" /></request>
-      <request>
-        <http url="/items"
-              method="GET"
-              version="1.1"
-              contents="category_search=1"
-        />
-      </request>
+      </transaction>
+
+      <transaction name="item_browsing">
+        <request><http url="/items" method="GET" version="1.1" /></request>
+        <request>
+          <http url="/items"
+                method="GET"
+                version="1.1"
+                contents="category_search=1"
+          />
+        </request>
+      </transaction>
 
       <setdynvars sourcetype="random_number" start="1" end="8000">
         <var name="item_id" />
