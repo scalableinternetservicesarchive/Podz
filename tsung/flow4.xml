@@ -9,7 +9,7 @@
 
   <!-- Server side setup -->
   <servers>
-    <server host="podz-scale.42dz3asytu.us-west-2.elasticbeanstalk.com" port="80" type="tcp"></server>
+    <server host="luber-ryan.42dz3asytu.us-west-2.elasticbeanstalk.com" port="80" type="tcp"></server>
   </servers>
 
   <load>
@@ -44,12 +44,12 @@
       
       <!-- Pick random user -->
       <!-- WARNING: assumes you've seeded the db with at least 1000 users named user2, user3, ... -->
-      <setdynvars sourcetype="random_number" start="2" end="10">
+      <setdynvars sourcetype="random_number" start="2" end="1000">
         <var name="random_user_number" />
       </setdynvars>
       <!-- Pick random category -->
       <!-- WARNING: assumes you've seeded the db with atleast 10 categories named Category 1 ... Category 10 -->
-      <setdynvars sourcetype="random_number" start="1" end="3">
+      <setdynvars sourcetype="random_number" start="1" end="10">
         <var name="random_category_number" />
       </setdynvars>
       <!-- Pick random keyword -->
@@ -58,9 +58,8 @@
         <var name="random_keyword_number" />
       </setdynvars>
       <!-- Pick random item -->
-      <setdynvars sourcetype="random_number" start="1" end="30">
-        <var name="item1" />
-        <var name="item2" />
+      <setdynvars sourcetype="random_number" start="10" end="7000">
+        <var name="first_item" />
       </setdynvars>
       
       <transaction name="SIGN_IN">
@@ -103,7 +102,7 @@
             url="/favorite"
             method="POST"
             version="1.1"
-            contents="item_id=%%_item1%%"
+            contents="item_id=%%_first_item%%"
             content_type="application/x-www-form-urlencoded"
           />
         </request>
@@ -124,14 +123,14 @@
         <!-- Wait to simulate user looking around -->
         <thinktime value="1" random="false"/>
 
-        <!-- Favorite Item -->
+        <!-- Unfavorite Item -->
         <request subst="true">
           <http
-            url="/favorite"
-            method="POST"
-            version="1.1"
-            contents="item_id=%%_item2%%"
-            content_type="application/x-www-form-urlencoded"
+                  url="/favorite"
+                  method="DELETE"
+                  version="1.1"
+                  contents="item_id=%%_first_item%%"
+                  content_type="application/x-www-form-urlencoded"
           />
         </request>
       </transaction>
