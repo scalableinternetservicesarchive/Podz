@@ -11,7 +11,7 @@ if Rails.env == 'test' || Rails.env == 'development'
 else
   # Production environment - use postgres
   puts 'IN REMOTE MODE (production)'
-  how_many = {user: 1000, items_per_user: 8, category: 10, rentals_per_user: 0, favorites_per_user: 3}
+  how_many = {user: 1000, items_per_user: 8, category: 10, rentals_per_user: 3, favorites_per_user: 3}
   col_name_delim = "" # postgres
   val_delim = "'"     # postgres
   direct_sql_inject = true
