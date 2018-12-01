@@ -16,7 +16,7 @@
 
 <hr>
 
-<% cache ["page-#{params[:page]}/category-#{params[:category_search]}/keyword-#{params[:keyword_search]}/last_item-#{@items.last.id}",
+<% cache ["page-#{params[:page]}/category-#{params[:category_search]}/keyword-#{params[:keyword_search]}/last_item-#{@items.last.nil? ? "nil" : @items.last.id}",
           @items.maximum('items.updated_at')] do %>
 
 <%= will_paginate @items %>
