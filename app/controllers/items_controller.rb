@@ -12,7 +12,7 @@ class ItemsController < ApplicationController
 
     @items = Item
     if !@category.nil? && @category.length.positive?
-      @items = @items.where('category_id == ?', @category.to_i)
+      @items = @items.where(category_id: @category.to_i)
     end
 
     if !@keyword.nil? && @keyword.length.positive?
