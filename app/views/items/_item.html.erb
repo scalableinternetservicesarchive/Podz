@@ -1,10 +1,8 @@
 <div class="list_item">
   <div class="fav_container" id="<%= item.id %>">
-    <% if logged_in? %>
-      <div class="list_item_button">
-          <%= link_to image_tag("empty_star.png"), favorite_path(item_id: item.id), remote: true, method: :post %>
-      </div>
-    <% end %>
+    <div class="list_item_button">
+        <%= link_to image_tag("empty_star.png"), favorite_path(item_id: item.id), remote: true, method: :post %>
+    </div>
   </div>
   <div class="text_container">
 
