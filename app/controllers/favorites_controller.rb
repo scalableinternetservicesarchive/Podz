@@ -4,7 +4,10 @@ class FavoritesController < ApplicationController
 
   def favorite
     @item = Item.find_by(id: params[:item_id])
-    Favorite.create!(user_id: current_user.id, item_id: params[:item_id])
+    if logged_in?
+      Favorite.create!(user_id: current_user.id, item_id: params[:item_id])
+    end
+
     respond_to do |format|
       format.js
       format.html { redirect_to items_path }
@@ -13,8 +16,11 @@ class FavoritesController < ApplicationController
 
   def unfavorite
     @item = Item.find_by(id: params[:item_id])
-    @favorite = Favorite.find_by(user_id: current_user.id, item_id: params[:item_id])
-    @favorite.destroy!
+    if logged_in?
+      @favorite = Favorite.find_by(user_id: current_user.id, item_id: params[:item_id])
+      @favorite.destroy!
+    end
+
     respond_to do |format|
       format.js
       format.html { redirect_to items_path }
