@@ -32,7 +32,10 @@ class RatingsCalculatorJob < ApplicationJob
           TopUser.create(user_id: users[index]["id"])
           index += 1
         end
-        TopUser.all[length..TopUser.count].each { |top_user| top_user.delete }
+        extra_users = TopUser.all[length..TopUser.count]
+        unless extra_users.nil?
+          extra_users.each { |top_user| top_user.delete }
+        end
       end
     end
 
