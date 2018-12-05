@@ -21,7 +21,7 @@ class RatingsCalculatorJob < ApplicationJob
       # If a top user ranking has changed, update
       ActiveRecord::Base.transaction do
         index = 0
-        TopUser.all.each do |user|
+        TopUser.all[0...10].each do |user|
           unless user.user_id == users[index]["id"]
             puts "Updating"
             user.update(user_id: users[index]["id"])
@@ -32,6 +32,7 @@ class RatingsCalculatorJob < ApplicationJob
           TopUser.create(user_id: users[index]["id"])
           index += 1
         end
+        TopUser.all[10..TopUser.count].each { |top_user| top_user.delete }
       end
     end
 
