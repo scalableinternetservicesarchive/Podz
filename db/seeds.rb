@@ -311,7 +311,7 @@ end
 puts "Generated #{Favorite.count} favorites"
 
 if Rails.env == 'production'
-  ["users", "categories", "items", "rentals", "reviews", "favorites"].each do |table|
+  ["top_items", "top_users", "users", "categories", "items", "rentals", "reviews", "favorites"].each do |table|
     ActiveRecord::Base.connection.execute "SELECT setval('#{table}_id_seq', (SELECT max(id) FROM #{table}))"
   end
 end
