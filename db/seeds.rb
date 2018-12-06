@@ -2,7 +2,7 @@
 puts '=============================='
 if Rails.env == 'test' || Rails.env == 'development'
   puts 'IN LOCAL MODE (' + Rails.env + ')'
-  how_many = {user: 100, items_per_user: 1, category: 3, rentals_per_user: 2, favorites_per_user: 0}
+  how_many = {user: 100, items_per_user: 3, category: 3, rentals_per_user: 2, favorites_per_user: 0}
   col_name_delim = "`"  # sqlite3
   val_delim = '"'       # sqlite3
   direct_sql_inject = true
@@ -311,7 +311,7 @@ end
 puts "Generated #{Favorite.count} favorites"
 
 if Rails.env == 'production'
-  ["users", "categories", "items", "rentals", "reviews", "favorites"].each do |table|
+  ["top_items", "top_users", "users", "categories", "items", "rentals", "reviews", "favorites"].each do |table|
     ActiveRecord::Base.connection.execute "SELECT setval('#{table}_id_seq', (SELECT max(id) FROM #{table}))"
   end
 end
