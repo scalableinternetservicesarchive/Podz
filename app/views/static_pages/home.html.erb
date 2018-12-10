@@ -30,26 +30,26 @@
 
 <% end %>
 
-<% cache(cache_key_for_top_user_table) do %>
-
 <% if logged_in? %>
-  <div>
-    <hr>
-    <h1>Highest Rated Users</h1>
-    <div class="item_table">
-      <div class="table_content">
-        <%= render 'users/user_header' %>
-      </div>
-      <div class="table_content">
-        <% @users.each do |user| %>
-          <% cache(cache_key_for_top_user(user)) do %>
-            <%= render user %>
+
+  <% cache(cache_key_for_top_user_table) do %>
+    <div>
+      <hr>
+      <h1>Highest Rated Users</h1>
+      <div class="item_table">
+        <div class="table_content">
+          <%= render 'users/user_header' %>
+        </div>
+        <div class="table_content">
+          <% @users.each do |user| %>
+            <% cache(cache_key_for_top_user(user)) do %>
+              <%= render user %>
+            <% end %>
           <% end %>
-        <% end %>
+        </div>
       </div>
     </div>
-  </div>
-<% end %>
+  <% end %>
 
 <% end %>
 
